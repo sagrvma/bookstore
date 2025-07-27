@@ -31,7 +31,7 @@ const createAuthor = async (req: Request<{}, {}, IAuthor>, res: Response) => {
 
 const getAuthors = async (req: Request, res: Response) => {
   try {
-    const authors = await Author.find({});
+    const authors: Array<IAuthor> = await Author.find({});
     return res.status(200).json({
       success: true,
       message:
@@ -55,7 +55,7 @@ const getAuthorById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    let author: IAuthor | null;
+    let author; // author: IAuthor | null; Will be self infered by TS
 
     if (mongoose.Types.ObjectId.isValid(id)) {
       author = await Author.findById(id);
