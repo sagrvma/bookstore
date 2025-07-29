@@ -9,22 +9,23 @@ const createAuthor = async (req: Request<{}, {}, IAuthor>, res: Response) => {
 
     return res.status(201).json({
       success: true,
-      message: "New author created successfully.",
+      message: "New author created successfully!",
       data: newAuthor,
     });
   } catch (error: any) {
-    console.error("Error while creating author: ", error);
+    console.error("Error while creating the author: ", error);
 
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
-        message: "Validation error",
+        message: "Validation error.",
         error: error.errors,
       });
     }
     return res.status(500).json({
       success: false,
-      message: "Something went wrong while creating author! Please try again.",
+      message:
+        "Something went wrong while creating the new author! Please try again.",
     });
   }
 };
@@ -76,11 +77,11 @@ const getAuthorById = async (req: Request, res: Response) => {
       data: author,
     });
   } catch (error: any) {
-    console.error("Error while fetching author by ID: ", error);
+    console.error("Error while fetching author by id: ", error);
     return res.status(500).json({
       success: false,
       message:
-        "Something went wrong while fetching author by ID! Please try again.",
+        "Something went wrong while fetching author by id! Please try again.",
       error: error.errors || error.message || "Unknown error!",
     });
   }

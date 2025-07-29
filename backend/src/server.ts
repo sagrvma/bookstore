@@ -9,7 +9,7 @@ connectToDB();
 
 const app = express();
 
-app.use(express.json()); //JSON Middleware
+app.use(express.json()); //Built-in middleware in Express.js that parse incoming requests with JSON payloads and makes the data available in req.body
 
 app.use("/api/authors", authorRouter);
 
