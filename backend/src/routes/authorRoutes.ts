@@ -1,16 +1,17 @@
-import express from "express";
+import { Router } from "express";
 import {
   createAuthor,
   getAuthorById,
   getAuthors,
 } from "../controllers/authorController";
 
-const router = express.Router();
+const router = Router();
 
+//GET - /api/authors - Get all authors
 router.get("/", getAuthors);
-
+//GET - /api/authors/:id - Get author by id or slug
 router.get("/:id", getAuthorById);
-
-router.put("/", createAuthor);
+//POST - /api/authors - Create a new author
+router.post("/", createAuthor);
 
 export default router;
