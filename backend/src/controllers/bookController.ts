@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Request, Response } from "express";
 import Book, { IBook } from "../models/book";
+import { validateId } from "../utils/validators";
 
 const createBook = async (req: Request<{}, {}, IBook>, res: Response) => {
   try {
@@ -15,13 +16,13 @@ const createBook = async (req: Request<{}, {}, IBook>, res: Response) => {
       data: newBook,
     });
   } catch (error: any) {
-    console.log("Error while creating the book: ", error);
+    console.error("Error while creating the book: ", error);
 
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
         message: "Validation error.",
-        error: error.errors,
+        error: error.errors || error.message || "Unknown error!",
       });
     }
 
@@ -44,7 +45,7 @@ const getBooks = async (req: Request, res: Response) => {
       data: books,
     });
   } catch (error: any) {
-    console.log("Something went wrong while fetching list of books: ", error);
+    console.error("Something went wrong while fetching list of books: ", error);
     return res.status(500).json({
       success: false,
       message:
@@ -54,9 +55,16 @@ const getBooks = async (req: Request, res: Response) => {
   }
 };
 
-const getBookById = async (req: Request, res: Response) => {
+const getBookById = async (req: Request<{ id: string }>, res: Response) => {
   try {
     const { id } = req.params;
+
+    if (!validateId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid id provided.",
+      });
+    }
 
     const book: IBook | null = await Book.findById(id).populate("author");
 
@@ -73,14 +81,52 @@ const getBookById = async (req: Request, res: Response) => {
       data: book,
     });
   } catch (error: any) {
-    console.log("Error while fetching book by id: ", error);
+    console.error("Error while fetching book by id: ", error);
     return res.status(500).json({
       success: false,
       message:
         "Something went wrong while fetching book by id! Please try again.",
-      error: error.errors || error.message || "Unknown Error",
+      error: error.errors || error.message || "Unknown error!",
     });
   }
 };
 
-export { createBook, getBooks, getBookById };
+const removeBook = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!validateId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid id provided.",
+      });
+    }
+
+    const deletedBook = await Book.findByIdAndDelete(id);
+
+    if (!deletedBook) {
+      return res.status(404).json({
+        success: false,
+        message: "No book found with the given id!",
+      });
+    }
+
+    await deletedBook.populate("author");
+
+    return res.status(200).json({
+      success: true,
+      message: "Book with the given id removed successfully.",
+      data: deletedBook,
+    });
+  } catch (error: any) {
+    console.error("Error while removing book by id: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while removing book by id! Please try again.",
+      error: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export { createBook, getBooks, getBookById, removeBook };
