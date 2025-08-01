@@ -19,13 +19,14 @@ const createAuthor = async (req: Request<{}, {}, IAuthor>, res: Response) => {
       return res.status(400).json({
         success: false,
         message: "Validation error.",
-        error: error.errors,
+        errors: error.errors || error.message || "Unknown error!",
       });
     }
     return res.status(500).json({
       success: false,
       message:
         "Something went wrong while creating the new author! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
     });
   }
 };
@@ -47,7 +48,7 @@ const getAuthors = async (req: Request, res: Response) => {
       success: false,
       message:
         "Something went wrong while fetching list of authors! Please try again.",
-      error: error.errors || error.message || "Unknown error!",
+      errors: error.errors || error.message || "Unknown error!",
     });
   }
 };
@@ -82,7 +83,7 @@ const getAuthorById = async (req: Request, res: Response) => {
       success: false,
       message:
         "Something went wrong while fetching author by id! Please try again.",
-      error: error.errors || error.message || "Unknown error!",
+      errors: error.errors || error.message || "Unknown error!",
     });
   }
 };
