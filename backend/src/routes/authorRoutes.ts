@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createAuthor,
+  deleteAuthor,
   getAuthorById,
   getAuthors,
 } from "../controllers/authorController";
@@ -13,5 +14,7 @@ router.get("/", getAuthors);
 router.get("/:id", getAuthorById);
 //POST - /api/authors - Create a new author
 router.post("/", createAuthor);
+//DELETE - /api/authors/:id - Remove author by id or slug
+router.delete("/:id", deleteAuthor);
 
 export default router;

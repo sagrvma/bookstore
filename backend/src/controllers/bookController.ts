@@ -20,7 +20,7 @@ const createBook = async (req: Request<{}, {}, IBook>, res: Response) => {
     if (!author) {
       return res.status(404).json({
         success: false,
-        message: "No author exists with the given authorId.",
+        message: "No author exists with the given ID.",
       });
     }
 
@@ -83,7 +83,7 @@ const getBookById = async (req: Request<{ id: string }>, res: Response) => {
     if (!validateId(id)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid id provided.",
+        message: "Invalid book ID provided.",
       });
     }
 
@@ -92,21 +92,21 @@ const getBookById = async (req: Request<{ id: string }>, res: Response) => {
     if (!book) {
       return res.status(404).json({
         success: false,
-        message: "No book exists with the given id.",
+        message: "No book exists with the given ID.",
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Book with given id found successfully!",
+      message: "Book with given ID found successfully!",
       data: book,
     });
   } catch (error: any) {
-    console.error("Error while fetching book by id: ", error);
+    console.error("Error while fetching book by ID: ", error);
     return res.status(500).json({
       success: false,
       message:
-        "Something went wrong while fetching book by id! Please try again.",
+        "Something went wrong while fetching book by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
@@ -119,7 +119,7 @@ const removeBook = async (req: Request<{ id: string }>, res: Response) => {
     if (!validateId(id)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid id provided.",
+        message: "Invalid book ID provided.",
       });
     }
 
@@ -128,7 +128,7 @@ const removeBook = async (req: Request<{ id: string }>, res: Response) => {
     if (!deletedBook) {
       return res.status(404).json({
         success: false,
-        message: "No book found with the given id!",
+        message: "No book found with the given ID!",
       });
     }
 
@@ -136,15 +136,15 @@ const removeBook = async (req: Request<{ id: string }>, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      message: "Book with the given id removed successfully.",
+      message: "Book with the given ID removed successfully.",
       data: deletedBook,
     });
   } catch (error: any) {
-    console.error("Error while removing book by id: ", error);
+    console.error("Error while removing book by ID: ", error);
     return res.status(500).json({
       success: false,
       message:
-        "Something went wrong while removing book by id! Please try again.",
+        "Something went wrong while removing book by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
@@ -157,7 +157,7 @@ const updateBook = async (req: Request<{ id: string }>, res: Response) => {
     if (!validateId(id)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid id provided.",
+        message: "Invalid book ID provided.",
       });
     }
 
@@ -171,7 +171,7 @@ const updateBook = async (req: Request<{ id: string }>, res: Response) => {
       if (!validateId(authorId.toString())) {
         return res.status(400).json({
           success: false,
-          message: "Invalid author ID provided!",
+          message: "Invalid author ID provided.",
         });
       }
 
@@ -193,7 +193,7 @@ const updateBook = async (req: Request<{ id: string }>, res: Response) => {
     if (!updatedBook) {
       return res.status(404).json({
         success: false,
-        message: "No book found with the given id.",
+        message: "No book found with the given ID.",
       });
     }
 
@@ -201,11 +201,11 @@ const updateBook = async (req: Request<{ id: string }>, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      message: "Book with the given id updated successfully!",
+      message: "Book with the given ID updated successfully!",
       data: updatedBook,
     });
   } catch (error: any) {
-    console.error("Error while updating book by id: ", error);
+    console.error("Error while updating book by ID: ", error);
 
     if (error.name === "ValidationError") {
       return res.status(400).json({
@@ -218,7 +218,7 @@ const updateBook = async (req: Request<{ id: string }>, res: Response) => {
     return res.status(500).json({
       success: false,
       message:
-        "Something went wrong while updating book by id! Please try again.",
+        "Something went wrong while updating book by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
