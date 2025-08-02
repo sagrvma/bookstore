@@ -138,4 +138,53 @@ const deleteAuthor = async (req: Request<{ id: string }>, res: Response) => {
   }
 };
 
-export { createAuthor, getAuthors, getAuthorById, deleteAuthor };
+const updateAuthor = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    let author; // : IAuthor | null
+    if (validateId(id)) {
+      author = await Author.findById(id);
+    } else {
+      author = await Author.findOne({ slug: id });
+    }
+
+    if (!author) {
+      return res.status(404).json({
+        success: false,
+        message: "No author found with the given ID!",
+      });
+    }
+
+    const updatedAuthor = await Author.findByIdAndUpdate(author._id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Author with the given ID updated successfully.",
+      data: updatedAuthor,
+    });
+  } catch (error: any) {
+    console.error("Error while updating author by ID: ", error);
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error.",
+        errors: error.errors || error.message || "Unknown error!",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while updating author by ID! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export { createAuthor, getAuthors, getAuthorById, deleteAuthor, updateAuthor };

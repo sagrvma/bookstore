@@ -4,6 +4,7 @@ import {
   deleteAuthor,
   getAuthorById,
   getAuthors,
+  updateAuthor,
 } from "../controllers/authorController";
 
 const router = Router();
@@ -16,5 +17,7 @@ router.get("/:id", getAuthorById);
 router.post("/", createAuthor);
 //DELETE - /api/authors/:id - Remove author by id or slug
 router.delete("/:id", deleteAuthor);
+//PATCH - api/authors/:id - Update author by id or slug
+router.patch("/:id", updateAuthor);
 
 export default router;
