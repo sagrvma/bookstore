@@ -11,7 +11,7 @@ const createBook = async (req: Request<{}, {}, IBook>, res: Response) => {
     if (!validateId(authorId.toString())) {
       return res.status(400).json({
         success: false,
-        message: "Invalid author id provided.",
+        message: "Invalid author ID provided.",
       });
     }
 
@@ -150,4 +150,78 @@ const removeBook = async (req: Request<{ id: string }>, res: Response) => {
   }
 };
 
-export { createBook, getBooks, getBookById, removeBook };
+const updateBook = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!validateId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid id provided.",
+      });
+    }
+
+    const updatedBookData = req.body; // Not :IBook to accomodate partial updates with only some fields to be updated
+
+    //IF author field is being updated, needs to be validated seperately
+
+    const authorId = updatedBookData.author;
+
+    if (authorId) {
+      if (!validateId(authorId.toString())) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid author ID provided!",
+        });
+      }
+
+      const author = await Author.findById(authorId);
+
+      if (!author) {
+        return res.status(404).json({
+          success: false,
+          message: "No author found with the given ID.",
+        });
+      }
+    }
+
+    const updatedBook = await Book.findByIdAndUpdate(id, updatedBookData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedBook) {
+      return res.status(404).json({
+        success: false,
+        message: "No book found with the given id.",
+      });
+    }
+
+    await updatedBook.populate("author"); //Populate the book for the response if it exists
+
+    return res.status(200).json({
+      success: true,
+      message: "Book with the given id updated successfully!",
+      data: updatedBook,
+    });
+  } catch (error: any) {
+    console.error("Error while updating book by id: ", error);
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error!",
+        errors: error.errors || error.message || "Unknown error!",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while updating book by id! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export { createBook, getBooks, getBookById, removeBook, updateBook };

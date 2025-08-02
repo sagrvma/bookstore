@@ -4,6 +4,7 @@ import {
   getBookById,
   createBook,
   removeBook,
+  updateBook,
 } from "../controllers/bookController";
 
 const router = Router();
@@ -14,7 +15,9 @@ router.get("/", getBooks);
 router.get("/:id", getBookById);
 //POST - /api/books - Create a new book
 router.post("/", createBook);
-//DELETE = /api/books/:id - Delete book by id
+//DELETE - /api/books/:id - Delete book by id
 router.delete("/:id", removeBook);
+//PATCH - /api/books/:id - Update book by id
+router.patch("/:id", updateBook);
 
 export default router;
