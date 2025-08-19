@@ -54,20 +54,16 @@ const userSchema = new Schema( //Represents how the input data for user is to be
 
 //Middleware to hash password before saving
 userSchema.pre("save", async function (next) {
-  //Cant use arrow fns here since they lexically bing this to the enclosing module's scope which means this.password could be undefined
-  //Regular functions dynamically bing this based on how the fn is called, in this case in the document's scope
-
   //Only hash if password was modified (new user or changed password)
-  if (!this.isModified("password")) {
+  if (this.isModified("password")) {
     //isModified is a mongoose document method
-    return next();
-  } else {
     this.password = await bcrypt.hash(this.password, 12);
-    next();
   }
+  next();
 });
 
 //Compare password method and validate if its the correct one
+//Adding this method to all individual document instances using userSchema.methods
 userSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
