@@ -37,7 +37,7 @@ const userSchema = new Schema( //Represents how the input data for user is to be
       type: String,
       required: [true, "Password is required."],
       minlength: [8, "Password must be at least 8 characters."],
-      select: false, //Doesn't not get included in queries by default
+      select: false, //Doesn't not get included in queries by default, use .select("+password") to include if needed
     },
     role: {
       type: String,

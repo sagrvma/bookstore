@@ -76,3 +76,45 @@ const register = async (req: Request, res: Response): Promise<Response> => {
     });
   }
 };
+
+const login = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { email, password } = req.body;
+
+    const user: IUser | null = await User.findOne({ email }).select(
+      "+password"
+    );
+
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password!",
+      });
+    }
+
+    //Generate JWT token
+    const token: string = genJWT(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged in successfully.",
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+        token,
+      },
+    });
+  } catch (error: any) {
+    console.error("Error while trying to login: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while trying to login the user! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
