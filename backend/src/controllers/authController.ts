@@ -118,3 +118,6 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     });
   }
 };
+
+export { genJWT, login, register };
+ 
