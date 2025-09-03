@@ -81,3 +81,29 @@ export const protect = async (
     });
   }
 };
+
+//Authorization middleware - Restricts access based on user roles
+//Using a higherOrder function here as this middleware needs parameters, and express middlewares have a fixed signature and cannot take custome parameters. If we dont do that, we would have to define different middlewares for all roles. Therefore,
+// 1. Fixed Behaviour -> Direct Middleware Function
+// 2. Configurable Behaviour -> Higher Order Function
+export const restrictTo = (...allowedRoles: string[]) => {
+  //REST Parameters Syntax, the ... collect multiple arguments into a single array, So there can be any number of arguments passed and we dont have to predefine the number of arguments which wont be flexible
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Access denied! User not authenticated.",
+      });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(401).json({
+        success: false,
+        message: "Access denied! User not authorized to access this resource.",
+      });
+    }
+
+    //If above 2 things okay, then just allow to proceed
+    next();
+  };
+};
