@@ -3,6 +3,7 @@ import express from "express";
 import connectToDB from "./config/database";
 import authorRouter from "./routes/authorRoutes";
 import bookRouter from "./routes/bookRoutes";
+import authRouter from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(express.json()); //Built-in middleware in Express.js that parse incoming
 app.use("/api/authors", authorRouter);
 //Book routes
 app.use("/api/books", bookRouter);
+//auth routes
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT;
 
