@@ -9,6 +9,7 @@ export interface IAuthor extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+//We have to defined createdAt and updatedAt explicitly here as even though mongoose is aware of it but they are not part of the generic mongoose Document, as mongoose only creates them based on the schema where {timestamps: true}. So, in cases where timestamps are needed in the schema, we need to define them explicitly in the TS interface as well as it would know by itself, as Document is just a generic document in mongoose, which doesnt have timestamps by default.
 
 const authorSchema = new Schema(
   {
