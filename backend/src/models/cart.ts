@@ -72,7 +72,10 @@ const cartSchema = new Schema(
       required: [true, "User reference for cart is required."],
       unique: true, //Only 1 cart for each user
     },
-    items: [cartItemSchema],
+    items: {
+      type: [cartItemSchema],
+      default: [],
+    },
     totalQuantity: {
       type: Number,
       default: 0,
@@ -113,5 +116,5 @@ cartSchema.pre("save", function (this: ICart, next): void {
   next();
 });
 
-const cart = mongoose.model<ICart>("Cart", cartSchema);
-export default cart;
+const Cart = mongoose.model<ICart>("Cart", cartSchema);
+export default Cart;
