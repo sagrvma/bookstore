@@ -77,14 +77,14 @@ export const addToCart = async (
     const book: IBook | null = await Book.findById(bookId);
 
     if (!book) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "Book with the given bookId doesnt exist.",
       });
     }
 
     if (bookQuantity > book.stock) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
         message: "Insufficient stock.",
       });
@@ -93,7 +93,7 @@ export const addToCart = async (
     //Get cart or create new if it doesn't exist
     let cart: ICart | null = await Cart.findOne({ user: userId });
     if (!cart) {
-      cart = await new Cart({ user: userId });
+      cart = new Cart({ user: userId });
     }
 
     //Check if book already exists in cart
@@ -108,14 +108,14 @@ export const addToCart = async (
       const newBookQuantity = cart.items[bookIndex].quantity + bookQuantity;
 
       if (newBookQuantity > 10) {
-        return res.status(401).json({
+        return res.status(400).json({
           success: false,
           message: "Maximum 10 books per item allowed.",
         });
       }
 
       if (newBookQuantity > book.stock) {
-        return res.status(401).json({
+        return res.status(400).json({
           success: false,
           message: "Insufficient stock.",
         });
@@ -181,7 +181,7 @@ export const updateCartItemById = async (
     const cart: ICart | null = await Cart.findOne({ user: userId });
 
     if (!cart) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "Cart not found.",
       });
@@ -205,7 +205,7 @@ export const updateCartItemById = async (
     const cartItem: ICartItem | null = cart.items.id(itemId);
 
     if (!cartItem) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "No item in cart exists with the given item ID.",
       });
@@ -264,7 +264,7 @@ export const removeCartItemById = async (
     // //Get cart
     // const cart: ICart | null = await Cart.findById(userId);
     // if (!cart) {
-    //   return res.status(401).json({
+    //   return res.status(404).json({
     //     success: false,
     //     message: "Cart not found.",
     //   });
@@ -273,7 +273,7 @@ export const removeCartItemById = async (
     // //Find and delete item using mongoosse subdocument methods
     // const cartItem: ICartItem | null = cart.items.id(itemId);
     // if (!cartItem) {
-    //   return res.status(401).json({
+    //   return res.status(404).json({
     //     success: false,
     //     message: "No item in the cart exists with the given item ID.",
     //   });
@@ -302,7 +302,7 @@ export const removeCartItemById = async (
         new: true,
       }
     ).populate("items.book", "title author isbn category");
-    //No need to .save() as $pull is atomic on the server and avoids loading the whole care into application memory.
+    //No need to .save() as $pull is atomic (happens in one DB operation) on the server and avoids loading the whole care into application memory.
 
     if (!cart) {
       return res.status(401).json({
@@ -322,6 +322,55 @@ export const removeCartItemById = async (
       success: false,
       message:
         "Something went wrong while removing item from cart by ID! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export const removeCartItemByBookId = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+    const { bookId } = req.params;
+
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found.",
+      });
+    }
+
+    const initialCartLength = cart.items.length;
+
+    cart.items = cart.items.filter((item) => item.book.toString() !== bookId);
+
+    if (initialCartLength === cart.items.length) {
+      return res.status(401).json({
+        success: false,
+        message: "No item found in cart with the given book ID.",
+      });
+    }
+
+    await cart.save();
+
+    await cart.populate("items.book", "title author isbn category");
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Item with the given book ID removed from the cart successfully.",
+      data: cart,
+    });
+  } catch (error: any) {
+    console.error("Error while removing cart item by Book ID: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while removing cart item by Book Id! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
