@@ -27,7 +27,7 @@ item.populate('book');    // ❌ Confusing - subdocs don't populate like documen
 
 export interface ICart extends Document {
   user: mongoose.Types.ObjectId;
-  items: ICartItem[];
+  items: mongoose.Types.DocumentArray<ICartItem & mongoose.Types.Subdocument>; //ICartItem[]; So we can use subdocument methods like id(), pull() and push() on document arrays. & because the ICartItem gives field options for the document ICartItem and the subdocument gives access to id(), push() and pull().
   totalQuantity: number;
   totalAmount: number;
   createdAt: Date;

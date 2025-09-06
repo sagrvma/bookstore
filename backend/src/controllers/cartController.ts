@@ -187,18 +187,29 @@ export const updateCartItemById = async (
       });
     }
 
-    const cartItemIndex = cart.items.findIndex(
-      (item) => item._id?.toString() === itemId
-    );
+    //Finding the cart item with the given id using normal approach
 
-    if (cartItemIndex == -1) {
+    // const cartItemIndex = cart.items.findIndex(
+    //   (item) => item._id?.toString() === itemId
+    // );
+
+    // if (cartItemIndex == -1) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "No item in cart exists with the given item ID.",
+    //   });
+    // }
+    //    const cartItem: ICartItem | null = cart.items[cartItemIndex];
+
+    //Using subdocument methods
+    const cartItem: ICartItem | null = cart.items.id(itemId);
+
+    if (!cartItem) {
       return res.status(401).json({
         success: false,
         message: "No item in cart exists with the given item ID.",
       });
     }
-
-    const cartItem: ICartItem | null = cart.items[cartItemIndex];
 
     const cartItemBook: IBook | null = await Book.findById(cartItem.book);
 
@@ -234,6 +245,83 @@ export const updateCartItemById = async (
       success: false,
       message:
         "Something went wrong while updating cart item by ID! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export const removeCartItemById = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+
+    const { itemId } = req.params;
+
+    //Approach 1
+
+    // //Get cart
+    // const cart: ICart | null = await Cart.findById(userId);
+    // if (!cart) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "Cart not found.",
+    //   });
+    // }
+
+    // //Find and delete item using mongoosse subdocument methods
+    // const cartItem: ICartItem | null = cart.items.id(itemId);
+    // if (!cartItem) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: "No item in the cart exists with the given item ID.",
+    //   });
+    // }
+
+    // // cartItem.deleteOne();//Subdocument method but gives TS error rn
+
+    //Approach 2 - Using $pull Document array/Subdocument method
+
+    const cart = await Cart.findOneAndUpdate(
+      {
+        //Checks if cartItem exists or returns null
+        user: userId,
+        "items._id": itemId,
+      },
+      {
+        $pull: {
+          //Removes the matching subdocument
+          items: {
+            _id: itemId,
+          },
+        },
+      },
+      {
+        //Returns the new updated cart
+        new: true,
+      }
+    ).populate("items.book", "title author isbn category");
+    //No need to .save() as $pull is atomic on the server and avoids loading the whole care into application memory.
+
+    if (!cart) {
+      return res.status(401).json({
+        success: false,
+        message: "No item in the cart exists with the given item ID.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Item with the given ID removed from the cart successfully.",
+      data: cart,
+    });
+  } catch (error: any) {
+    console.error("Error while removing item from cart by ID: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while removing item from cart by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
