@@ -7,7 +7,7 @@ export interface ICartItem {
   title: string; // Book's title
   price: number; //Price when being added to the cart(Price protection)
   quantity: number;
-  subtotal: number; //Price X Quantity
+  // subtotal: number; //Price X Quantity (NOT KEEPING PERSISTED JUST LIKE TOTALS IN CART, USING VIRTUALS INSTEAD)
 }
 /*
 ICartItem is a subdocument of ICart and therefore doesnt need to extend Document. It will only be saved when ICart will be saved so there is no use of extending docuemnt. Only top level documents should extend Document, as Icart will.
@@ -28,8 +28,9 @@ item.populate('book');    // ❌ Confusing - subdocs don't populate like documen
 export interface ICart extends Document {
   user: mongoose.Types.ObjectId;
   items: mongoose.Types.DocumentArray<ICartItem & mongoose.Types.Subdocument>; //ICartItem[]; So we can use subdocument methods like id(), pull() and push() on document arrays. & because the ICartItem gives field options for the document ICartItem and the subdocument gives access to id(), push() and pull().
-  totalQuantity: number;
-  totalAmount: number;
+  // totalQuantity: number;//Not keeping totals persisted as they might not automatically update when we update items,
+  // totalAmount: number;//Using virtuals instead
+  //This is because pre.save middleware doesnt run for update paths/findOneAndUpdate
   createdAt: Date;
   updatedAt: Date;
   calculateTotals(): void; //Function to recalculate totals
@@ -57,11 +58,11 @@ const cartItemSchema = new Schema({
     min: [1, "Quantity should be atleast 1."],
     max: [10, "Maximum 10 copies of 1 book allowed."],
   },
-  subtotal: {
-    type: Number,
-    required: [true, "Subtotal is required."],
-    min: [0, "Subtotal can't be negative"],
-  },
+  // subtotal: { (VIRTUAL)
+  //   type: Number,
+  //   required: [true, "Subtotal is required."],
+  //   min: [0, "Subtotal can't be negative"],
+  // },
 });
 
 const cartSchema = new Schema(
@@ -76,45 +77,65 @@ const cartSchema = new Schema(
       type: [cartItemSchema],
       default: [],
     },
-    totalQuantity: {
-      type: Number,
-      default: 0,
-      min: [0, "Quantity can't be negative."],
-    },
-    totalAmount: {
-      type: Number,
-      default: 0,
-      min: [0, "Amount can't be negative."],
-    },
+    // totalQuantity: { (VIRTUAL)
+    //   type: Number,
+    //   default: 0,
+    //   min: [0, "Quantity can't be negative."],
+    // },
+    // totalAmount: { (VIRTUAL)
+    //   type: Number,
+    //   default: 0,
+    //   min: [0, "Amount can't be negative."],
+    // },
   },
   { timestamps: true }
 );
 
-//Method to calculate and update totals
-cartSchema.methods.calculateTotals = function (): void {
-  this.totalQuantity = this.items.reduce(
-    (total: number, item: ICartItem) => total + item.quantity,
-    0
-  );
-  this.totalAmount = this.items.reduce(
-    (total: number, item: ICartItem) => total + item.subtotal,
-    0
-  );
-};
+// //Method to calculate and update totals (NOT NEEDED AS NOW USING VIRTUALS INSTEAD)
+// cartSchema.methods.calculateTotals = function (): void {
+//   this.totalQuantity = this.items.reduce(
+//     (total: number, item: ICartItem) => total + item.quantity,
+//     0
+//   );
+//   this.totalAmount = this.items.reduce(
+//     (total: number, item: ICartItem) => total + item.subtotal,
+//     0
+//   );
+// };
 
-//Pre-save middleware to calculate item subtotals and cart totals
-cartSchema.pre("save", function (this: ICart, next): void {
-  //not next:NextFunction as this next is the mongoose next callback function and not from express. Also defined this:Icart explicitly as TS doesnt know what this type can hold and doesnt know if it would have this.calculateTotals, only needed cuz its a custom method and TS is not sure of its. Not needed for just this.items or other schema properties.
+// //Pre-save middleware to calculate item subtotals and cart totals (NOT NEEDED AS USING VIRTUALS INSTEAD)
+// cartSchema.pre("save", function (this: ICart, next): void {
+//   //not next:NextFunction as this next is the mongoose next callback function and not from express. Also defined this:Icart explicitly as TS doesnt know what this type can hold and doesnt know if it would have this.calculateTotals, only needed cuz its a custom method and TS is not sure of its. Not needed for just this.items or other schema properties.
 
-  //Calculate subtotal for each item
-  this.items.forEach((item: ICartItem) => {
-    item.subtotal = item.price * item.quantity;
-  });
+//   //Calculate subtotal for each item
+//   this.items.forEach((item: ICartItem) => {
+//     item.subtotal = item.price * item.quantity;
+//   });
 
-  //Calculate cart totals
-  this.calculateTotals();
-  next();
+//   // Calculate cart totals x (USING VIRTUALS INSTEAD)
+//   // this.calculateTotals();
+//   next();
+// });
+
+cartItemSchema.virtual("subtotal").get(function (this: ICartItem) {
+  return this.price * this.quantity;
 });
+
+cartSchema.virtual("totalItems").get(function (this: ICart) {
+  return this.items.reduce((total, item) => total + item.quantity, 0);
+});
+
+cartSchema.virtual("totalPrice").get(function (this: ICart) {
+  return this.items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  ); //Error as subtotal is a virtual
+});
+
+cartItemSchema.set("toJSON", { virtuals: true });
+cartItemSchema.set("toObject", { virtuals: true });
+cartSchema.set("toJSON", { virtuals: true });
+cartSchema.set("toObject", { virtuals: true });
 
 const Cart = mongoose.model<ICart>("Cart", cartSchema);
 export default Cart;

@@ -128,7 +128,7 @@ export const addToCart = async (
         title: book.title,
         price: book.price,
         quantity: bookQuantity,
-        subtotal: 0, //Will be calculated in pre-save middleware
+        // subtotal: 0, //Virtual
       };
 
       cart.items.push(cartItem);

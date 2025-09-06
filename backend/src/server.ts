@@ -4,6 +4,7 @@ import connectToDB from "./config/database";
 import authorRouter from "./routes/authorRoutes";
 import bookRouter from "./routes/bookRoutes";
 import authRouter from "./routes/authRoutes";
+import cartRouter from "./routes/cartRoutes";
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ app.use("/api/authors", authorRouter);
 app.use("/api/books", bookRouter);
 //auth routes
 app.use("/api/auth", authRouter);
+//cart routes
+app.use("/api/cart", cartRouter);
 
 const PORT = process.env.PORT;
 
