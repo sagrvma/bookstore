@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
 import Cart, { ICart, ICartItem } from "../models/cart";
-import Book from "../models/book";
+import Book, { IBook } from "../models/book";
 
 export const getCart = async (
   req: AuthRequest,
@@ -20,7 +20,7 @@ export const getCart = async (
 
     //Fetch the cart using userId
 
-    let cart = await Cart.findOne({ user: userId }).populate(
+    let cart: ICart | null = await Cart.findOne({ user: userId }).populate(
       "items.book", //path to populate, as book is not a direct property of Cart, but a element in the items array
       "title author isbn category" //Properties to be populated
     );
@@ -67,14 +67,14 @@ export const addToCart = async (
     }
 
     if (bookQuantity > 10 || bookQuantity < 1) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
         message: "Book quantity must to be between 1 to 10.",
       });
     }
 
     //Check if book exists and has sufficient stock
-    const book = await Book.findById(bookId);
+    const book: IBook | null = await Book.findById(bookId);
 
     if (!book) {
       return res.status(401).json({
@@ -91,7 +91,7 @@ export const addToCart = async (
     }
 
     //Get cart or create new if it doesn't exist
-    let cart = await Cart.findOne({ user: userId });
+    let cart: ICart | null = await Cart.findOne({ user: userId });
     if (!cart) {
       cart = await new Cart({ user: userId });
     }
@@ -148,6 +148,92 @@ export const addToCart = async (
       success: false,
       message:
         "Something went wrong while adding the book to the cart! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export const updateCartItemById = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+
+    const { itemId } = req.params; //Using cartItem ID, not book ID
+    const { newQuantity } = req.body;
+
+    if (!newQuantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Updated quantity is required.",
+      });
+    }
+
+    if (newQuantity < 1 || newQuantity > 10) {
+      return res.status(400).json({
+        success: false,
+        message: "Book quantity must be between 1 and 10.",
+      });
+    }
+
+    //Find cart
+    const cart: ICart | null = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(401).json({
+        success: false,
+        message: "Cart not found.",
+      });
+    }
+
+    const cartItemIndex = cart.items.findIndex(
+      (item) => item._id?.toString() === itemId
+    );
+
+    if (cartItemIndex == -1) {
+      return res.status(401).json({
+        success: false,
+        message: "No item in cart exists with the given item ID.",
+      });
+    }
+
+    const cartItem: ICartItem | null = cart.items[cartItemIndex];
+
+    const cartItemBook: IBook | null = await Book.findById(cartItem.book);
+
+    if (!cartItemBook) {
+      //Not actually necessary as while adding the item it must have been checked already
+      return res.status(401).json({
+        success: false,
+        message: "Invalid book ID.",
+      });
+    }
+
+    //Check against available stock
+    if (newQuantity > cartItemBook.stock) {
+      return res.status(401).json({
+        success: false,
+        message: "Insufficient stock.",
+      });
+    }
+
+    cartItem.quantity = newQuantity;
+
+    await cart.save();
+    await cart.populate("items.book", "title author isbn category");
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart item updated successfully.",
+      data: cart,
+    });
+  } catch (error: any) {
+    console.error("Error while updating cart item by ID: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while updating cart item by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
