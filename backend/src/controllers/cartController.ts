@@ -194,7 +194,7 @@ export const updateCartItemById = async (
     // );
 
     // if (cartItemIndex == -1) {
-    //   return res.status(401).json({
+    //   return res.status(404).json({
     //     success: false,
     //     message: "No item in cart exists with the given item ID.",
     //   });
@@ -215,7 +215,7 @@ export const updateCartItemById = async (
 
     if (!cartItemBook) {
       //Not actually necessary as while adding the item it must have been checked already
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "Invalid book ID.",
       });
@@ -223,7 +223,7 @@ export const updateCartItemById = async (
 
     //Check against available stock
     if (newQuantity > cartItemBook.stock) {
-      return res.status(401).json({
+      return res.status(400).json({
         success: false,
         message: "Insufficient stock.",
       });
@@ -259,27 +259,29 @@ export const removeCartItemById = async (
 
     const { itemId } = req.params;
 
+    //Get cart
+
     //Approach 1
+    /*
+    const cart: ICart | null = await Cart.findById(userId);
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found.",
+      });
+    }
 
-    // //Get cart
-    // const cart: ICart | null = await Cart.findById(userId);
-    // if (!cart) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     message: "Cart not found.",
-    //   });
-    // }
+    //Find and delete item using mongoosse subdocument methods
+    const cartItem: ICartItem | null = cart.items.id(itemId);
+    if (!cartItem) {
+      return res.status(404).json({
+        success: false,
+        message: "No item in the cart exists with the given item ID.",
+      });
+    }
 
-    // //Find and delete item using mongoosse subdocument methods
-    // const cartItem: ICartItem | null = cart.items.id(itemId);
-    // if (!cartItem) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     message: "No item in the cart exists with the given item ID.",
-    //   });
-    // }
-
-    // // cartItem.deleteOne();//Subdocument method but gives TS error rn
+    cartItem.deleteOne();//Subdocument method but gives TS error rn
+    */
 
     //Approach 2 - Using $pull Document array/Subdocument method
 
@@ -305,9 +307,10 @@ export const removeCartItemById = async (
     //No need to .save() as $pull is atomic (happens in one DB operation) on the server and avoids loading the whole care into application memory.
 
     if (!cart) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
-        message: "No item in the cart exists with the given item ID.",
+        message:
+          "Cart not found or no item in the cart exists with the given item ID.",
       });
     }
 
@@ -335,29 +338,33 @@ export const removeCartItemByBookId = async (
     const userId = req.user?._id;
     const { bookId } = req.params;
 
-    const cart = await Cart.findOne({ user: userId });
+    const cart = await Cart.findOneAndUpdate(
+      {
+        //Checks if item exists or returns null
+        user: userId,
+        "items.book": bookId,
+      },
+      {
+        //Removes the matching subdocument
+        $pull: {
+          items: {
+            book: bookId,
+          },
+        },
+      },
+      {
+        //Returns the new updated cart
+        new: true,
+      }
+    ).populate("items.book", "title author isbn category");
 
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Cart not found.",
+        message:
+          "Cart not found or no item in the cart exists with the given book ID.",
       });
     }
-
-    const initialCartLength = cart.items.length;
-
-    cart.items = cart.items.filter((item) => item.book.toString() !== bookId);
-
-    if (initialCartLength === cart.items.length) {
-      return res.status(401).json({
-        success: false,
-        message: "No item found in cart with the given book ID.",
-      });
-    }
-
-    await cart.save();
-
-    await cart.populate("items.book", "title author isbn category");
 
     return res.status(200).json({
       success: true,
@@ -372,6 +379,62 @@ export const removeCartItemByBookId = async (
       message:
         "Something went wrong while removing cart item by Book Id! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export const clearCart = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+
+    //APPROACH 1
+    /*
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found.",
+      });
+    }
+
+    cart.items = []; //TS Error
+    await cart.save();
+    await cart.populate("items.book", "title author isbn category");
+    */
+
+    //APPROACH 2 - Atomic using $set
+
+    const cart = await Cart.findOneAndUpdate(
+      {
+        //Check if cart exists
+        user: userId,
+      },
+      {
+        $set: {
+          items: [], //Update cart to be empty array
+        },
+      },
+      {
+        new: true,
+        upsert: true, //Create new if it doesnt already exist or update if it does
+      }
+    ).populate("items.book", "title author isbn category");
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully.",
+      data: cart,
+    });
+  } catch (error: any) {
+    console.error("Error while clearing the cart: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while clearing the cart! Please try again.",
     });
   }
 };
