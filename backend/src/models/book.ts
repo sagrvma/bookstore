@@ -20,8 +20,8 @@ const bookSchema = new Schema(
       type: String,
       required: [true, "Book's title is required."],
       trim: true,
-      minlength: [2, "Book title must be at least 2 characters."],
-      maxlength: [100, "Book title can't exceed 100 characters."],
+      minlength: [2, "Book's title must be at least 2 characters."],
+      maxlength: [100, "Book's title can't exceed 100 characters."],
     },
     author: {
       type: Schema.Types.ObjectId,

@@ -40,12 +40,12 @@ const cartItemSchema = new Schema(
     book: {
       type: Schema.Types.ObjectId,
       ref: "Book",
-      required: [true, "Book reference is required."],
+      required: [true, "Book's reference is required."],
     },
     title: {
       type: String,
       trim: true,
-      required: [true, "Title of the book is required."],
+      required: [true, "Book's title is required."],
     },
     price: {
       type: Number,
