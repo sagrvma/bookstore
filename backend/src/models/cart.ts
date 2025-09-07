@@ -1,4 +1,3 @@
-import { NextFunction } from "express";
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface ICartItem {
@@ -33,37 +32,47 @@ export interface ICart extends Document {
   //This is because pre.save middleware doesnt run for update paths/findOneAndUpdate
   createdAt: Date;
   updatedAt: Date;
-  calculateTotals(): void; //Function to recalculate totals
+  // calculateTotals(): void; //Function to recalculate totals (NOT NEEDED AS NOW USING VIRTUALS)
 }
 
-const cartItemSchema = new Schema({
-  book: {
-    type: Schema.Types.ObjectId,
-    ref: "Book",
-    required: [true, "Book reference is required."],
+const cartItemSchema = new Schema(
+  {
+    book: {
+      type: Schema.Types.ObjectId,
+      ref: "Book",
+      required: [true, "Book reference is required."],
+    },
+    title: {
+      type: String,
+      trim: true,
+      required: [true, "Title of the book is required."],
+    },
+    price: {
+      type: Number,
+      required: [true, "Price of the book is required."],
+      min: [0, "Price of the book can't be negative."],
+    },
+    quantity: {
+      type: Number,
+      required: [true, "Quantity is required."],
+      min: [1, "Quantity should be atleast 1."],
+      max: [10, "Maximum 10 copies of 1 book allowed."],
+    },
+    // subtotal: { (VIRTUAL)
+    //   type: Number,
+    //   required: [true, "Subtotal is required."],
+    //   min: [0, "Subtotal can't be negative"],
+    // },
   },
-  title: {
-    type: String,
-    trim: true,
-    required: [true, "Title of the book is required."],
-  },
-  price: {
-    type: Number,
-    required: [true, "Price of the book is required."],
-    min: [0, "Price of the book can't be negative."],
-  },
-  quantity: {
-    type: Number,
-    required: [true, "Quantity is required."],
-    min: [1, "Quantity should be atleast 1."],
-    max: [10, "Maximum 10 copies of 1 book allowed."],
-  },
-  // subtotal: { (VIRTUAL)
-  //   type: Number,
-  //   required: [true, "Subtotal is required."],
-  //   min: [0, "Subtotal can't be negative"],
-  // },
-});
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+  }
+);
 
 const cartSchema = new Schema(
   {
@@ -88,7 +97,16 @@ const cartSchema = new Schema(
     //   min: [0, "Amount can't be negative."],
     // },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    //To make sure virtuals appear in API responses
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+  }
 );
 
 // //Method to calculate and update totals (NOT NEEDED AS NOW USING VIRTUALS INSTEAD)
@@ -121,7 +139,7 @@ cartItemSchema.virtual("subtotal").get(function (this: ICartItem) {
   return this.price * this.quantity;
 });
 
-cartSchema.virtual("totalItems").get(function (this: ICart) {
+cartSchema.virtual("totalQuantity").get(function (this: ICart) {
   return this.items.reduce((total, item) => total + item.quantity, 0);
 });
 
@@ -131,11 +149,6 @@ cartSchema.virtual("totalPrice").get(function (this: ICart) {
     0
   ); //Error as subtotal is a virtual
 });
-
-cartItemSchema.set("toJSON", { virtuals: true });
-cartItemSchema.set("toObject", { virtuals: true });
-cartSchema.set("toJSON", { virtuals: true });
-cartSchema.set("toObject", { virtuals: true });
 
 const Cart = mongoose.model<ICart>("Cart", cartSchema);
 export default Cart;
