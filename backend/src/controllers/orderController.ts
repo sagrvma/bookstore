@@ -43,7 +43,7 @@ export const placeOrder = async (
     }
 
     const orderItems: Array<IOrderItem> = [];
-    let subTotal: number = 0;
+    let subtotal: number = 0;
 
     for (let cartItem of cart.items) {
       const bookItem = cartItem.book as any; //Populated book
@@ -90,19 +90,19 @@ export const placeOrder = async (
         lineTotal: lineTotal,
       });
 
-      subTotal += lineTotal;
+      subtotal += lineTotal;
     }
 
     //Calculate total order cost\
     const tax = 0;
     const shippingCost = 0;
-    const total = subTotal + tax + shippingCost;
+    const total = subtotal + tax + shippingCost;
 
     //Order creation
     const order: IOrder = new Order({
       user: userId,
       items: orderItems,
-      subTotal: subTotal,
+      subtotal: subtotal,
       tax: tax,
       shippingCost: shippingCost,
       totalAmount: total,
@@ -149,5 +149,51 @@ export const placeOrder = async (
     });
   } finally {
     await session.endSession(); //Releases DB session resources
+  }
+};
+
+export const getOrdersByUser = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const orders = await Order.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("items.book", "title author isbn category")
+      .select("-__v"); //Omits the version key from response object
+
+    const totalOrders = await Order.countDocuments({ user: userId });
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    return res.status(200).json({
+      success: true,
+      message: "Orders fetched for user successfully.",
+      data: {
+        orders,
+        pageination: {
+          currentPage: page,
+          totalOrders,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1,
+        },
+      },
+    });
+  } catch (error: any) {
+    console.error("Error while getting orders for the user: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while getting orders for the user! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
   }
 };
