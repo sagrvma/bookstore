@@ -178,7 +178,7 @@ export const getOrdersByUser = async (
       message: "Orders fetched for user successfully.",
       data: {
         orders,
-        pageination: {
+        pagination: {
           currentPage: page,
           totalOrders,
           totalPages,
@@ -193,6 +193,43 @@ export const getOrdersByUser = async (
       success: false,
       message:
         "Something went wrong while getting orders for the user! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
+
+export const getOrderById = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const userId = req.user?._id;
+
+    const orderId = req.params.orderId;
+
+    const order: IOrder | null = await Order.findOne({
+      _id: orderId,
+      user: userId, //Search with both as order should belong to respective user only
+    }).populate("items.book", "title author isbn category");
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Order found by ID successfully.",
+      data: order,
+    });
+  } catch (error: any) {
+    console.error("Error while getting the order by ID: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while getting the order by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
   }
