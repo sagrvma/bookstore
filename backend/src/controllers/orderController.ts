@@ -310,3 +310,62 @@ export const cancelOrder = async (
     await session.endSession(); //End session
   }
 };
+
+//Admin: Get all orders
+export const getAllOrders = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const status = req.query.status as string; //Optional
+
+    const skip = (page - 1) * limit;
+
+    const filter: any = {}; //To search for orders, if no matches then find({}) will just return all orders
+
+    if (
+      status &&
+      ["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(
+        status
+      )
+    ) {
+      filter.status = status;
+    }
+
+    const orders = await Order.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("user", "name email")
+      .populate("items.book", "title author isbn category")
+      .select("-__v");
+
+    const totalOrders = await Order.countDocuments(filter);
+    const totalPages = Math.ceil(totalOrders / limit);
+
+    return res.status(200).json({
+      success: true,
+      message: "All orders fetched successfully.",
+      data: {
+        orders,
+        pagination: {
+          currentPage: page,
+          totalPages: totalPages,
+          totalOrders: totalOrders,
+          hasNext: page < totalPages,
+          hasPrev: page > 1,
+        },
+      },
+    });
+  } catch (error: any) {
+    console.error("Error while getting all orders: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while getting all orders! Please try again.",
+      errors: error.errors || error.message || "Unkown error!",
+    });
+  }
+};
