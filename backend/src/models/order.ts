@@ -29,9 +29,9 @@ export interface IOrder extends Document {
   tax?: number; // Tax Amount (0 for now)
   shippingCost?: number; // Shipping cost (0 for now)
   totalAmount: number; //subtotal+tax+totalAmount
-  status?: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
-  paymentStatus?: "pending" | "completed" | "failed" | "refunded";
-  paymentMethod?: "cash_on_delivery" | "card";
+  status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
+  paymentStatus: "pending" | "completed" | "failed" | "refunded";
+  paymentMethod: "cash_on_delivery" | "card";
   paymentIntentId?: string; //Stripe Payment intent ID
   shippingAddress: IShippingAddress;
   notes?: string; //Order notes, extra info if available/needed
@@ -168,16 +168,19 @@ const orderSchema = new Schema(
     },
     status: {
       type: String,
+      required: [true, "Order status is required."],
       enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
     paymentStatus: {
       type: String,
+      required: [true, "Payment status is required."],
       enum: ["pending", "completed", "failed", "refunded"],
       default: "pending",
     },
     paymentMethod: {
       type: String,
+      required: [true, "Payment method is required."],
       enum: ["cash_on_delivery", "card"],
       default: "cash_on_delivery",
     },

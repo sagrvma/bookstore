@@ -5,6 +5,7 @@ import Cart, { ICart } from "../models/cart";
 import Book, { IBook } from "../models/book";
 import Order, { IOrder, IOrderItem } from "../models/order";
 
+//Place an order for a user
 export const placeOrder = async (
   req: AuthRequest,
   res: Response
@@ -152,6 +153,7 @@ export const placeOrder = async (
   }
 };
 
+//Get all orders for one user - No transactions needed as read-only
 export const getOrdersByUser = async (
   req: AuthRequest,
   res: Response
@@ -168,7 +170,7 @@ export const getOrdersByUser = async (
       .skip(skip)
       .limit(limit)
       .populate("items.book", "title author isbn category")
-      .select("-__v"); //Omits the version key from response object
+      .select("-__v"); //Omits the version key from response object, - means exclude, if no hyphen means only include this and nothing else
 
     const totalOrders = await Order.countDocuments({ user: userId });
     const totalPages = Math.ceil(totalOrders / limit);
@@ -198,6 +200,7 @@ export const getOrdersByUser = async (
   }
 };
 
+//Get a single order by ID - No transactions needed as read-only
 export const getOrderById = async (
   req: AuthRequest,
   res: Response
@@ -232,5 +235,78 @@ export const getOrderById = async (
         "Something went wrong while getting the order by ID! Please try again.",
       errors: error.errors || error.message || "Unknown error!",
     });
+  }
+};
+
+export const cancelOrder = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  const session = await mongoose.startSession(); //Start session
+  try {
+    const userId = req.user?._id;
+    const { orderId } = req.params;
+
+    await session.startTransaction(); //Start atomic transaction
+
+    const order: IOrder | null = await Order.findOne({
+      _id: orderId,
+      user: userId, //Order should belong to the correct user, secure
+    }).session(session);
+
+    if (!order) {
+      await session.abortTransaction();
+      return res.status(404).json({
+        success: false,
+        message: "Order not found.",
+      });
+    }
+
+    //Check order status if eligible to be cancelled or not
+    if (!["pending", "confirmed"].includes(order.status)) {
+      await session.abortTransaction();
+      return res.status(400).json({
+        success: false,
+        message: `Can't cancel order with status: ${order.status}`,
+      });
+    }
+
+    //Restore inventory for each item
+    for (const item of order.items) {
+      await Book.findByIdAndUpdate(
+        item.book,
+        {
+          $inc: {
+            stock: item.quantity,
+          },
+        },
+        {
+          session,
+        }
+      );
+    }
+
+    //Update order status
+    order.status = "cancelled";
+    await order.save({ session });
+
+    await session.commitTransaction();
+
+    return res.status(200).json({
+      success: true,
+      message: "Order cancelled successfully.",
+      data: order,
+    });
+  } catch (error: any) {
+    await session.abortTransaction();
+    console.error("Error while cancelling the order: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while cancelling the order! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  } finally {
+    await session.endSession(); //End session
   }
 };
