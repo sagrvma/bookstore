@@ -369,3 +369,64 @@ export const getAllOrders = async (
     });
   }
 };
+
+export const updateOrderStatus = async (
+  req: AuthRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const validStatuses = [
+      "pending",
+      "confirmed",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
+
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status.",
+      });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        status: status,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .populate("user", "name email")
+      .populate("items.book", "title author isbn category");
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Order updated successfully.",
+      data: {
+        order,
+      },
+    });
+  } catch (error: any) {
+    console.error("Error while updating the order status: ", error);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while updating the order status! Please try again.",
+      errors: error.errors || error.message || "Unknown error!",
+    });
+  }
+};
