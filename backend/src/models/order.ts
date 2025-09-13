@@ -204,7 +204,8 @@ const orderSchema = new Schema(
 );
 
 //Generate unique orderNumber
-orderSchema.pre("save", async function (next) {
+orderSchema.pre("validate", async function (next) {
+  //Pre validate as since order number is required, the request payload validation happens before the saving, so it will see that no orderNumber is present and return with error response. So generated orderNumber before validate.
   if (this.isNew && !this.orderNumber) {
     const date = new Date().toISOString().slice(0, 10).replace(/-/g, ""); //Converts date to ISO String and then slices it to only first 10 digits eg 2025-05-09 and them removes all hyphens (g means global to remove all hyphens and not just the first one) =>
     const count = await mongoose.model("Order").countDocuments({

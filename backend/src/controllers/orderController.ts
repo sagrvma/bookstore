@@ -39,7 +39,15 @@ export const placeOrder = async (
 
     //Get user's cart
     const cart: ICart | null = await Cart.findOne({ user: userId })
-      .populate("items.book")
+      .populate({
+        path: "items.book",
+        select: "title author isbn category",
+        populate: {
+          path: "author",
+          select: "name",
+        },
+      })
+      .select("-__v")
       .session(session);
 
     if (!cart || cart.items.length === 0) {
@@ -92,7 +100,10 @@ export const placeOrder = async (
       orderItems.push({
         book: bookItem._id,
         title: bookItem.title,
-        author: bookItem.author?.name || "Unknown Author",
+        author:
+          bookItem.author?.name && typeof bookItem.author == "object"
+            ? bookItem.author.name
+            : "Unknown Author",
         price: cartItem.price, //not bookItem.price, for price protection
         quantity: cartItem.quantity,
         lineTotal: lineTotal,
@@ -139,8 +150,14 @@ export const placeOrder = async (
     await session.commitTransaction();
 
     //Populate order for response
-    await order.populate("items.book", "title author isbn category");
-
+    await order.populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
     return res.status(201).json({
       success: true,
       message: "Order placed successfully!",
@@ -191,7 +208,14 @@ export const getOrdersByUser = async (
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate("items.book", "title author isbn category")
+      .populate({
+        path: "items.book",
+        select: "title author isbn category",
+        populate: {
+          path: "author",
+          select: "name",
+        },
+      })
       .select("-__v"); //Omits the version key from response object, - means exclude, if no hyphen means only include this and nothing else
 
     const totalOrders = await Order.countDocuments({ user: userId });
@@ -242,7 +266,16 @@ export const getOrderById = async (
     const order: IOrder | null = await Order.findOne({
       _id: orderId,
       user: userId, //Search with both as order should belong to respective user only
-    }).populate("items.book", "title author isbn category");
+    })
+      .populate({
+        path: "items.book",
+        select: "title author isbn category",
+        populate: {
+          path: "author",
+          select: "name",
+        },
+      })
+      .select("-__v");
 
     if (!order) {
       return res.status(404).json({
@@ -393,7 +426,14 @@ export const getAllOrders = async (
       .skip(skip)
       .limit(limit)
       .populate("user", "name email")
-      .populate("items.book", "title author isbn category")
+      .populate({
+        path: "items.book",
+        select: "title author isbn cateogry",
+        populate: {
+          path: "author",
+          select: "name",
+        },
+      })
       .select("-__v");
 
     const totalOrders = await Order.countDocuments(statusFilter);
@@ -465,7 +505,15 @@ export const updateOrderStatus = async (
       }
     )
       .populate("user", "name email")
-      .populate("items.book", "title author isbn category");
+      .populate({
+        path: "items.book",
+        select: "title author isbn category",
+        populate: {
+          path: "author",
+          select: "name",
+        },
+      })
+      .select("-__v");
 
     if (!order) {
       return res.status(404).json({
