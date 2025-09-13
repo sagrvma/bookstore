@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import Cart, { ICart } from "../models/cart";
 import Book, { IBook } from "../models/book";
 import Order, { IOrder, IOrderItem } from "../models/order";
@@ -19,6 +19,13 @@ export const placeOrder = async (
       paymentMethod = "cash_on_delivery",
       notes,
     } = req.body;
+
+    if (!isValidObjectId(userId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid user ID.",
+      });
+    }
 
     if (!shippingAddress) {
       return res.status(400).json({
@@ -163,6 +170,21 @@ export const getOrdersByUser = async (
 
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
+
+    if (!isValidObjectId(userId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid user ID.",
+      });
+    }
+
+    if (page < 1 || limit < 1) {
+      return res.status(401).json({
+        success: false,
+        message: "Page and Limit can't be < 1.",
+      });
+    }
+
     const skip = (page - 1) * limit;
 
     const orders = await Order.find({ user: userId })
@@ -210,6 +232,13 @@ export const getOrderById = async (
 
     const orderId = req.params.orderId;
 
+    if (!isValidObjectId(userId) || !isValidObjectId(orderId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid user ID or order ID.",
+      });
+    }
+
     const order: IOrder | null = await Order.findOne({
       _id: orderId,
       user: userId, //Search with both as order should belong to respective user only
@@ -246,6 +275,13 @@ export const cancelOrder = async (
   try {
     const userId = req.user?._id;
     const { orderId } = req.params;
+
+    if (!isValidObjectId(userId) || !isValidObjectId(orderId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid user ID or order ID.",
+      });
+    }
 
     await session.startTransaction(); //Start atomic transaction
 
@@ -321,20 +357,38 @@ export const getAllOrders = async (
     const limit = parseInt(req.query.limit as string) || 20;
     const status = req.query.status as string; //Optional
 
-    const skip = (page - 1) * limit;
-
-    const filter: any = {}; //To search for orders, if no matches then find({}) will just return all orders
-
-    if (
-      status &&
-      ["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(
-        status
-      )
-    ) {
-      filter.status = status;
+    if (page < 1 || limit < 1) {
+      return res.status(401).json({
+        success: false,
+        message: "Page and Limit can't be < 1.",
+      });
     }
 
-    const orders = await Order.find(filter)
+    const skip = (page - 1) * limit;
+
+    const validStatuses = [
+      "pending",
+      "confirmed",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
+
+    let statusFilter: any = {};
+
+    if (status) {
+      if (!validStatuses.includes(status)) {
+        return res.status(401).json({
+          success: false,
+          message: "Invalid status.",
+        });
+      } else {
+        statusFilter.status = status; //To avoid TS error, made statusFilter : any type, as otherwise TS would expect empty object only
+      }
+    }
+    //if(!status) - Then statusFilter will remain {} and on searching will return all documents.
+
+    const orders = await Order.find(statusFilter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -342,7 +396,7 @@ export const getAllOrders = async (
       .populate("items.book", "title author isbn category")
       .select("-__v");
 
-    const totalOrders = await Order.countDocuments(filter);
+    const totalOrders = await Order.countDocuments(statusFilter);
     const totalPages = Math.ceil(totalOrders / limit);
 
     return res.status(200).json({
@@ -377,6 +431,13 @@ export const updateOrderStatus = async (
   try {
     const { orderId } = req.params;
     const { status } = req.body;
+
+    if (!isValidObjectId(orderId)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid order ID.",
+      });
+    }
 
     const validStatuses = [
       "pending",
