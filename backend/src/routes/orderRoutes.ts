@@ -14,7 +14,7 @@ const router = Router();
 //All routes need authentication
 router.use(protect);
 
-//Admin Routes
+//Admin Routes - (Must come first) as if there is a match search for /api/orders/admin (all not provided), it would match with getOrderById route as express reads routes from top to bottom, so make sure this is on top
 
 //GET - /api/orders/admin/all - Get all orders for all users (admin only)
 router.get("/admin/all", restrictTo("admin"), getAllOrders);
