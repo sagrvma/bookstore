@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import connectToDB from "./config/database";
 import authorRouter from "./routes/authorRoutes";
 import bookRouter from "./routes/bookRoutes";
@@ -12,6 +13,17 @@ dotenv.config();
 connectToDB();
 
 const app = express();
+
+//CORS
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.options("*", cors()); //Explicit pre-flight handling across route (Although already included in app.use(cors({...}))). This prevents "blocked by CORS policy" on complex requests that trigger pre-flight checks
 
 app.use(express.json()); //Built-in middleware in Express.js that parse incoming requests with JSON payloads and makes the data available in req.body
 
