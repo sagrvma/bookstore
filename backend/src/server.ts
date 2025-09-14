@@ -7,6 +7,7 @@ import bookRouter from "./routes/bookRoutes";
 import authRouter from "./routes/authRoutes";
 import cartRouter from "./routes/cartRoutes";
 import orderRouter from "./routes/orderRoutes";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -23,7 +24,10 @@ app.use(
   })
 );
 
-app.options("*", cors()); //Explicit pre-flight handling across route (Although already included in app.use(cors({...}))). This prevents "blocked by CORS policy" on complex requests that trigger pre-flight checks
+// app.options("*", cors()); //pre-flight handling across route (Already included in app.use(cors({...}))). This prevents "blocked by CORS policy" on complex requests that trigger pre-flight checks
+
+//Helmet for secure headers
+app.use(helmet());
 
 app.use(express.json()); //Built-in middleware in Express.js that parse incoming requests with JSON payloads and makes the data available in req.body
 
