@@ -40,13 +40,14 @@ export const protect = async (
       //Throwung an error instead of returning res.status.json as this is a config error and not something caused by the user. When there is a user caused error, the application keeps running with the appropriate response, in this case thought we need the application to stop running and crash until the secret is defined.
     }
 
-    const decoded = jwt.verify(token, secret) as {
+    const payload = jwt.verify(token, secret) as {
+      //Decoded from token
       userId: string;
       username: string;
       role: string;
     }; //For TS, as usually jwt.verify has a generic return type (string | JwtPayload | object) which is not aware of our custon JWT payload.
 
-    const user = await User.findById(decoded.userId);
+    const user = await User.findById(payload.userId);
 
     if (!user) {
       return res.status(401).json({
@@ -97,7 +98,8 @@ export const restrictTo = (...allowedRoles: string[]) => {
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      return res.status(401).json({
+      return res.status(403).json({
+        //403 for authorization error
         success: false,
         message: "Access denied! User not authorized to access this resource.",
       });
