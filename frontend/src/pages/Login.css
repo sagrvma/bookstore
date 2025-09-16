@@ -1,0 +1,23 @@
+.loginForm {
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+  margin: 40px auto;
+}
+.loginForm input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.loginForm button {
+  padding: 10px 14px;
+  background: #334;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.error {
+  color: crimson;
+}
