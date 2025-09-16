@@ -81,3 +81,5 @@ const Books = () => {
     </div>
   );
 };
+
+export default Books;
