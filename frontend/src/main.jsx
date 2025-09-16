@@ -12,11 +12,11 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        //Login page
+        {/*Login page*/}
         <Route path="/login" element={<Login />} />
-        //Public Books page
+        {/*Public Books page*/}
         <Route path="/books" element={<Books />} />
-        //Protected Routes
+        {/*Protected Routes*/}
         <Route
           path="/cart"
           element={
