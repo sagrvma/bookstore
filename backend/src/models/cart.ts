@@ -32,7 +32,7 @@ export interface ICart extends Document {
   //This is because pre.save middleware doesnt run for update paths/findOneAndUpdate
   createdAt: Date;
   updatedAt: Date;
-  // calculateTotals(): void; //Function to recalculate totals (NOT NEEDED AS NOW USING VIRTUALS)
+  // XXXcalculateTotals(): void; //Function to recalculate totals (NOT NEEDED AS NOW USING VIRTUALS)
 }
 
 const cartItemSchema = new Schema(
