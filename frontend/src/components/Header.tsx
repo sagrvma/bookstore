@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { tokenStore } from "../lib/http";
+import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const Header = () => {
         <div className="spacer" />
         <Link to="/books">Books</Link>
         <Link to="/cart">Cart</Link>
-
         {!isAuthed ? (
           <Link to="/login" className="btn">
             Login
