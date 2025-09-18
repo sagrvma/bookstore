@@ -82,9 +82,9 @@ const CartPage = () => {
     }
   };
 
-  if (loading) {
-    return <p className="status">Loading Cart...</p>;
-  }
+  // if (loading) {
+  //   return <p className="status">Loading Cart...</p>;
+  // }
 
   if (err) {
     return <p className="error">{err}</p>;
