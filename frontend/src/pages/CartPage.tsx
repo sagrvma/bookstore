@@ -8,6 +8,7 @@ import {
   updateCartItemById,
 } from "../api/cart";
 import { useNavigate } from "react-router";
+import "./CartPage.css";
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -179,3 +180,5 @@ const CartPage = () => {
     </div>
   );
 };
+
+export default CartPage;

@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import Login from "./pages/Login.tsx";
 import Books from "./pages/Books.tsx";
 import Header from "./components/Header.tsx";
+import CartPage from "./pages/CartPage.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
@@ -23,9 +24,7 @@ createRoot(document.getElementById("root")).render(
           path="/cart"
           element={
             <ProtectedRoute>
-              <div>
-                <h2>Cart</h2>
-              </div>
+              <CartPage />
             </ProtectedRoute>
           }
         />

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import http from "../lib/http";
 import "./Books.css";
+import { useNavigate } from "react-router";
+import { addToCart } from "../api/cart";
 
 type Author = { _id: string; name: string } | string;
 
@@ -29,6 +31,8 @@ const Books = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -76,6 +80,19 @@ const Books = () => {
                 ? book.author
                 : book.author?.name ?? "Unknown"}
             </div>
+            <button
+              onClick={async () => {
+                try {
+                  await addToCart(book._id, 1);
+                } catch (error: any) {
+                  if (error?.response?.status === 401) {
+                    navigate("/login");
+                  }
+                }
+              }}
+            >
+              Add to Cart
+            </button>
           </li>
         ))}
       </ul>

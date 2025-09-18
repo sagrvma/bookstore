@@ -1,28 +1,111 @@
+/* Books list layout and simple responsive styles */
+
 .booksWrap {
-  max-width: 760px;
-  margin: 24px auto;
-  padding: 0 16px;
+  max-width: 1100px;
+  margin: 1.25rem auto;
+  padding: 0 1rem;
+  color: #0f172a;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial;
 }
+
+.booksWrap h2 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.4rem;
+  color: #0b2545;
+}
+
+/* Grid/stack list */
 .booksList {
-  display: grid;
-  gap: 10px;
-  padding: 0;
   list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
 }
+
+/* Individual book card */
 .bookItem {
-  border: 1px solid #eee;
+  background: #ffffff;
+  border: 1px solid rgba(11, 37, 69, 0.06);
   border-radius: 8px;
-  padding: 12px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 1px 3px rgba(11, 37, 69, 0.04);
+  transition: transform 140ms ease, box-shadow 140ms ease;
 }
+
+.bookItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(11, 37, 69, 0.08);
+}
+
+/* Title and meta */
 .bookTitle {
   font-weight: 600;
+  color: #07213a;
+  font-size: 1rem;
+  line-height: 1.2;
+  word-break: break-word;
 }
+
 .bookMeta {
-  color: #666;
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-top: -0.1rem;
 }
-.status {
-  color: #333;
+
+/* Action area: push button to bottom */
+.bookItem > button {
+  margin-top: auto;
+  align-self: stretch;
+  justify-self: end;
 }
-.error {
-  color: crimson;
+
+/* Button styles */
+.bookItem button {
+  background: #0b2545;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 120ms ease, transform 80ms ease;
+}
+
+.bookItem button:hover {
+  background: #08305a;
+  transform: translateY(-1px);
+}
+
+.bookItem button:active {
+  transform: translateY(0);
+}
+
+/* Disabled / loading state (if used) */
+.bookItem button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Small screens: single column with slightly larger padding */
+@media (max-width: 640px) {
+  .booksList {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .bookItem {
+    padding: 0.85rem;
+  }
+
+  .booksWrap h2 {
+    font-size: 1.2rem;
+  }
 }
