@@ -7,6 +7,7 @@ import Books from "./pages/Books.tsx";
 import Header from "./components/Header.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import Checkout from "./pages/Checkout.tsx";
+import Orders from "./pages/Orders.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
@@ -34,6 +35,14 @@ createRoot(document.getElementById("root")).render(
           element={
             <ProtectedRoute>
               <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
             </ProtectedRoute>
           }
         />

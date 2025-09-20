@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cancelOrder, getOrdersByUser, OrdersPage } from "../api/order";
 import { useNavigate } from "react-router";
+import "./Orders.css";
 
 const Orders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);

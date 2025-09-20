@@ -173,7 +173,7 @@ const CartPage = () => {
 
       <div className="cartActions">
         <button onClick={() => onClear()}>Clear Cart</button>
-        <button onClick={() => navigate("/orders", { replace: false })}>
+        <button onClick={() => navigate("/checkout", { replace: false })}>
           Checkout
         </button>
       </div>
