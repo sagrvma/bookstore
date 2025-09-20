@@ -1,0 +1,327 @@
+.checkoutWrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+  line-height: 1.6;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
+.checkoutForm {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 25px rgba(0, 0, 0, 0.04),
+    0 20px 40px rgba(0, 0, 0, 0.03);
+  display: grid;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.checkoutForm::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+}
+
+/* Fieldset Styling */
+.checkoutForm fieldset {
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #fafbfc 0%, #f1f5f9 100%);
+  margin: 0;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkoutForm fieldset:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.checkoutForm legend {
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Form Labels */
+.checkoutForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Text Inputs */
+.checkoutForm input[type="text"],
+.checkoutForm input[type="tel"],
+.checkoutForm input[type="email"],
+.checkoutForm input[type="password"],
+.checkoutForm input[type="url"],
+.checkoutForm textarea {
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #1f2937;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.checkoutForm input:focus,
+.checkoutForm textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1),
+    0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+}
+
+.checkoutForm input:invalid {
+  border-color: #ef4444;
+}
+
+.checkoutForm input:valid {
+  border-color: #10b981;
+}
+
+.checkoutForm textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Radio Button Styling */
+.checkoutForm fieldset > label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.checkoutForm fieldset > label:hover {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.checkoutForm input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  appearance: none;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkoutForm input[type="radio"]:checked {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.checkoutForm input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.checkoutForm input[type="radio"]:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Actions */
+.checkoutActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.checkoutActions button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.checkoutActions button[type="submit"] {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.checkoutActions button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.checkoutActions button[type="button"] {
+  background: #ffffff;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.checkoutActions button[type="button"]:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+.checkoutActions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.checkoutActions button[type="submit"]:disabled {
+  background: #9ca3af;
+  box-shadow: none;
+}
+
+/* Error Styling */
+.error {
+  color: #dc2626;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 1rem;
+  border-left: 4px solid #dc2626;
+}
+
+/* Shipping Address Grid */
+.shippingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.shippingGrid .full {
+  grid-column: 1 / -1;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .checkoutWrapper {
+    padding: 2rem;
+  }
+
+  .checkoutForm {
+    padding: 2.5rem;
+  }
+
+  .shippingGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .checkoutWrapper {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .checkoutForm {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .checkoutActions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .checkoutActions button {
+    width: 100%;
+    padding: 0.875rem;
+  }
+
+  .shippingGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading Animation */
+.checkoutActions button[type="submit"]:disabled::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus Styles for Accessibility */
+.checkoutForm *:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Form Validation Feedback */
+.checkoutForm input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ef4444;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem 1rem;
+  padding-right: 2.5rem;
+}

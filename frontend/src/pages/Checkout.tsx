@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Order, placeOrder, ShippingAddress } from "../api/order";
 import { useNavigate } from "react-router";
+import "./Checkout.css";
 
 const Checkout = () => {
   const navigate = useNavigate();
