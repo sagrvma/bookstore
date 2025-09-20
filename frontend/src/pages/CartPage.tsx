@@ -36,7 +36,7 @@ const CartPage = () => {
         navigate("/login", { replace: true });
         return;
       }
-      setErr("Failed to load cart.");
+      setErr(error?.response?.data?.message || "Failed to load cart.");
     } finally {
       setLoading(false);
     }
