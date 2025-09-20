@@ -114,7 +114,10 @@ const shippingAddressSchema = new Schema(
       type: String,
       required: [true, "Phone number is required."],
       trim: true,
-      match: [/^\+?[\d\s-()]{10,15}$/, "Please enter a valid phone number."],
+      match: [
+        /^(\+[1-9]\d{0,3})?[6-9]\d{9}$/,
+        "Please enter a valid phone number.",
+      ],
     },
   },
   {

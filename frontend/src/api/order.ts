@@ -1,6 +1,6 @@
 import http from "../lib/http";
 
-type Book = {
+export type Book = {
   _id: string;
   title: string;
   author?: string;
@@ -8,7 +8,7 @@ type Book = {
   category?: string;
 };
 
-type ShippingAddress = {
+export type ShippingAddress = {
   fullName: string;
   street: string;
   city: string;
@@ -18,7 +18,7 @@ type ShippingAddress = {
   phone: string;
 };
 
-type OrderItem = {
+export type OrderItem = {
   _id: string;
   book: Book;
   title: string;
@@ -28,7 +28,8 @@ type OrderItem = {
   lineTotal: number;
 };
 
-type Order = {
+export type Order = {
+  _id: string;
   user: string;
   orderNumber: string;
   items: OrderItem[];
@@ -46,7 +47,7 @@ type Order = {
   updatedAt: string;
 };
 
-type OrdersPage = {
+export type OrdersPage = {
   orders: Order[];
   pagination: {
     currentPage: number;
