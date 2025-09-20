@@ -8,6 +8,7 @@ import Header from "./components/Header.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import Orders from "./pages/Orders.tsx";
+import OrderDetails from "./pages/OrderDetails.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
@@ -43,6 +44,14 @@ createRoot(document.getElementById("root")).render(
           element={
             <ProtectedRoute>
               <Orders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders/:orderId"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
             </ProtectedRoute>
           }
         />

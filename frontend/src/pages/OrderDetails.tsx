@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { cancelOrder, getOrderById, Order } from "../api/order";
+import "./OrderDetails.css";
 
 const OrderDetails = () => {
   const { orderId } = useParams<{ orderId: string }>();
