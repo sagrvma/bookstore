@@ -46,6 +46,7 @@ const Header = () => {
           <>
             <Link to="/admin/orders">Admin Orders</Link>
             <Link to="admin/books">Admin Books</Link>
+            <Link to="admin/authors">Admin Authors</Link>
           </>
         )}
       </nav>

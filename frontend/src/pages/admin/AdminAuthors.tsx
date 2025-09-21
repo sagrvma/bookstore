@@ -7,6 +7,7 @@ import {
   updateAuthor,
 } from "../../api/admin";
 import { useNavigate } from "react-router";
+import "./AdminAuthors.css";
 
 const AdminAuthors = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -271,3 +272,5 @@ const AdminAuthors = () => {
     </div>
   );
 };
+
+export default AdminAuthors;
