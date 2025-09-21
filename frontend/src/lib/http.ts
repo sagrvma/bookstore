@@ -32,7 +32,7 @@ http.interceptors.response.use(
   (err) => {
     if (err?.response?.status === 401) {
       tokenStore.clear();
-      //window.location.assign("/login");
+      window.location.assign("/login");
     }
     return Promise.reject(err);
   }
