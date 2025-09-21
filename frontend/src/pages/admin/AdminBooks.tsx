@@ -13,7 +13,7 @@ import "./AdminBooks.css";
 
 const AdminBooks = () => {
   const [books, setBooks] = useState<Book[] | null>(null);
-  const [authors, setAuthors] = useState<Author[] | null>(null);
+  const [authors, setAuthors] = useState<Author[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
