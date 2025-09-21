@@ -9,6 +9,7 @@ import {
   updateBook,
 } from "../../api/admin";
 import { useNavigate } from "react-router";
+import "./AdminBooks.css";
 
 const AdminBooks = () => {
   const [books, setBooks] = useState<Book[] | null>(null);
