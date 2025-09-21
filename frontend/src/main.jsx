@@ -9,8 +9,10 @@ import CartPage from "./pages/CartPage.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import Orders from "./pages/Orders.tsx";
 import OrderDetails from "./pages/OrderDetails.tsx";
+import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import AdminRoute from "./routes/AdminRoute.tsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -53,6 +55,14 @@ createRoot(document.getElementById("root")).render(
             <ProtectedRoute>
               <OrderDetails />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <AdminRoute>
+              <AdminOrders />
+            </AdminRoute>
           }
         />
       </Routes>

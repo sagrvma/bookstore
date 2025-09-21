@@ -1,87 +1,279 @@
-/* Simple, responsive header for Bookstore app */
-
 .siteHeader {
-  background: linear-gradient(90deg, #c70000 0%, #ff8b20 100%);
-  color: #fff;
-  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.4);
+  background: linear-gradient(135deg, #013b67 0%, #334155 100%);
+  border-bottom: 1px solid #475569;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
 }
 
 .siteHeader nav {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0.6rem 1rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  height: 70px;
+  gap: 0.5rem;
 }
 
 /* Brand */
-.brand {
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: #fff;
+.siteHeader .brand {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
   text-decoration: none;
-  letter-spacing: 0.4px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  letter-spacing: -0.5px;
 }
 
-/* Spacer to push links to the right */
+.siteHeader .brand:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Spacer */
 .spacer {
-  flex: 1 1 auto;
+  flex: 1;
 }
 
-/* Links */
-nav a {
-  color: #e6eef8;
+/* Navigation Links */
+.siteHeader nav a:not(.brand):not(.btn) {
+  color: #e2e8f0;
   text-decoration: none;
-  margin-left: 0.6rem;
-  padding: 0.35rem 0.5rem;
-  border-radius: 4px;
-  transition: background 150ms ease, color 150ms ease;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
   font-size: 0.95rem;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-nav a:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-}
-
-/* Button-like link / logout button */
-.btn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff;
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: background 120ms ease, transform 80ms ease;
-}
-
-.btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+.siteHeader nav a:not(.brand):not(.btn):hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   transform: translateY(-1px);
 }
 
-/* Mobile: stack links into a row that can wrap */
+.siteHeader nav a:not(.brand):not(.btn)::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.siteHeader nav a:not(.brand):not(.btn):hover::before {
+  width: 80%;
+}
+
+/* Button Styling (Login/Logout) */
+.siteHeader .btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.siteHeader .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+.siteHeader button.btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+}
+
+.siteHeader button.btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+/* Admin Links Styling */
+.siteHeader nav a[href*="admin"] {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #c4b5fd;
+  margin-left: 0.5rem;
+}
+
+.siteHeader nav a[href*="admin"]:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #e9d5ff;
+}
+
+.siteHeader nav a[href*="admin"]::before {
+  background: linear-gradient(90deg, #a855f7, #c084fc);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .siteHeader nav {
+    padding: 0 1rem;
+    height: 60px;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .siteHeader .brand {
+    font-size: 1.5rem;
+  }
+
+  .siteHeader nav a:not(.brand):not(.btn) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .siteHeader .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    margin-left: 0.25rem;
+  }
+
+  .siteHeader nav a[href*="admin"] {
+    margin-left: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 640px) {
   .siteHeader nav {
-    padding: 0.6rem;
-    gap: 0.5rem;
+    height: auto;
+    min-height: 60px;
+    padding: 0.75rem 1rem;
   }
 
-  nav a,
-  .btn {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.5rem;
+  .siteHeader .brand {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
   }
 
-  .brand {
-    font-size: 1rem;
+  .spacer {
+    flex: none;
+    width: 100%;
+    height: 0;
   }
+
+  .siteHeader nav {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .siteHeader nav > *:not(.brand):not(.spacer) {
+    margin: 0.25rem;
+  }
+}
+
+/* Active Link Styling */
+.siteHeader nav a.active:not(.brand):not(.btn) {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.siteHeader nav a.active:not(.brand):not(.btn)::before {
+  width: 80%;
+}
+
+/* Focus States for Accessibility */
+.siteHeader nav a:focus,
+.siteHeader .btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Cart Link Special Styling (Optional) */
+.siteHeader nav a[href="/cart"] {
+  position: relative;
+}
+
+.siteHeader nav a[href="/cart"]:hover {
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+}
+
+/* Smooth Transitions */
+.siteHeader * {
+  transition: all 0.2s ease;
+}
+
+/* Header Animations */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.siteHeader {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Glass Effect Enhancement */
+.siteHeader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+/* Brand Logo Glow Effect */
+.siteHeader .brand::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.siteHeader .brand:hover::after {
+  opacity: 1;
 }

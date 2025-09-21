@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Order, OrdersPage } from "../../api/order";
 import { getAllOrders, updateOrderStatus } from "../../api/admin";
 import { useNavigate } from "react-router";
+import "./AdminOrders.css";
 
 const AdminOrders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);
@@ -75,9 +76,7 @@ const AdminOrders = () => {
     return <p className="status">Loading Orders...</p>;
   }
 
-  return data && data.orders.length === 0 ? (
-    <p className="status">No orders found.</p>
-  ) : (
+  return (
     <div className="adminOrdersWrapper">
       <div className="adminHeader">
         <h2>Manage Orders</h2>
@@ -100,90 +99,101 @@ const AdminOrders = () => {
 
       {err && <p className="error">{err}</p>}
 
-      <div className="ordersTable">
-        <table>
-          <thead>
-            <tr>
-              <th>Order #</th>
-              <th>Customer</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.orders.map((order) => (
-              <tr key={order._id}>
-                <td>#{order.orderNumber}</td>
-                <td>{order.shippingAddress.fullName}</td>
-                <td>{order.items.length}</td>
-                <td>{inr.format(order.totalAmount)}</td>
-                <td>
-                  <span className={`orderStatus status-${order.status}`}>
-                    {order.status}
-                  </span>
-                </td>
-                <td>{new Date(order.createdAt).toLocaleDateString("en-IN")}</td>
-                <td>
-                  <div className="adminActions">
-                    <select
-                      value={order.status}
-                      disabled={updating === order._id}
-                      onChange={(e) => {
-                        handleStatusUpdate(
-                          order._id,
-                          e.target.value as Order["status"]
-                        );
-                      }}
-                    >
-                      {statuses.map((status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      className="viewBtn"
-                      onClick={() => {
-                        navigate(`/orders/${order._id}`);
-                      }}
-                    >
-                      View
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {data && data.orders.length === 0 ? (
+        <p className="status">No orders found.</p>
+      ) : (
+        <>
+          <div className="ordersTable">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.orders.map((order) => (
+                  <tr key={order._id}>
+                    <td>#{order.orderNumber}</td>
+                    <td>{order.shippingAddress.fullName}</td>
+                    <td>{order.items.length}</td>
+                    <td>{inr.format(order.totalAmount)}</td>
+                    <td>
+                      <span className={`orderStatus status-${order.status}`}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td>
+                      {new Date(order.createdAt).toLocaleDateString("en-IN")}
+                    </td>
+                    <td>
+                      <div className="adminActions">
+                        <select
+                          value={order.status}
+                          disabled={updating === order._id}
+                          onChange={(e) => {
+                            handleStatusUpdate(
+                              order._id,
+                              e.target.value as Order["status"]
+                            );
+                          }}
+                        >
+                          {statuses.map((status) => (
+                            <option key={status} value={status}>
+                              {status}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          className="viewBtn"
+                          onClick={() => {
+                            navigate(`/orders/${order._id}`);
+                          }}
+                        >
+                          View
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-      <div className="adminPagination">
-        <button
-          disabled={!data?.pagination.hasPrev || loading}
-          onClick={() => {
-            load(page - 1, statusFilter);
-          }}
-        >
-          Prev
-        </button>
-        <span>
-          Page {data?.pagination.currentPage} of {data?.pagination.totalPages} (
-          {data?.pagination.totalOrders} total)
-        </span>
-        <button
-          disabled={!data?.pagination.hasNext || loading}
-          onClick={() => {
-            load(page + 1, statusFilter);
-          }}
-        >
-          Next
-        </button>
-      </div>
+          <div className="adminPagination">
+            <button
+              disabled={!data?.pagination.hasPrev || loading}
+              onClick={() => {
+                load(page - 1, statusFilter);
+              }}
+            >
+              Prev
+            </button>
+            <span>
+              Page {data?.pagination.currentPage} of{" "}
+              {data?.pagination.totalPages} ({data?.pagination.totalOrders}{" "}
+              total)
+            </span>
+            <button
+              disabled={!data?.pagination.hasNext || loading}
+              onClick={() => {
+                load(page + 1, statusFilter);
+              }}
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
 
       {loading && <p className="status">Loading...</p>}
     </div>
   );
 };
+
+export default AdminOrders;

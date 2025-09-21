@@ -256,6 +256,8 @@ export const getOrderById = async (
 
     const orderId = req.params.orderId;
 
+    const userRole = req?.user?.role;
+
     if (!isValidObjectId(userId) || !isValidObjectId(orderId)) {
       return res.status(401).json({
         success: false,
@@ -263,10 +265,13 @@ export const getOrderById = async (
       });
     }
 
-    const order: IOrder | null = await Order.findOne({
-      _id: orderId,
-      user: userId, //Search with both as order should belong to respective user only
-    })
+    let query: any = { _id: orderId };
+
+    if (userRole !== "admin") {
+      query.user = userId;
+    }
+
+    const order: IOrder | null = await Order.findOne(query)
       .populate({
         path: "items.book",
         select: "title author isbn category",
