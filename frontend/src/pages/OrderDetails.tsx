@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { cancelOrder, getOrderById, Order } from "../api/order";
 import "./OrderDetails.css";
+import { tokenStore } from "../lib/http";
+import { jwtDecode } from "jwt-decode";
+import { JWTPayload } from "../routes/AdminRoute";
 
 const OrderDetails = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -11,6 +14,15 @@ const OrderDetails = () => {
   const [err, setErr] = useState("");
 
   const navigate = useNavigate();
+
+  let isAdmin = false;
+
+  const token = tokenStore.get();
+
+  if (token) {
+    const payload = jwtDecode<JWTPayload>(token);
+    isAdmin = payload.role === "admin";
+  }
 
   const inr = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -150,7 +162,11 @@ const OrderDetails = () => {
       <div className="orderActions">
         <button
           onClick={() => {
-            navigate("/orders");
+            if (isAdmin) {
+              navigate("/admin/orders");
+            } else {
+              navigate("/orders");
+            }
           }}
         >
           Back to Orders
