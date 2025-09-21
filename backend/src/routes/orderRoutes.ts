@@ -19,7 +19,7 @@ router.use(protect);
 //GET - /api/orders/admin/all - Get all orders for all users (admin only)
 router.get("/admin/all", restrictTo("admin"), getAllOrders);
 
-//PATCH - /api/orders/:orderId/status - Update the order status of an order by orderId (admin only)
+//PATCH - /api/orders/admin/:orderId/status - Update the order status of an order by orderId (admin only)
 router.patch("/admin/:orderId/status", restrictTo("admin"), updateOrderStatus);
 
 //Customer Routes
