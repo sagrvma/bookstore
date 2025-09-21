@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router";
 import { tokenStore } from "../lib/http";
 import "./Header.css";
+import { jwtDecode } from "jwt-decode";
+import { JWTPayload } from "../routes/AdminRoute";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -8,6 +10,13 @@ const Header = () => {
     //Check if authenticated/signed in or not
     import.meta.env.VITE_TOKEN_STORAGE_KEY || "bookstore_token"
   );
+
+  const token = tokenStore.get();
+  let isAdmin = false;
+  if (token) {
+    const payload = jwtDecode<JWTPayload>(token);
+    isAdmin = payload.role === "admin";
+  }
 
   return (
     <header className="siteHeader">
@@ -32,6 +41,12 @@ const Header = () => {
           >
             Log Out
           </button>
+        )}
+        {isAdmin && (
+          <>
+            <Link to="/admin/orders">Admin Orders</Link>
+            <Link to="admin/books">Admin Books</Link>
+          </>
         )}
       </nav>
     </header>

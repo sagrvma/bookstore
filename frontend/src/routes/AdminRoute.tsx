@@ -3,7 +3,7 @@ import { tokenStore } from "../lib/http";
 import { jwtDecode } from "jwt-decode";
 import { JSX } from "react";
 
-interface JWTPayload {
+export interface JWTPayload {
   userId: string;
   userName: string;
   role: "admin" | "user";
