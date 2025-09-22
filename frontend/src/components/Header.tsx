@@ -28,9 +28,14 @@ const Header = () => {
         <Link to="/books">Books</Link>
         <Link to="/cart">Cart</Link>
         {!isAuthed ? (
-          <Link to="/login" className="btn">
-            Login
-          </Link>
+          <>
+            <Link to="/login" className="btn">
+              Login
+            </Link>
+            <Link to="/register" className="btn">
+              Register
+            </Link>
+          </>
         ) : (
           <button
             className="btn"

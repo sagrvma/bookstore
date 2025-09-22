@@ -12,6 +12,7 @@ import OrderDetails from "./pages/OrderDetails.tsx";
 import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import AdminBooks from "./pages/admin/AdminBooks.tsx";
 import AdminAuthors from "./pages/admin/AdminAuthors.tsx";
+import Register from "./pages/Register.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />} />
         {/*Login page*/}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {/*Public Books page*/}
         <Route path="/books" element={<Books />} />
         {/*Protected Routes*/}

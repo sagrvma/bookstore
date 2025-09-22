@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import http, { tokenStore } from "../lib/http";
 import "./Login.css";
 
@@ -48,28 +48,38 @@ const Login = () => {
   };
 
   return (
-    <form className="loginForm" onSubmit={onSubmit}>
-      <label>
-        Email
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email address"
-        />
-      </label>
-      <label>
-        Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-        />
-      </label>
-      <button type="submit">Sign In</button>
-      {err && <p className="error">{err}</p>}
-    </form>
+    <>
+      <form className="loginForm" onSubmit={onSubmit}>
+        <label>
+          Email
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email address"
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+          />
+        </label>
+        <button type="submit">Sign In</button>
+        {err && <p className="error">{err}</p>}
+      </form>
+      <div className="loginFooter">
+        <p>
+          Don't have an account? (" ")
+          <Link to="/register" className="authLink">
+            Create one here
+          </Link>
+        </p>
+      </div>
+    </>
   );
 };
 

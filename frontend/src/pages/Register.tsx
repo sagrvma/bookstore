@@ -1,6 +1,7 @@
 import { useState } from "react";
 import http, { tokenStore } from "../lib/http";
 import { Link, useNavigate } from "react-router";
+import "./Register.css";
 
 type AuthPayload = {
   user: {
@@ -152,3 +153,5 @@ const Register = () => {
     </div>
   );
 };
+
+export default Register;
