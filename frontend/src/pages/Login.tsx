@@ -73,7 +73,7 @@ const Login = () => {
       </form>
       <div className="loginFooter">
         <p>
-          Don't have an account? (" ")
+          Don't have an account?{" "}
           <Link to="/register" className="authLink">
             Create one here
           </Link>
