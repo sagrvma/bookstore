@@ -13,6 +13,7 @@ import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import AdminBooks from "./pages/admin/AdminBooks.tsx";
 import AdminAuthors from "./pages/admin/AdminAuthors.tsx";
 import Register from "./pages/Register.tsx";
+import BookDetails from "./pages/BookDetails.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -78,13 +79,15 @@ createRoot(document.getElementById("root")).render(
           }
         />
         <Route
-          path="admin/authors"
+          path="/admin/authors"
           element={
             <AdminRoute>
               <AdminAuthors />
             </AdminRoute>
           }
         />
+
+        <Route path="/books/:bookId" element={<BookDetails />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

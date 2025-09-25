@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { Book, getBookById, getBooks } from "../api/admin";
 import { addToCart } from "../api/cart";
+import "./BookDetails.css";
 
 const BookDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -257,7 +258,7 @@ const BookDetails = () => {
                             : "Unknown"}
                         </div>
                         <div className="relatedBookPrice">
-                          {inr.format(book.price)}
+                          {inr.format(relatedBook.price)}
                         </div>
                       </div>
                     </Link>

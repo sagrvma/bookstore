@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import http from "../lib/http";
 import "./Books.css";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { addToCart } from "../api/cart";
 import { getBooks } from "../api/admin";
 
@@ -277,7 +277,9 @@ const Books = () => {
           {filteredBooks.map((book) => (
             <li key={book._id} className="bookItem">
               <div className="bookInfo">
-                <div className="bookTitle">{book.title}</div>
+                <Link to={`/books/${book._id}`}>
+                  <div className="bookTitle">{book.title}</div>
+                </Link>
                 <div className="bookMeta">
                   by{" "}
                   {typeof book.author === "string"
