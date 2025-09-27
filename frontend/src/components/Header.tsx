@@ -3,6 +3,7 @@ import { tokenStore } from "../lib/http";
 import "./Header.css";
 import { jwtDecode } from "jwt-decode";
 import { JWTPayload } from "../routes/AdminRoute";
+import { useToast } from "../context/ToastContext";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const Header = () => {
     //Check if authenticated/signed in or not
     import.meta.env.VITE_TOKEN_STORAGE_KEY || "bookstore_token"
   );
+
+  const { showToast } = useToast();
 
   const token = tokenStore.get();
   let isAdmin = false;
@@ -41,6 +44,7 @@ const Header = () => {
             className="btn"
             onClick={() => {
               tokenStore.clear(); //Remove token to remove authentication and logout
+              showToast("success", "You have been logged out.");
               navigate("/login", { replace: true });
             }}
           >

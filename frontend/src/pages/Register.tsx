@@ -2,6 +2,7 @@ import { useState } from "react";
 import http, { tokenStore } from "../lib/http";
 import { Link, useNavigate } from "react-router";
 import "./Register.css";
+import { useToast } from "../context/ToastContext";
 
 type AuthPayload = {
   user: {
@@ -30,6 +31,8 @@ const Register = () => {
   const [err, setErr] = useState("");
 
   const navigate = useNavigate();
+
+  const { showToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,9 +66,17 @@ const Register = () => {
       const { token } = res.data.data;
 
       tokenStore.set(token);
+
+      showToast(
+        "success",
+        "Account created successfully! Welcome to the bookstore."
+      );
+
       navigate("/books", { replace: true });
     } catch (error: any) {
-      setErr(error?.response?.data?.message || "Failed to register user.");
+      const msg = error?.response?.data?.message || "Failed to register user.";
+      showToast("error", msg);
+      setErr(msg);
     } finally {
       setLoading(false);
     }

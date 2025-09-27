@@ -17,78 +17,83 @@ import BookDetails from "./pages/BookDetails.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
+import { ToastProvider } from "./context/ToastContext.tsx";
+import ToastContainer from "./components/Toast.tsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<App />} />
-        {/*Login page*/}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/*Public Books page*/}
-        <Route path="/books" element={<Books />} />
-        {/*Protected Routes*/}
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <CartPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <Checkout />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders/:orderId"
-          element={
-            <ProtectedRoute>
-              <OrderDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/orders"
-          element={
-            <AdminRoute>
-              <AdminOrders />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/books"
-          element={
-            <AdminRoute>
-              <AdminBooks />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/authors"
-          element={
-            <AdminRoute>
-              <AdminAuthors />
-            </AdminRoute>
-          }
-        />
+    <ToastProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<App />} />
+          {/*Login page*/}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/*Public Books page*/}
+          <Route path="/books" element={<Books />} />
+          {/*Protected Routes*/}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:orderId"
+            element={
+              <ProtectedRoute>
+                <OrderDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <AdminRoute>
+                <AdminOrders />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/books"
+            element={
+              <AdminRoute>
+                <AdminBooks />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/authors"
+            element={
+              <AdminRoute>
+                <AdminAuthors />
+              </AdminRoute>
+            }
+          />
 
-        <Route path="/books/:bookId" element={<BookDetails />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/books/:bookId" element={<BookDetails />} />
+        </Routes>
+        <ToastContainer />
+      </BrowserRouter>
+    </ToastProvider>
   </StrictMode>
 );

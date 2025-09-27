@@ -4,6 +4,7 @@ import "./Books.css";
 import { Link, useNavigate } from "react-router";
 import { addToCart } from "../api/cart";
 import { getBooks } from "../api/admin";
+import { useToast } from "../context/ToastContext";
 
 type Author = { _id: string; name: string } | string;
 
@@ -57,6 +58,8 @@ const Books = () => {
   });
 
   const navigate = useNavigate();
+
+  const { showToast } = useToast();
 
   const inr = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -305,9 +308,15 @@ const Books = () => {
                       try {
                         await addToCart(book._id, 1);
                         //Could add toast notification here
+                        showToast("success", `${book.title} added to cart!`);
                       } catch (error: any) {
                         if (error.response?.status === 401) {
                           navigate("/login", { replace: true });
+                        } else {
+                          showToast(
+                            "error",
+                            "Failed to add to cart. Please try again."
+                          );
                         }
                       }
                     }}

@@ -9,6 +9,7 @@ import {
 } from "../api/cart";
 import { useNavigate } from "react-router";
 import "./CartPage.css";
+import { useToast } from "../context/ToastContext";
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -16,6 +17,8 @@ const CartPage = () => {
   const [err, setErr] = useState("");
 
   const navigate = useNavigate();
+
+  const { showToast } = useToast();
 
   const inr = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -50,24 +53,32 @@ const CartPage = () => {
   const onQuantityChange = async (id: string, newQuantity: number) => {
     try {
       await updateCartItemById(id, newQuantity); //Update
+      showToast("success", "Quantity updated!");
       await load(); //Reload after mutation
     } catch (error: any) {
-      setErr(error?.response?.data?.message || "Failed to update quantity.");
+      const msg =
+        error?.response?.data?.message || "Failed to update quantity.";
+      showToast("error", msg);
+      setErr(msg);
     }
   };
 
   const onRemoveByItem = async (itemId: string) => {
     try {
       await removeCartItemById(itemId);
+      showToast("success", "Item removed from cart.");
       await load();
     } catch (error: any) {
-      setErr(error?.response?.data?.message || "Failed to remove item.");
+      const msg = error?.response?.data?.message || "Failed to remove item.";
+      showToast("error", msg);
+      setErr(msg);
     }
   };
 
   const onRemoveByBook = async (bookId: string) => {
     try {
       await removeCartItemByBookId(bookId);
+      showToast("success", "Item removed from cart.");
       await load();
     } catch (error: any) {
       setErr(error?.response?.data?.message || "Failed to remove item.");
@@ -78,7 +89,9 @@ const CartPage = () => {
       await clearCart();
       await load();
     } catch (error: any) {
-      setErr(error?.response?.data?.message || "Failed to clear cart.");
+      const msg = error?.response?.data?.message || "Failed to remove item.";
+      showToast("error", msg);
+      setErr(msg);
     }
   };
 

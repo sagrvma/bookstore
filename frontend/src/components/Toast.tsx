@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Toast, useToast } from "../context/ToastContext";
+import "./Toast.css";
 
 const ToastItem = ({
   toast,
@@ -60,3 +61,5 @@ const ToastContainer = () => {
     </div>
   );
 };
+
+export default ToastContainer;

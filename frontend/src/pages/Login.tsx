@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import http, { tokenStore } from "../lib/http";
 import "./Login.css";
+import { useToast } from "../context/ToastContext";
 
 type AuthPayload = {
   user: {
@@ -25,6 +26,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
 
+  const { showToast } = useToast();
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr("");
@@ -37,12 +40,15 @@ const Login = () => {
 
       tokenStore.set(token);
 
+      showToast("success", "Welcome back! Login successful.");
+
       navigate("/books", { replace: true });
     } catch (error: any) {
       const msg =
         error?.response?.data?.message ||
         error?.message ||
         "Login failed! Please try again.";
+      showToast("error", msg);
       setErr(msg);
     }
   };

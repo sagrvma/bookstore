@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Order, placeOrder, ShippingAddress } from "../api/order";
 import { useNavigate } from "react-router";
 import "./Checkout.css";
+import { useToast } from "../context/ToastContext";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const Checkout = () => {
 
   const [notes, setNotes] = useState("");
 
+  const { showToast } = useToast();
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr("");
@@ -35,12 +38,16 @@ const Checkout = () => {
         paymentMethod: paymentMethod,
         notes: notes,
       });
+
+      showToast("success", `Order ${order.orderNumber} placed successfully!`);
       navigate(`/orders/${order._id}`, { replace: true });
     } catch (error: any) {
       if (error?.response?.status === 401) {
         navigate("/login", { replace: true });
       }
-      setErr(error?.response?.data?.message || "Failed to place order.");
+      const msg = error?.response?.data?.message || "Failed to place order.";
+      showToast("error", msg);
+      setErr(msg);
     } finally {
       setLoading(false);
     }

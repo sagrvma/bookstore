@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import { Book, getBookById, getBooks } from "../api/admin";
 import { addToCart } from "../api/cart";
 import "./BookDetails.css";
+import { useToast } from "../context/ToastContext";
 
 const BookDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,8 @@ const BookDetails = () => {
   const [addingToCart, setAddingToCart] = useState(false);
 
   const navigate = useNavigate();
+
+  const { showToast } = useToast();
 
   const inr = new Intl.NumberFormat("en-In", {
     style: "currency",
@@ -78,13 +81,23 @@ const BookDetails = () => {
     try {
       await addToCart(book._id, quantity);
 
+      const quantityText = quantity === 1 ? "copy" : "copies";
+
+      showToast(
+        "success",
+        `${quantity} ${quantityText} of ${book.title} added to cart!`
+      );
+
       navigate("/cart");
     } catch (error: any) {
       if (error.response?.status === 401) {
         navigate("/login", { replace: true });
         return;
       }
-      setErr(error?.response?.data?.message || "Failed to add book to cart.");
+      const msg =
+        error?.response?.data?.message || "Failed to add book to cart.";
+      showToast("error", "Failed to add to cart! Please try again.");
+      setErr(msg);
     } finally {
       setAddingToCart(false);
     }
