@@ -7,6 +7,7 @@ import bookRouter from "./routes/bookRoutes";
 import authRouter from "./routes/authRoutes";
 import cartRouter from "./routes/cartRoutes";
 import orderRouter from "./routes/orderRoutes";
+import userRouter from "./routes/userRoutes";
 import helmet from "helmet";
 
 dotenv.config();
@@ -41,6 +42,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/cart", cartRouter);
 //order routes
 app.use("/api/orders", orderRouter);
+//user routes
+app.use("/api/user", userRouter);
 
 const PORT = process.env.PORT;
 
