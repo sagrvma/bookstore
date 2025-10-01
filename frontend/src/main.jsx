@@ -15,6 +15,7 @@ import AdminAuthors from "./pages/admin/AdminAuthors.tsx";
 import Register from "./pages/Register.tsx";
 import BookDetails from "./pages/BookDetails.tsx";
 import Profile from "./pages/Profile.tsx";
+import EditProfile from "./pages/EditProfile.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -97,6 +98,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <ProtectedRoute>
+                <EditProfile />
               </ProtectedRoute>
             }
           />

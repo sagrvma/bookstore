@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getProfile, updateProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
+import "./EditProfile.css";
 
 const EditProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -144,3 +145,5 @@ const EditProfile = () => {
     </div>
   );
 };
+
+export default EditProfile;
