@@ -30,6 +30,9 @@ const Header = () => {
         <div className="spacer" />
         <Link to="/books">Books</Link>
         <Link to="/cart">Cart</Link>
+        <Link to="/profile" className="btn">
+          Profile
+        </Link>
         {!isAuthed ? (
           <>
             <Link to="/login" className="btn">

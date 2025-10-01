@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
+import "./Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -181,3 +182,5 @@ const Profile = () => {
     </div>
   );
 };
+
+export default Profile;

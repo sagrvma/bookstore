@@ -14,6 +14,7 @@ import AdminBooks from "./pages/admin/AdminBooks.tsx";
 import AdminAuthors from "./pages/admin/AdminAuthors.tsx";
 import Register from "./pages/Register.tsx";
 import BookDetails from "./pages/BookDetails.tsx";
+import Profile from "./pages/Profile.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -91,6 +92,14 @@ createRoot(document.getElementById("root")).render(
           />
 
           <Route path="/books/:bookId" element={<BookDetails />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         <ToastContainer />
       </BrowserRouter>
