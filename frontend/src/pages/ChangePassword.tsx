@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useToast } from "../context/ToastContext";
 import { changePassword } from "../api/user";
 import { Link, useNavigate } from "react-router";
+import "./ChangePassword.css";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
@@ -129,4 +130,4 @@ const ChangePassword = () => {
   );
 };
 
-export default changePassword;
+export default ChangePassword;

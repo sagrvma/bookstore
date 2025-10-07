@@ -16,6 +16,7 @@ import Register from "./pages/Register.tsx";
 import BookDetails from "./pages/BookDetails.tsx";
 import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
+import ChangePassword from "./pages/ChangePassword.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -106,6 +107,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <ProtectedRoute>
                 <EditProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/password"
+            element={
+              <ProtectedRoute>
+                <ChangePassword />
               </ProtectedRoute>
             }
           />
