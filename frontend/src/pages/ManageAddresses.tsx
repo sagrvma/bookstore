@@ -9,6 +9,7 @@ import {
   User,
 } from "../api/user";
 import { Link, useNavigate } from "react-router";
+import "./ManageAddresses.css";
 
 const ManageAddresses = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -109,6 +110,7 @@ const ManageAddresses = () => {
         "warning",
         "Cannot delete the only address. Add another address first."
       );
+      return;
     }
 
     if (!confirm("Are you sure you want to delete this address?")) {

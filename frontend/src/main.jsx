@@ -17,6 +17,7 @@ import BookDetails from "./pages/BookDetails.tsx";
 import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
 import ChangePassword from "./pages/ChangePassword.tsx";
+import ManageAddresses from "./pages/ManageAddresses.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.tsx";
@@ -118,7 +119,16 @@ createRoot(document.getElementById("root")).render(
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/profile/addresses"
+            element={
+              <ProtectedRoute>
+                <ManageAddresses />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
+
         <ToastContainer />
       </BrowserRouter>
     </ToastProvider>
