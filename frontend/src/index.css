@@ -16,7 +16,7 @@
   /* Colors */
   --primary: #1a1a2e;
   --secondary: #16213e;
-  --accent: #e94560;
+  --accent: #6600d2;
   --background: #f8f9fa;
   --surface: #ffffff;
   --text-dark: #0f0f0f;
@@ -58,7 +58,7 @@
 
   /* Border Radius */
   --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-md: 6px;
   --radius-lg: 8px;
 
   /* Transitions */
