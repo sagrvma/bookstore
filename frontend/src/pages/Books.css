@@ -1,0 +1,377 @@
+/* ==========================================
+   BOOKS PAGE - MODERN MINIMAL
+   ========================================== */
+
+.booksWrapper {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+/* Header Section */
+.booksHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--border);
+}
+
+.booksHeader h2 {
+  margin: 0;
+  color: var(--primary);
+}
+
+.booksCount {
+  font-size: var(--text-sm);
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* Filters Section */
+.booksFilters {
+  background-color: var(--surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Search Bar */
+.searchBar {
+  margin-bottom: var(--spacing-lg);
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-size: var(--text-base);
+  font-family: var(--font-sans);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface);
+  transition: all var(--transition-fast);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(102, 0, 210, 0.1);
+}
+
+.searchInput::placeholder {
+  color: var(--text-light);
+}
+
+/* Filter Controls */
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.categoryFilter {
+  flex: 1;
+  min-width: 180px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.categoryFilter:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Price Range */
+.priceRange {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.priceRange label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.priceRange input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.priceRange input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.priceRange input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 4px rgba(102, 0, 210, 0.2);
+}
+
+.priceRange input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+}
+
+/* Sort Controls */
+.sortControls {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.sortControls select {
+  flex: 1;
+  min-width: 140px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--surface);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.sortControls select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Clear Filters Button */
+.clearFilters {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background-color: var(--background);
+  color: var(--text-dark);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.clearFilters:hover {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filterControls {
+    flex-direction: column;
+  }
+
+  .categoryFilter,
+  .priceRange,
+  .sortControls,
+  .clearFilters {
+    width: 100%;
+  }
+
+  .sortControls select {
+    min-width: auto;
+  }
+}
+
+/* No Books Found */
+.noBooksFound {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.noBooksFound p {
+  color: var(--text-light);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Books Grid */
+.booksList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+/* Individual Book Card */
+.bookItem {
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bookItem:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.bookInfo {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.bookTitle {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: var(--spacing-sm);
+  transition: color var(--transition-fast);
+}
+
+.bookTitle:hover {
+  color: var(--accent);
+}
+
+.bookMeta {
+  font-size: var(--text-sm);
+  color: var(--text-light);
+  margin-bottom: var(--spacing-md);
+}
+
+.bookDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.bookCategory,
+.bookPrice,
+.bookStock {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.bookCategory {
+  background-color: rgba(102, 0, 210, 0.1);
+  color: var(--accent);
+}
+
+.bookPrice {
+  background-color: rgba(0, 184, 148, 0.1);
+  color: var(--success);
+}
+
+.bookStock {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: var(--text-light);
+}
+
+.bookDescription {
+  font-size: var(--text-sm);
+  color: var(--text-light);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md);
+  flex: 1;
+}
+
+/* Book Actions */
+.bookActions {
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+
+.addToCartBtn {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.addToCartBtn:hover:not(.disabled) {
+  background-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.addToCartBtn.disabled {
+  background-color: var(--border);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .booksWrapper {
+    padding: var(--spacing-lg);
+  }
+
+  .booksHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .filterControls {
+    grid-template-columns: 1fr;
+  }
+
+  .sortControls {
+    flex-direction: column;
+  }
+
+  .booksList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .booksWrapper {
+    padding: var(--spacing-md);
+  }
+
+  .booksFilters {
+    padding: var(--spacing-md);
+  }
+}
