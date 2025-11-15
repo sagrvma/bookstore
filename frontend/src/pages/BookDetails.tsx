@@ -127,6 +127,7 @@ const BookDetails = () => {
 
   return (
     <div className="bookDetailsWrapper">
+      {/* Breadcrumb stays at top */}
       <nav className="breadCrumb">
         <Link to="/books">Books</Link>
         <span className="breadCrumbSeperator">{">"}</span>
@@ -135,152 +136,175 @@ const BookDetails = () => {
         <span>{book.title}</span>
       </nav>
 
+      {/* Main 2-column layout */}
       <div className="bookDetailGrid">
-        <section className="bookMainInfo">
-          <div className="bookHeader">
-            <h1 className="bookDetailTitle">{book.title}</h1>
-            <div className="bookMeta">
-              <span className="bookAuthor">by {authorName}</span>
+        {/* LEFT COLUMN - Image + Quick Info */}
+        <aside className="bookImageSection">
+          <div className="bookImagePlaceholder">
+            <div className="imagePlaceholderText">
+              📚
+              <br />
+              Book Cover
+            </div>
+          </div>
+
+          <div className="bookQuickInfo">
+            <h4>Quick Info</h4>
+            <div className="quickInfoItem">
+              <span className="quickInfoLabel">Author:</span>
+              <span>{authorName}</span>
+            </div>
+            <div className="quickInfoItem">
+              <span className="quickInfoLabel">Category:</span>
               <span className="bookCategory">{book.category}</span>
             </div>
-          </div>
-
-          <div className="bookPrice">
-            <span className="currentPrice">{inr.format(book.price)}</span>
-          </div>
-
-          <div className="stockInfo">
-            {inStock ? (
-              <span className="inStock">{book.stock} in stock</span>
-            ) : (
-              <span className="outOfStock">Out of stock.</span>
-            )}
-          </div>
-
-          <div className="addToCartSection">
-            {inStock && (
-              <div className="quantitySelector">
-                <label htmlFor="quantity">Quantity:</label>
-                <select
-                  id="quantity"
-                  disabled={addingToCart}
-                  value={quantity}
-                  onChange={(e) => {
-                    setQuantity(Number(e.target.value));
-                  }}
-                >
-                  {Array.from({ length: maxQuantity }, (_, i) => i + 1).map(
-                    (num) => (
-                      <option key={num} value={num}>
-                        {num}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-            )}
-
-            <button
-              className={`addToCartBtn ${inStock ? "" : "disabled"}`}
-              onClick={handleAddToCart}
-              disabled={!inStock || addingToCart}
-            >
-              {addingToCart
-                ? "Adding to Cart..."
-                : inStock
-                ? `Add ${quantity} to Cart`
-                : "Out of Stock"}
-            </button>
-          </div>
-
-          <div className="bookDetails">
-            <h3>Book Details</h3>
-            <div className="detailsGrid">
-              <div className="detailItem">
-                <span className="detailLabel">ISBN: </span>
-                <span>{book.isbn}</span>
-              </div>
-              {book.pages && (
-                <div className="detailItem">
-                  <span className="detailLabel">Pages: </span>
-                  <span>{book.pages}</span>
-                </div>
-              )}
-              {book.publishedDate && (
-                <div className="detailItem">
-                  <span className="detailLabel">Published Date: </span>
-                  <span>
-                    {new Date(book.publishedDate).toLocaleDateString("en-IN")}
-                  </span>
-                </div>
-              )}
-              <div className="detailItem">
-                <span className="detailLabel">Category: </span>
-                <span>{book.category}</span>
-              </div>
+            <div className="quickInfoItem">
+              <span className="quickInfoLabel">ISBN:</span>
+              <span>{book.isbn}</span>
             </div>
+            {book.pages && (
+              <div className="quickInfoItem">
+                <span className="quickInfoLabel">Pages:</span>
+                <span>{book.pages}</span>
+              </div>
+            )}
+            {book.publishedDate && (
+              <div className="quickInfoItem">
+                <span className="quickInfoLabel">Published:</span>
+                <span>
+                  {new Date(book.publishedDate).toLocaleDateString("en-IN")}
+                </span>
+              </div>
+            )}
+          </div>
+        </aside>
+
+        {/* RIGHT COLUMN - Main Content */}
+        <section className="bookMainContent">
+          {/* Title */}
+          <h1 className="bookDetailTitle">{book.title}</h1>
+          <div className="bookAuthorLine">
+            by <span>{authorName}</span>
           </div>
 
+          {/* Price & Stock - Compact Box */}
+          <div className="buyBox">
+            <div className="priceSection">
+              <span className="priceLabel">Price:</span>
+              <span className="currentPrice">{inr.format(book.price)}</span>
+            </div>
+
+            <div className="stockSection">
+              {inStock ? (
+                <span className="inStock">✓ {book.stock} in stock</span>
+              ) : (
+                <span className="outOfStock">Out of stock</span>
+              )}
+            </div>
+
+            {/* Quantity + Add to Cart */}
+            {inStock && (
+              <div className="addToCartSection">
+                <div className="quantitySelector">
+                  <label htmlFor="quantity">Qty:</label>
+                  <select
+                    id="quantity"
+                    disabled={addingToCart}
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                  >
+                    {Array.from({ length: maxQuantity }, (_, i) => i + 1).map(
+                      (num) => (
+                        <option key={num} value={num}>
+                          {num}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </div>
+
+                <button
+                  className="addToCartBtn"
+                  onClick={handleAddToCart}
+                  disabled={!inStock || addingToCart}
+                >
+                  {addingToCart ? "Adding..." : `Add ${quantity} to Cart`}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Description - HIGH UP */}
           {book.description && (
             <div className="bookDescription">
-              <h3>Description</h3>
+              <h3>About this book</h3>
               <p>{book.description}</p>
             </div>
           )}
 
+          {/* Book Details */}
+          <div className="bookDetails">
+            <h3>Product Details</h3>
+            <div className="detailsGrid">
+              <div className="detailItem">
+                <span className="detailLabel">ISBN:</span> {book.isbn}
+              </div>
+              {book.pages && (
+                <div className="detailItem">
+                  <span className="detailLabel">Pages:</span> {book.pages}
+                </div>
+              )}
+              {book.publishedDate && (
+                <div className="detailItem">
+                  <span className="detailLabel">Published:</span>{" "}
+                  {new Date(book.publishedDate).toLocaleDateString("en-IN")}
+                </div>
+              )}
+              <div className="detailItem">
+                <span className="detailLabel">Category:</span> {book.category}
+              </div>
+            </div>
+          </div>
+
+          {/* Author Info - Still included but lower */}
           {authorBio && (
             <div className="authorInfo">
               <h3>About the Author</h3>
-              <div className="authorDetails">
-                <h4>{authorName}</h4>
-                <p>{authorBio}</p>
+              <h4>{authorName}</h4>
+              <p>{authorBio}</p>
+            </div>
+          )}
+
+          {/* Related Books */}
+          {relatedBooks.length > 0 && (
+            <div className="relatedBooks">
+              <h3>Customers also viewed</h3>
+              <div className="relatedBooksGrid">
+                {relatedBooks.map((relatedBook) => (
+                  <Link
+                    key={relatedBook._id}
+                    to={`/books/${relatedBook._id}`}
+                    className="relatedBookCard"
+                  >
+                    <div className="relatedBookTitle">{relatedBook.title}</div>
+                    <div className="relatedBookAuthor">
+                      {typeof relatedBook.author === "object"
+                        ? relatedBook.author.name
+                        : "Unknown"}
+                    </div>
+                    <div className="relatedBookPrice">
+                      {inr.format(relatedBook.price)}
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           )}
+
+          <button className="backBtn" onClick={() => navigate("/books")}>
+            ← Back to Books
+          </button>
         </section>
-
-        <aside className="bookSidebar">
-          <div className="quickActions">
-            <button
-              className="backBtn"
-              onClick={() => {
-                navigate("/books");
-              }}
-            >
-              Back to Books
-            </button>
-          </div>
-
-          {relatedBooks.length > 0 && (
-            <div className="relatedBooks">
-              <h4>Books you might also like</h4>
-              <ul className="relatedBooksList">
-                {relatedBooks.map((relatedBook) => (
-                  <li key={relatedBook._id} className="relatedBookItem">
-                    <Link
-                      to={`/books/${relatedBook._id}`}
-                      className="relatedBookLink"
-                    >
-                      <div className="relatedBookInfo">
-                        <div className="relatedBookTitle">
-                          {relatedBook.title}
-                        </div>
-                        <div className="relatedBookAuthor">
-                          {typeof relatedBook.author === "object"
-                            ? relatedBook.author.name
-                            : "Unknown"}
-                        </div>
-                        <div className="relatedBookPrice">
-                          {inr.format(relatedBook.price)}
-                        </div>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </aside>
       </div>
     </div>
   );
