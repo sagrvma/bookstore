@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div className="loginWrapper">
       <form className="loginForm" onSubmit={onSubmit}>
         <label>
           Email
@@ -85,7 +85,7 @@ const Login = () => {
           </Link>
         </p>
       </div>
-    </>
+    </div>
   );
 };
 
