@@ -63,6 +63,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.fullName}
+              type="text"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
                   ...prev,
@@ -76,6 +77,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.street}
+              type="text"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
                   ...prev,
@@ -90,6 +92,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.city}
+              type="text"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
                   ...prev,
@@ -104,6 +107,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.state}
+              type="text"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
                   ...prev,
@@ -117,6 +121,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.pinCode}
+              type="text"
               pattern="[1-9][0-9]{5}"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
@@ -131,6 +136,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.country}
+              type="text"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
                   ...prev,
@@ -144,6 +150,7 @@ const Checkout = () => {
             <input
               required
               value={shippingAddress.phone}
+              type="tel"
               pattern="(\+[1-9]\d{0,3})?[6-9]\d{9}"
               onChange={(e) => {
                 setShippingAddress((prev) => ({
