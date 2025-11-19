@@ -102,7 +102,7 @@
 }
 
 .itemActions input[type="number"] {
-  width: 60px;
+  width: 70px;
   padding: var(--spacing-sm);
   font-size: var(--text-sm);
   font-family: var(--font-sans);
@@ -118,17 +118,6 @@
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(102, 0, 210, 0.1);
-}
-
-/* Remove quantity spinner arrows */
-.itemActions input[type="number"]::-webkit-inner-spin-button,
-.itemActions input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.itemActions input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 .itemActions button {
