@@ -232,33 +232,33 @@
 }
 
 /* Description - HIGH priority */
-.bookDescription {
+.bookDetailsWrapper .bookDescription {
   background-color: var(--surface);
   padding: var(--spacing-xl);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
-.bookDescription h3 {
+.bookDetailsWrapper .bookDescription h3 {
   font-size: var(--text-xl);
   margin-bottom: var(--spacing-md);
   color: var(--primary);
 }
 
-.bookDescription p {
+.bookDetailsWrapper .bookDescription p {
   line-height: 1.7;
   color: var(--text-dark);
 }
 
 /* Product Details */
-.bookDetails {
+.bookDetailsWrapper .bookDetails {
   background-color: var(--surface);
   padding: var(--spacing-xl);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
-.bookDetails h3 {
+.bookDetailsWrapper .bookDetails h3 {
   font-size: var(--text-xl);
   margin-bottom: var(--spacing-md);
   color: var(--primary);

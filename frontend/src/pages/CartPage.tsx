@@ -126,16 +126,18 @@ const CartPage = () => {
           return (
             <li key={item._id} className="cartItem">
               <div className="itemInfo">
-                <div className="itemTitle">{item.title}</div>
-                <div className="itemMeta">
-                  {book?.title ?? item.title} - {authorName}
-                </div>
+                {/* Use book.title instead of item.title */}
+                <div className="itemTitle">{book?.title || item.title}</div>
+
+                {/* Show proper author name */}
+                <div className="itemMeta">by {authorName}</div>
+
                 <div className="itemPrice">{inr.format(item.price)}</div>
               </div>
 
               <div className="itemActions">
                 <label>
-                  Qty
+                  QTY
                   <input
                     type="number"
                     min={1}
@@ -152,17 +154,11 @@ const CartPage = () => {
                     }}
                   />
                 </label>
-                <button onClick={() => onRemoveByItem(item._id)}>
-                  Remove (by item)
-                </button>
-                {book?._id && (
-                  <button onClick={() => onRemoveByBook(book._id)}>
-                    Remove (by book)
-                  </button>
-                )}
+                <button onClick={() => onRemoveByItem(item._id)}>Remove</button>
               </div>
+
               <div className="itemTotal">
-                Line Total :{" "}
+                Sub-Total:{" "}
                 {inr.format(item.subtotal ?? item.price * item.quantity)}
               </div>
             </li>
