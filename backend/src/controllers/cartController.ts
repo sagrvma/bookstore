@@ -20,10 +20,14 @@ export const getCart = async (
 
     //Fetch the cart using userId
 
-    let cart: ICart | null = await Cart.findOne({ user: userId }).populate(
-      "items.book", //path to populate, as book is not a direct property of Cart, but a element in the items array
-      "title author isbn category" //Properties to be populated
-    );
+    let cart: ICart | null = await Cart.findOne({ user: userId }).populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
 
     //Create a new cart if it doesn't already exist
     if (!cart) {
@@ -91,7 +95,15 @@ export const addToCart = async (
     }
 
     //Get cart or create new if it doesn't exist
-    let cart: ICart | null = await Cart.findOne({ user: userId });
+    let cart: ICart | null = await Cart.findOne({ user: userId }).populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
+
     if (!cart) {
       cart = new Cart({ user: userId });
     }
@@ -232,7 +244,14 @@ export const updateCartItemById = async (
     cartItem.quantity = newQuantity;
 
     await cart.save();
-    await cart.populate("items.book", "title author isbn category");
+    await cart.populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -303,7 +322,14 @@ export const removeCartItemById = async (
         //Returns the new updated cart
         new: true,
       }
-    ).populate("items.book", "title author isbn category");
+    ).populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
     //No need to .save() as $pull is atomic (happens in one DB operation) on the server and avoids loading the whole care into application memory.
 
     if (!cart) {
@@ -356,7 +382,14 @@ export const removeCartItemByBookId = async (
         //Returns the new updated cart
         new: true,
       }
-    ).populate("items.book", "title author isbn category");
+    ).populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
 
     if (!cart) {
       return res.status(404).json({
@@ -422,7 +455,14 @@ export const clearCart = async (
         new: true,
         upsert: true, //Create new if it doesnt already exist or update if it does
       }
-    ).populate("items.book", "title author isbn category");
+    ).populate({
+      path: "items.book",
+      select: "title author isbn category",
+      populate: {
+        path: "author",
+        select: "name",
+      },
+    });
 
     return res.status(200).json({
       success: true,
