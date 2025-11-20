@@ -30,6 +30,14 @@ const Header = () => {
         <div className="spacer" />
         <Link to="/books">Books</Link>
         <Link to="/cart">Cart</Link>
+
+        {isAdmin && (
+          <>
+            <Link to="/admin/orders">Admin Orders</Link>
+            <Link to="admin/books">Admin Books</Link>
+            <Link to="admin/authors">Admin Authors</Link>
+          </>
+        )}
         <Link to="/profile" className="btn">
           Profile
         </Link>
@@ -53,13 +61,6 @@ const Header = () => {
           >
             Log Out
           </button>
-        )}
-        {isAdmin && (
-          <>
-            <Link to="/admin/orders">Admin Orders</Link>
-            <Link to="admin/books">Admin Books</Link>
-            <Link to="admin/authors">Admin Authors</Link>
-          </>
         )}
       </nav>
     </header>
