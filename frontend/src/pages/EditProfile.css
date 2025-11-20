@@ -1,0 +1,168 @@
+/* ==========================================
+   EDIT PROFILE PAGE
+   ========================================== */
+
+.editProfileWrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header */
+.editProfileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.editProfileHeader h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+.editProfileHeader .actionBtn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: var(--surface);
+  color: var(--text-dark);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.editProfileHeader .actionBtn:hover {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateX(-2px);
+}
+
+/* Form Container */
+.editProfileForm {
+  background-color: var(--surface);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--border);
+}
+
+/* Form Groups */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.editProfileForm input[type="text"],
+.editProfileForm input[type="email"] {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--background);
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.editProfileForm input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(102, 0, 210, 0.1);
+  background-color: var(--surface);
+}
+
+.editProfileForm input::placeholder {
+  color: var(--text-light);
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.formActions button {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.formActions .cancelBtn {
+  background-color: var(--surface);
+  color: var(--text-dark);
+  border: 2px solid var(--border);
+}
+
+.formActions .cancelBtn:hover {
+  background-color: var(--error);
+  color: white;
+  border-color: var(--error);
+}
+
+.formActions button[type="submit"] {
+  background-color: var(--accent);
+  color: white;
+  border: 2px solid var(--accent);
+}
+
+.formActions button[type="submit"]:hover:not(:disabled) {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.formActions button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.editProfileForm .error {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(214, 48, 49, 0.1);
+  border: 2px solid var(--error);
+  border-radius: var(--radius-md);
+  color: var(--error);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .editProfileWrapper {
+    padding: 1rem;
+  }
+
+  .editProfileForm {
+    padding: 1.5rem;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+}
