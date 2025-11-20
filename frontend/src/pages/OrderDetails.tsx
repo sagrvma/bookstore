@@ -92,90 +92,197 @@ const OrderDetails = () => {
 
   return (
     <div className="orderDetailsWrapper">
-      <div className="orderDetailsHeader">
-        <h2>Order #{order.orderNumber}</h2>
-        <div className={`orderStatus status-${order.status}`}>
-          {order.status}
+      {/* Back Button */}
+      <button
+        className="backToOrders"
+        onClick={() => {
+          if (isAdmin) {
+            navigate("/admin/orders");
+          } else {
+            navigate("/orders");
+          }
+        }}
+      >
+        ← Back to Orders
+      </button>
+
+      {/* Header Section */}
+      <div className="orderHeader">
+        <div className="orderTitleRow">
+          <h1>Order #{order.orderNumber}</h1>
+          <div className={`orderStatusBadge ${order.status}`}>
+            {order.status}
+          </div>
+        </div>
+
+        <div className="orderInfoGrid">
+          <div className="orderInfoItem">
+            <span className="infoLabel">Date Placed</span>
+            <span className="infoValue">
+              {new Date(order.createdAt).toLocaleDateString("en-IN")}
+            </span>
+          </div>
+          <div className="orderInfoItem">
+            <span className="infoLabel">Payment Method</span>
+            <span className="infoValue">
+              {order.paymentMethod.replace("_", " ")}
+            </span>
+          </div>
+          <div className="orderInfoItem">
+            <span className="infoLabel">Payment Status</span>
+            <span className="infoValue" style={{ textTransform: "capitalize" }}>
+              {order.paymentStatus}
+            </span>
+          </div>
+          <div className="orderInfoItem">
+            <span className="infoLabel">Total Amount</span>
+            <span className="infoValue total">
+              {inr.format(order.totalAmount)}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="orderGrid">
-        <section className="orderItems">
-          <h3>Items</h3>
-          <ul className="itemsList">
+      {/* Main Content Grid */}
+      <div className="orderContentGrid">
+        {/* Left Column: Items */}
+        <div className="orderItemsCard">
+          <h2>Items in Order</h2>
+          <div className="itemsList">
             {order.items.map((item) => (
-              <li key={item._id} className="orderItem">
-                <div className="itemInfo">
+              <div key={item._id} className="orderItemCard">
+                <div className="itemHeader">
                   <div className="itemTitle">{item.title}</div>
-                  <div className="itemMeta">{item.author}</div>
+                  <div className="itemTotal">{inr.format(item.lineTotal)}</div>
                 </div>
-                <div className="itemQty">x{item.quantity}</div>
-                <div className="itemPrice">{inr.format(item.price)}</div>
-                <div className="itemTotal">{inr.format(item.lineTotal)}</div>
-              </li>
+                <span className="itemAuthor">{item.author}</span>
+
+                <div className="itemPricing">
+                  <span className="itemQty">
+                    {item.quantity} x {inr.format(item.price)}
+                  </span>
+                  <span className="itemUnitPrice">Unit Price</span>
+                </div>
+              </div>
             ))}
-          </ul>
-
-          <div className="orderTotals">
-            <div>Subtotal: {inr.format(order.subtotal)}</div>
-            {order.tax && order.tax > 0 && (
-              <div>Tax: {inr.format(order.tax)}</div>
-            )}
-            {order.shippingCost && order.shippingCost > 0 && (
-              <div>Shipping Cost: {inr.format(order.shippingCost)}</div>
-            )}
-            <div className="totalAmount">{inr.format(order.totalAmount)}</div>
           </div>
-        </section>
 
-        <section className="orderInfo">
-          <h3>Order Info</h3>
-          <div className="infoGrid">
-            <div>Status: {order.status}</div>
-            <div>Payment: {order.paymentMethod.replace("_", " ")}</div>
-            <div>Payment Status: {order.paymentStatus}</div>
-            <div>
-              Date: {new Date(order.createdAt).toLocaleDateString("en-IN")}
+          {/* Totals Summary inside Items Card */}
+          <div
+            style={{
+              marginTop: "2rem",
+              paddingTop: "1.5rem",
+              borderTop: "2px solid var(--border)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <span style={{ color: "var(--text-light)" }}>Subtotal</span>
+              <span style={{ fontWeight: 600 }}>
+                {inr.format(order.subtotal)}
+              </span>
+            </div>
+            {/* Tax Section */}
+            {(order.tax ?? 0) > 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <span style={{ color: "var(--text-light)" }}>Tax</span>
+                <span style={{ fontWeight: 600 }}>
+                  {inr.format(order.tax!)}
+                </span>{" "}
+                {/* or order.tax ?? 0 */}
+              </div>
+            )}
+            {/* Shipping Section */}
+            {(order.shippingCost ?? 0) > 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                <span style={{ color: "var(--text-light)" }}>Shipping</span>
+                <span style={{ fontWeight: 600 }}>
+                  {inr.format(order.shippingCost!)}
+                </span>{" "}
+                {/* or order.shippingCost ?? 0 */}
+              </div>
+            )}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "1rem",
+                fontSize: "1.25rem",
+                fontWeight: 700,
+                color: "var(--primary)",
+              }}
+            >
+              <span>Grand Total</span>
+              <span>{inr.format(order.totalAmount)}</span>
             </div>
           </div>
-          <h4>Shipping Address</h4>
-          <div className="address">
-            <div>{order.shippingAddress.fullName}</div>
-            <div>{order.shippingAddress.street}</div>
-            <div>
-              {order.shippingAddress.city}, {order.shippingAddress.state},{" "}
+        </div>
+
+        {/* Right Column: Sidebar */}
+        <div className="orderSidebar">
+          {/* Shipping Address Card */}
+          <div className="sidebarCard">
+            <h3>Shipping Address</h3>
+            <div className="addressText">
+              <strong>{order.shippingAddress.fullName}</strong>
+              {order.shippingAddress.street}
+              <br />
+              {order.shippingAddress.city}, {order.shippingAddress.state}
+              <br />
               {order.shippingAddress.pinCode}
+              <br />
+              {order.shippingAddress.country}
+              <br />
+              Phone: {order.shippingAddress.phone}
             </div>
-            <div>{order.shippingAddress.country}</div>
-            <div>{order.shippingAddress.phone}</div>
           </div>
 
+          {/* Payment Info Card */}
+          <div className="sidebarCard">
+            <h3>Payment</h3>
+            <div className="paymentBadge">
+              {order.paymentMethod.replace("_", " ")}
+            </div>
+          </div>
+
+          {/* Notes Card */}
           {order.notes && (
-            <div>
-              <h4>Notes</h4>
-              <div className="orderNotes">{order.notes}</div>
+            <div className="sidebarCard">
+              <h3>Order Notes</h3>
+              <p className="notesText">"{order.notes}"</p>
             </div>
           )}
-        </section>
-      </div>
 
-      <div className="orderActions">
-        <button
-          onClick={() => {
-            if (isAdmin) {
-              navigate("/admin/orders");
-            } else {
-              navigate("/orders");
-            }
-          }}
-        >
-          Back to Orders
-        </button>
-        {canCancel && (
-          <button className="cancel" disabled={cancelling} onClick={onCancel}>
-            {cancelling ? "Cancelling" : "Cancel Order"}
-          </button>
-        )}
+          {/* Actions Card */}
+          {canCancel && (
+            <div className="sidebarActions">
+              <button
+                className="cancelBtn"
+                disabled={cancelling}
+                onClick={onCancel}
+              >
+                {cancelling ? "Cancelling..." : "Cancel Order"}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
