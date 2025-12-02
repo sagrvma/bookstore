@@ -19,7 +19,8 @@ const app = express();
 //CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://bookstore-five-gray.vercel.app"],
+    credentials: true, //Allowing cookies/tokens
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
