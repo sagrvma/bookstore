@@ -224,7 +224,7 @@ orderSchema.pre("validate", async function (next) {
 
 //Indexes for efficient queryies
 orderSchema.index({ user: 1, createdAt: -1 });
-orderSchema.index({ orderNumber: 1 });
+// orderSchema.index({ orderNumber: 1 }); Not needed since unique:true automatically creates an index
 orderSchema.index({ status: 1 });
 orderSchema.index({ paymentStatus: 1 });
 
