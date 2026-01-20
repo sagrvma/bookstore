@@ -1,35 +1,74 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Link } from "react-router";
 
-function App() {
-  const [count, setCount] = useState(0);
+const App = () => {
+  const categories = [
+    {
+      name: "Fiction",
+      color: "#FF6B6B",
+    },
+    {
+      name: "Business",
+      color: "#4ECDC4",
+    },
+    {
+      name: "Science",
+      color: "#45B7D1",
+    },
+    {
+      name: "Biography",
+      color: "#96CEB4",
+    },
+  ];
+
+  const features = [
+    {
+      icon: "🚀",
+      title: "Fast Shipping",
+      text: "Delivery within 3-5 business days",
+    },
+    {
+      icon: "🛡️",
+      title: "Secure Payment",
+      text: "100% Secure Transactions",
+    },
+    {
+      icon: "↩️",
+      title: "Easy Returns",
+      text: "7-day return policy",
+    },
+  ];
 
   return (
-    <>
-      {/* <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
-    </>
+    <div className="homePage">
+      \{/*Hero Section*/}
+      <section className="hero">
+        <div className="heroContent">
+          <h1>Discover your favourite book here.</h1>
+          <p>
+            Explore our vast collection of books across all genres. From
+            timeless classics to the latest bestsellers, there is something for
+            everyone.
+          </p>
+          <div className="heroActions">
+            <Link to="/books">Browse All Books</Link>
+            <Link to="/register">Join for Free</Link>
+          </div>
+        </div>
+      </section>
+      {/*Features/Trust Signals*/}
+      <section className="featuresStrip">
+        {features.map((feature) => (
+          <div className="featureItem">
+            <span className="featureIcon">{feature.icon}</span>
+            <div className="featureText">
+              <h3>{feature.title}</h3>
+              <p>{feature.text}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+    </div>
   );
-}
+};
 
 export default App;
