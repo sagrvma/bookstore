@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import http from "../lib/http";
 import "./Books.css";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { addToCart } from "../api/cart";
 import { getBooks } from "../api/admin";
 import { useToast } from "../context/ToastContext";
@@ -47,10 +47,13 @@ const Books = () => {
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
 
+  //Adding search params to filter based on category when redirected from the homepage
+  const [searchParams, setSearchParams] = useSearchParams();
+
   //Filter state
   const [filters, setFilters] = useState<BookFilters>({
     search: "",
-    category: "",
+    category: searchParams.get("category") || "",
     minPrice: 0,
     maxPrice: 10000,
     sortBy: "title",
@@ -108,7 +111,8 @@ const Books = () => {
 
     //Price Range filter
     filtered = filtered.filter(
-      (book) => filters.minPrice <= book.price && book.price <= filters.maxPrice
+      (book) =>
+        filters.minPrice <= book.price && book.price <= filters.maxPrice,
     );
 
     //Sort
@@ -135,13 +139,25 @@ const Books = () => {
     load();
   }, []);
 
+  //In a seperate useEffect cuz we dont wanna fetch all the books again everytime a filter changes
+  useEffect(() => {
+    //Update URL as well to reflect the filter params
+    const params: any = {};
+
+    if (filters.category) {
+      params.category = filters.category;
+    }
+
+    setSearchParams(params, { replace: true });
+  }, [filters.category]);
+
   useEffect(() => {
     applyFilters();
   }, [books, filters]);
 
   const updateFilters = <K extends keyof BookFilters>( //Update filters
     key: K,
-    value: BookFilters[K]
+    value: BookFilters[K],
   ) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
@@ -239,7 +255,7 @@ const Books = () => {
               onChange={(e) => {
                 updateFilters(
                   "sortBy",
-                  e.target.value as BookFilters["sortBy"]
+                  e.target.value as BookFilters["sortBy"],
                 );
               }}
             >
@@ -253,7 +269,7 @@ const Books = () => {
               onChange={(e) => {
                 updateFilters(
                   "sortOrder",
-                  e.target.value as BookFilters["sortOrder"]
+                  e.target.value as BookFilters["sortOrder"],
                 );
               }}
             >
@@ -315,7 +331,7 @@ const Books = () => {
                         } else {
                           showToast(
                             "error",
-                            "Failed to add to cart. Please try again."
+                            "Failed to add to cart. Please try again.",
                           );
                         }
                       }
@@ -333,34 +349,6 @@ const Books = () => {
         </ul>
       )}
     </div>
-    // <div className="booksWrap">
-    //   <h2>Books</h2>
-    //   <ul className="booksList">
-    //     {books.map((book) => (
-    //       <li key={book._id} className="bookItem">
-    //         <div className="bookTitle">{book.title}</div>
-    //         <div className="bookMeta">
-    //           {typeof book.author === "string"
-    //             ? book.author
-    //             : book.author?.name ?? "Unknown"}
-    //         </div>
-    //         <button
-    //           onClick={async () => {
-    //             try {
-    //               await addToCart(book._id, 1);
-    //             } catch (error: any) {
-    //               if (error?.response?.status === 401) {
-    //                 navigate("/login");
-    //               }
-    //             }
-    //           }}
-    //         >
-    //           Add to Cart
-    //         </button>
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
   );
 };
 
