@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   const isAuthed = localStorage.getItem(
     //Check if authenticated/signed in or not
-    import.meta.env.VITE_TOKEN_STORAGE_KEY || "bookstore_token"
+    import.meta.env.VITE_TOKEN_STORAGE_KEY || "bookstore_token",
   );
 
   const { showToast } = useToast();
@@ -38,9 +38,7 @@ const Header = () => {
             <Link to="admin/authors">Admin Authors</Link>
           </>
         )}
-        <Link to="/profile" className="btn">
-          Profile
-        </Link>
+
         {!isAuthed ? (
           <>
             <Link to="/login" className="btn">
@@ -51,16 +49,21 @@ const Header = () => {
             </Link>
           </>
         ) : (
-          <button
-            className="btn"
-            onClick={() => {
-              tokenStore.clear(); //Remove token to remove authentication and logout
-              showToast("success", "You have been logged out.");
-              navigate("/login", { replace: true });
-            }}
-          >
-            Log Out
-          </button>
+          <>
+            <Link to="/profile" className="btn">
+              Profile
+            </Link>
+            <button
+              className="btn"
+              onClick={() => {
+                tokenStore.clear(); //Remove token to remove authentication and logout
+                showToast("success", "You have been logged out.");
+                navigate("/login", { replace: true });
+              }}
+            >
+              Log Out
+            </button>
+          </>
         )}
       </nav>
     </header>
