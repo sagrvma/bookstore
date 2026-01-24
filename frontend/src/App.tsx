@@ -1,7 +1,18 @@
 import { Link, useNavigate } from "react-router";
-import { CSSProperties } from "react";
+import { useEffect, useState } from "react";
+import { getBooks, type Book } from "./api/admin";
+import "./App.css";
 
 const App = () => {
+  const [latestBooks, setLatestBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const inr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   const categories = [
     {
       name: "Mystery",
@@ -39,11 +50,32 @@ const App = () => {
     },
   ];
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const allBooks: Book[] = await getBooks();
+        //Sort books by latest created
+        const sortedBooks: Book[] = allBooks.sort(
+          (a: Book, b: Book) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+        //Take top 4
+        setLatestBooks(sortedBooks.slice(0, 5));
+
+        console.log(latestBooks);
+      } catch (error) {
+        console.error("Failed to fetch latest books.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
 
   return (
     <div className="homePage">
-      \{/*Hero Section*/}
+      {/*Hero Section*/}
       <section className="hero">
         <div className="heroContent">
           <h1>Discover your favourite book here.</h1>
@@ -79,7 +111,7 @@ const App = () => {
               key={category.name}
               className="categoryCard"
               onClick={() => navigate(`/books?category=${category.name}`)}
-              style={{ "--cat-color": category.color }}
+              // style={{ "--cat-color": category.color as React.CSSProperties }}
             >
               <h3>{category.name}</h3>
               <p>Explore→</p>
@@ -87,6 +119,7 @@ const App = () => {
           ))}
         </div>
       </section>
+      {/*Featured Section (Latest Books) */}
     </div>
   );
 };

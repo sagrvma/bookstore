@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import http from "../lib/http";
 import "./Books.css";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { addToCart } from "../api/cart";
@@ -8,7 +7,7 @@ import { useToast } from "../context/ToastContext";
 
 type Author = { _id: string; name: string } | string;
 
-type Book = {
+export type Book = {
   _id: string;
   title: string;
   author?: Author;
