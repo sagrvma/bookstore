@@ -1,21 +1,22 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { CSSProperties } from "react";
 
 const App = () => {
   const categories = [
     {
-      name: "Fiction",
+      name: "Mystery",
       color: "#FF6B6B",
     },
     {
-      name: "Business",
+      name: "Fantasy",
       color: "#4ECDC4",
     },
     {
-      name: "Science",
+      name: "Horror",
       color: "#45B7D1",
     },
     {
-      name: "Biography",
+      name: "Literary Fiction",
       color: "#96CEB4",
     },
   ];
@@ -38,6 +39,8 @@ const App = () => {
     },
   ];
 
+  const navigate = useNavigate();
+
   return (
     <div className="homePage">
       \{/*Hero Section*/}
@@ -58,7 +61,7 @@ const App = () => {
       {/*Features/Trust Signals*/}
       <section className="featuresStrip">
         {features.map((feature) => (
-          <div className="featureItem">
+          <div key={feature.title} className="featureItem">
             <span className="featureIcon">{feature.icon}</span>
             <div className="featureText">
               <h3>{feature.title}</h3>
@@ -66,6 +69,23 @@ const App = () => {
             </div>
           </div>
         ))}
+      </section>
+      {/*Browse by Category */}
+      <section className="categorySection">
+        <div className="sectionHeader">Browse By Categories</div>
+        <div className="categoryGrid">
+          {categories.map((category) => (
+            <div
+              key={category.name}
+              className="categoryCard"
+              onClick={() => navigate(`/books?category=${category.name}`)}
+              style={{ "--cat-color": category.color }}
+            >
+              <h3>{category.name}</h3>
+              <p>Explore→</p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );
