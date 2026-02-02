@@ -11,7 +11,7 @@ type BookCardProps = {
 const BookCard = ({ book, currencyFormatter, onAddtoCart }: BookCardProps) => {
   return (
     <div className={styles.card}>
-      <Link to={`books/${book._id}`} className={styles.imageLink}>
+      <Link to={`/books/${book._id}`} className={styles.imageLink}>
         {/*Placeholder Cover*/}
         <div className={styles.placeholderCover}>
           <div className={styles.spine}></div>
