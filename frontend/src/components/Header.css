@@ -1,130 +1,122 @@
-/* ==========================================
-   HEADER COMPONENT - MODERN MINIMAL
-   ========================================== */
-
 .siteHeader {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  height: var(--header-height);
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
 }
 
-.siteHeader nav {
-  max-width: 100%;
+.headerNav {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--spacing-xl);
-  height: 100%;
+  padding: 0.9rem 1.75rem;
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-/* Brand/Logo */
-.siteHeader .brand {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: -0.5px;
-  transition: color var(--transition-fast);
+/* Left: Brand */
+.headerLeft .brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: #111827;
+  letter-spacing: -0.03em;
 }
 
-.siteHeader .brand:hover {
-  color: var(--accent);
-}
-
-/* Spacer - pushes items to right */
-.siteHeader .spacer {
+/* Center: Main nav */
+.headerCenter {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
   flex: 1;
+  justify-content: center;
 }
 
-/* Navigation Links */
-.siteHeader nav a:not(.brand):not(.btn) {
-  color: var(--text-dark);
+.navLink {
+  text-decoration: none;
+  color: #6b7280;
   font-weight: 500;
-  font-size: var(--text-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  font-size: 0.95rem;
+  padding: 0.3rem 0;
   position: relative;
+  transition: color 0.2s ease;
 }
 
-.siteHeader nav a:not(.brand):not(.btn):hover {
-  color: var(--accent);
-  background-color: rgba(233, 69, 96, 0.05);
+.navLink:hover {
+  color: #111827;
 }
 
-/* Active link indicator (optional - add 'active' class to current page link) */
-.siteHeader nav a.active:not(.brand):not(.btn)::after {
+.navLink::after {
   content: "";
   position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
+  left: 0;
+  bottom: -0.2rem;
+  width: 0;
   height: 2px;
-  background-color: var(--accent);
+  background: #111827;
+  transition: width 0.2s ease;
 }
 
-/* Button Styles (for Login/Register/Logout) */
-.siteHeader .btn {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  border: 2px solid var(--primary);
-  border-radius: var(--radius-md);
-  background-color: var(--primary);
-  color: var(--surface);
+.navLink:hover::after {
+  width: 100%;
+}
+
+/* Admin group */
+.adminLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-left: 1.25rem;
+  margin-left: 1.25rem;
+  border-left: 1px solid #e5e7eb;
+}
+
+.adminLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
+}
+
+/* Right: Auth */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoutBtn {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #4b5563;
+  font-weight: 500;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.siteHeader .btn:hover {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+.logoutBtn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
 }
 
-/* Responsive Design */
+/* Simple responsive */
 @media (max-width: 768px) {
-  .siteHeader nav {
+  .headerNav {
     flex-wrap: wrap;
-    height: auto;
-    padding: var(--spacing-md);
-    gap: var(--spacing-sm);
+    gap: 1rem;
   }
 
-  .siteHeader .brand {
-    font-size: var(--text-xl);
+  .headerCenter {
+    order: 3;
+    flex-wrap: wrap;
   }
 
-  .siteHeader nav a:not(.brand):not(.btn) {
-    font-size: var(--text-xs);
-    padding: var(--spacing-xs) var(--spacing-sm);
-  }
-
-  .siteHeader .btn {
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: var(--text-xs);
-  }
-}
-
-@media (max-width: 480px) {
-  .siteHeader nav {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .siteHeader .spacer {
-    display: none;
-  }
-
-  .siteHeader nav a,
-  .siteHeader .btn {
-    text-align: center;
+  .headerRight {
+    margin-left: auto;
   }
 }

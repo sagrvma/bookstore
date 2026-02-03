@@ -1,70 +1,88 @@
-import { Link, useNavigate } from "react-router";
-import { tokenStore } from "../lib/http";
-import "./Header.css";
 import { jwtDecode } from "jwt-decode";
+import { tokenStore } from "../lib/http";
 import { JWTPayload } from "../routes/AdminRoute";
 import { useToast } from "../context/ToastContext";
+import { Link, useNavigate } from "react-router";
+
+import "./Header.css";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const isAuthed = localStorage.getItem(
-    //Check if authenticated/signed in or not
-    import.meta.env.VITE_TOKEN_STORAGE_KEY || "bookstore_token",
-  );
-
   const { showToast } = useToast();
 
+  const navigate = useNavigate();
+
   const token = tokenStore.get();
+
+  const isAuthed: boolean = !!token; //Converts the string into a strict boolean
+
   let isAdmin = false;
+
   if (token) {
     const payload = jwtDecode<JWTPayload>(token);
     isAdmin = payload.role === "admin";
   }
 
+  const handleLogout = () => {
+    tokenStore.clear();
+    showToast("success", "You have been logged out.");
+    navigate("/login", { replace: true });
+  };
+
   return (
     <header className="siteHeader">
-      <nav>
-        <Link to="/" className="brand">
-          Bookstore
-        </Link>
-        <div className="spacer" />
-        <Link to="/books">Books</Link>
-        <Link to="/cart">Cart</Link>
+      <nav className="headerNav">
+        {/*Left : Brand */}
+        <div className="headerLeft">
+          <Link to="/" className="brand">
+            Bookstore
+          </Link>
+        </div>
+        {/*Center : Main Nav */}
+        <div className="headerCenter">
+          <Link to="/books" className="navLink">
+            Books
+          </Link>
+          <Link to="/cart" className="navLink">
+            Cart
+          </Link>
 
-        {isAdmin && (
-          <>
-            <Link to="/admin/orders">Admin Orders</Link>
-            <Link to="admin/books">Admin Books</Link>
-            <Link to="admin/authors">Admin Authors</Link>
-          </>
-        )}
-
-        {!isAuthed ? (
-          <>
-            <Link to="/login" className="btn">
-              Login
-            </Link>
-            <Link to="/register" className="btn">
-              Register
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/profile" className="btn">
-              Profile
-            </Link>
-            <button
-              className="btn"
-              onClick={() => {
-                tokenStore.clear(); //Remove token to remove authentication and logout
-                showToast("success", "You have been logged out.");
-                navigate("/login", { replace: true });
-              }}
-            >
-              Log Out
-            </button>
-          </>
-        )}
+          {isAdmin && (
+            <div className="adminLinks">
+              <span className="adminLabel">Admin</span>
+              <Link to="/admin/orders" className="navLink">
+                Orders
+              </Link>
+              <Link to="/admin/books" className="navLink">
+                Books
+              </Link>
+              <Link to="/admin/authors" className="navLink">
+                Authors
+              </Link>
+            </div>
+          )}
+        </div>
+        {/*Right : Auth */}
+        <div className="headerRight">
+          {isAuthed ? (
+            <>
+              <Link to="/profile" className="navLink">
+                Profile
+              </Link>
+              <button className="logoutBtn" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="navLink">
+                Login
+              </Link>
+              <Link to="/register" className="navLink">
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
       </nav>
     </header>
   );
