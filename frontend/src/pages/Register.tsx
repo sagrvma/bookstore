@@ -1,8 +1,8 @@
 import { useState } from "react";
 import http, { tokenStore } from "../lib/http";
 import { Link, useNavigate } from "react-router";
-import "./Register.css";
 import { useToast } from "../context/ToastContext";
+import styles from "./Register.module.css";
 
 type AuthPayload = {
   user: {
@@ -60,7 +60,7 @@ const Register = () => {
           email: formData.email,
           password: formData.password,
           // role: Defaults to user on backend
-        }
+        },
       );
 
       const { token } = res.data.data;
@@ -69,7 +69,7 @@ const Register = () => {
 
       showToast(
         "success",
-        "Account created successfully! Welcome to the bookstore."
+        "Account created successfully! Welcome to the bookstore.",
       );
 
       navigate("/books", { replace: true });
@@ -83,12 +83,17 @@ const Register = () => {
   };
 
   return (
-    <div className="registerWrapper">
-      <form className="registerForm" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
-        <label>
+    <div className={styles.registerWrapper}>
+      <form className={styles.registerForm} onSubmit={handleSubmit}>
+        <h2 className={styles.formTitle}>Create Account</h2>
+        <p className={styles.formSubtitle}>
+          Join us and start your reading journey
+        </p>
+
+        <label className={styles.inputLabel}>
           Full Name
           <input
+            className={styles.inputField}
             required
             value={formData.name}
             onChange={(e) => {
@@ -103,9 +108,10 @@ const Register = () => {
           />
         </label>
 
-        <label>
+        <label className={styles.inputLabel}>
           Email
           <input
+            className={styles.inputField}
             required
             type="email"
             value={formData.email}
@@ -116,22 +122,25 @@ const Register = () => {
           />
         </label>
 
-        <label>
+        <label className={styles.inputLabel}>
           Password
           <input
+            className={styles.inputField}
             required
             type="password"
             value={formData.password}
             onChange={(e) => {
               setFormData((prev) => ({ ...prev, password: e.target.value }));
             }}
-            placeholder="Enter your password (Minimum 8 characters)"
+            placeholder="Minimum 8 characters"
             minLength={8}
           />
         </label>
-        <label>
+
+        <label className={styles.inputLabel}>
           Confirm Password
           <input
+            className={styles.inputField}
             required
             type="password"
             value={formData.confirmPassword}
@@ -141,21 +150,21 @@ const Register = () => {
                 confirmPassword: e.target.value,
               }));
             }}
-            placeholder="Confirm your password"
+            placeholder="Re-enter your password"
             minLength={8}
           />
         </label>
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className={styles.submitBtn}>
           {loading ? "Creating account..." : "Create Account"}
         </button>
 
-        {err && <p className="error">{err}</p>}
+        {err && <p className={styles.error}>{err}</p>}
 
-        <div className="registerFooter">
+        <div className={styles.registerFooter}>
           <p>
             Already have an account?{" "}
-            <Link to="/login" className="authLink">
+            <Link to="/login" className={styles.authLink}>
               Sign in
             </Link>
           </p>
@@ -164,5 +173,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;
