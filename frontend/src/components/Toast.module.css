@@ -1,0 +1,131 @@
+.toastContainer {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 500px;
+  width: calc(100% - 3rem);
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1rem 1.5rem;
+  border-radius: 16px;
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 56px;
+}
+
+.toastEnter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Success Toast - Green Glass */
+.toastSuccess {
+  background: rgba(16, 185, 129, 0.85);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Error Toast - Red Glass */
+.toastError {
+  background: rgba(239, 68, 68, 0.85);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Warning Toast - Orange Glass */
+.toastWarning {
+  background: rgba(245, 158, 11, 0.85);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Info Toast - Blue Glass */
+.toastInfo {
+  background: rgba(59, 130, 246, 0.85);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Hide icon */
+.toastIcon {
+  display: none;
+}
+
+/* Message */
+.toastMessage {
+  flex: 0 1 auto;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: #ffffff;
+  padding: 0 2rem;
+}
+
+/* Close button */
+.toastClose {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.toastClose:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.toastClose:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .toastContainer {
+    bottom: 1.5rem;
+    width: calc(100% - 2rem);
+  }
+
+  .toast {
+    padding: 1rem 1.25rem;
+    min-height: 52px;
+  }
+
+  .toastMessage {
+    font-size: 0.9rem;
+    padding: 0 2.2rem;
+  }
+
+  .toastClose {
+    width: 26px;
+    height: 26px;
+  }
+}

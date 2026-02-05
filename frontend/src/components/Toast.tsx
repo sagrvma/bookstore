@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Toast, useToast } from "../context/ToastContext";
-import "./Toast.css";
+import styles from "./Toast.module.css";
 
 const ToastItem = ({
   toast,
@@ -10,11 +10,10 @@ const ToastItem = ({
   onRemove: () => void;
 }) => {
   useEffect(() => {
-    //Add animation after a small delay
     const timer = setTimeout(() => {
       const element = document.getElementById(`toast-${toast.id}`);
       if (element) {
-        element.classList.add("toastEnter");
+        element.classList.add(styles.toastEnter);
       }
     }, 10);
 
@@ -35,12 +34,16 @@ const ToastItem = ({
         return "ℹ";
     }
   };
+
   return (
-    <div id={`toast-${toast.id}`} className={`toast toast-${toast.type}`}>
-      <div className="toastIcon">{getIcon()}</div>
-      <div className="toastMessage">{toast.message}</div>
-      <button className="toastClose" onClick={() => onRemove()}>
-        x
+    <div
+      id={`toast-${toast.id}`}
+      className={`${styles.toast} ${styles[`toast${toast.type.charAt(0).toUpperCase() + toast.type.slice(1)}`]}`}
+    >
+      <div className={styles.toastIcon}>{getIcon()}</div>
+      <div className={styles.toastMessage}>{toast.message}</div>
+      <button className={styles.toastClose} onClick={() => onRemove()}>
+        ×
       </button>
     </div>
   );
@@ -50,7 +53,7 @@ const ToastContainer = () => {
   const { toasts, removeToast } = useToast();
 
   return (
-    <div className="toastContainer">
+    <div className={styles.toastContainer}>
       {toasts.map((toast) => (
         <ToastItem
           key={toast.id}
