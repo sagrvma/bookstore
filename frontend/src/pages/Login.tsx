@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import http, { tokenStore } from "../lib/http";
-import "./Login.css";
 import { useToast } from "../context/ToastContext";
+
+import styles from "./Login.module.css";
 
 type AuthPayload = {
   user: {
@@ -54,33 +55,42 @@ const Login = () => {
   };
 
   return (
-    <div className="loginWrapper">
-      <form className="loginForm" onSubmit={onSubmit}>
-        <label>
+    <div className={styles.loginWrapper}>
+      <form className={styles.loginForm} onSubmit={onSubmit}>
+        <h2 className={styles.formTitle}>Welcome Back</h2>
+        <p className={styles.formSubtitle}>
+          Sign in to continue to your account
+        </p>
+
+        <label className={styles.inputLabel}>
           Email
           <input
-            type="text"
+            className={styles.inputField}
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address"
           />
         </label>
-        <label>
+        <label className={styles.inputLabel}>
           Password
           <input
+            className={styles.inputField}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
           />
         </label>
-        <button type="submit">Sign In</button>
-        {err && <p className="error">{err}</p>}
+        <button type="submit" className={styles.submitBtn}>
+          Sign In
+        </button>
+        {err && <p className={styles.error}>{err}</p>}
       </form>
-      <div className="loginFooter">
+      <div className={styles.loginFooter}>
         <p>
           Don't have an account?{" "}
-          <Link to="/register" className="authLink">
+          <Link to="/register" className={styles.authLink}>
             Create one here
           </Link>
         </p>
