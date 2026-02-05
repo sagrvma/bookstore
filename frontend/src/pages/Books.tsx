@@ -149,21 +149,10 @@ const Books = () => {
   }
 
   return (
-    <div style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
+    <div className={styles.pageWrapper}>
       <BooksHero searchTerm={search} onSearchChange={setSearch} />
 
-      {/* 4. Layout Grid: Sidebar | Main Content */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "280px 1fr",
-          gap: "3rem",
-          maxWidth: "1300px",
-          margin: "0 auto",
-          padding: "4rem 2rem",
-        }}
-      >
-        {/* Sidebar */}
+      <div className={styles.layoutGrid}>
         <BooksFilter
           filters={filters}
           categories={categories}
@@ -171,17 +160,15 @@ const Books = () => {
           onClear={handleClear}
           currencyFormatter={inr}
         />
-        <main>
-          {/* <h2>Results</h2>
-          <pre>{JSON.stringify({ search, ...filters }, null, 2)}</pre> */}
 
+        <main>
           <div className={styles.resultsCount}>
             Showing <strong>{filteredBooks.length}</strong> results
           </div>
 
           {filteredBooks.length === 0 ? (
             <div className={styles.emptyState}>
-              <div style={{ fontSize: "3rem", opacity: "0.5" }}>📚</div>
+              <div style={{ fontSize: "3rem", opacity: 0.5 }}>📚</div>
               <h3>No books found.</h3>
               <button onClick={handleClear} className={styles.clearBtn}>
                 Clear Filters
