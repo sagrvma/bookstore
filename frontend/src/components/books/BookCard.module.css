@@ -1,133 +1,164 @@
 .card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  transition: all 0.3s ease;
-  border: 1px solid #f0f0f0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  border-radius: 18px;
+  background: linearGradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(248, 250, 252, 0.92)
+  );
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  border-color: rgba(99, 102, 241, 0.35);
 }
 
+/* Image / cover */
 .imageLink {
-  display: block;
-  overflow: hidden;
-  background: #f4f4f4;
-  position: relative;
+  text-decoration: none;
 }
 
-/* Placeholder Styling */
 .placeholderCover {
+  position: relative;
   width: 100%;
-  aspect-ratio: 2/3;
+  aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
-  position: relative;
+  background: radial-gradient(circle at top, #e0e7ff, #eef2ff, #f9fafb);
+  overflow: hidden;
 }
 
 .spine {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  background: rgba(0, 0, 0, 0.05);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  left: 14%;
+  top: 10%;
+  bottom: 10%;
+  width: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4f46e5, #6366f1);
+  opacity: 0.9;
 }
 
 .emoji {
-  font-size: 3.5rem;
-  filter: grayscale(100%);
-  opacity: 0.5;
-  transition: transform 0.3s;
+  font-size: 2.6rem;
+  z-index: 1;
 }
 
-.card:hover .emoji {
-  transform: scale(1.2) rotate(10deg);
-  filter: grayscale(0%);
-  opacity: 1;
-}
-
-/* Content Area */
+/* Content */
 .content {
-  padding: 1.2rem;
+  padding: 1.1rem 1.2rem 1.25rem;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  gap: 0.4rem;
 }
 
+/* Top row: category + price */
 .meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.15rem;
 }
 
 .category {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  background: #f0f4f8;
-  color: #555;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
   font-weight: 600;
 }
 
 .price {
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #3498db;
-  font-size: 1.1rem;
+  color: #111827;
 }
 
+/* Title */
 .titleLink {
   text-decoration: none;
-  color: inherit;
 }
 
-.content h3 {
-  font-size: 1.1rem;
-  margin: 0 0 0.3rem 0;
-  line-height: 1.4;
-  color: #2c3e50;
-  /* Truncate text after 2 lines */
+.titleLink h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #020617;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* Author */
 .author {
-  font-size: 0.9rem;
-  color: #888;
-  margin: 0 0 1.5rem 0;
+  margin: 0.15rem 0 0.4rem;
+  font-size: 0.88rem;
+  color: #6b7280;
 }
 
+/* Button */
 .addToCartBtn {
-  margin-top: auto;
+  margin-top: 0.3rem;
   width: 100%;
-  padding: 0.8rem;
-  background: #2c3e50;
-  color: white;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #f9fafb;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
 }
 
-.addToCartBtn:hover {
-  background: #1a252f;
+.addToCartBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 26px rgba(79, 70, 229, 0.45);
+}
+
+.addToCartBtn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .addToCartBtn:disabled {
-  background: #ccc;
   cursor: not-allowed;
+  opacity: 0.6;
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  box-shadow: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .content {
+    padding: 1rem 1rem 1.1rem;
+  }
+
+  .titleLink h3 {
+    font-size: 0.95rem;
+  }
+
+  .price {
+    font-size: 1rem;
+  }
 }
