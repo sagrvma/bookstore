@@ -30,7 +30,7 @@ const App = () => {
           (a: Book, b: Book) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
-        setFeaturedBooks(sorted.slice(0, 5));
+        setFeaturedBooks(sorted.slice(0, 4));
       } catch (err) {
         console.error("Failed to load featured books");
       } finally {
