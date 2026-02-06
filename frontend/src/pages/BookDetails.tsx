@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { Book, getBookById, getBooks } from "../api/admin";
 import { addToCart } from "../api/cart";
-import "./BookDetails.css";
 import { useToast } from "../context/ToastContext";
+import styles from "./BookDetails.module.css";
 
 const BookDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -15,13 +15,33 @@ const BookDetails = () => {
   const [addingToCart, setAddingToCart] = useState(false);
 
   const navigate = useNavigate();
-
   const { showToast } = useToast();
 
   const inr = new Intl.NumberFormat("en-In", {
     style: "currency",
     currency: "INR",
   });
+
+  const loadRelatedBooks = async (currentBook: Book) => {
+    try {
+      const allBooks = await getBooks();
+
+      const related = allBooks
+        .filter(
+          (book) =>
+            book._id !== currentBook._id &&
+            (book.category === currentBook.category ||
+              (typeof book.author === "object" &&
+                typeof currentBook.author === "object" &&
+                book.author?.name === currentBook.author?.name)),
+        )
+        .slice(0, 4);
+
+      setRelatedBooks(related);
+    } catch (error: any) {
+      console.error("Failed to load related books.");
+    }
+  };
 
   const loadBook = async () => {
     if (!bookId) {
@@ -35,8 +55,7 @@ const BookDetails = () => {
     try {
       const res = await getBookById(bookId);
       setBook(res);
-
-      await loadRelatedBooks(res); //Load related books
+      await loadRelatedBooks(res);
     } catch (error: any) {
       if (error.response?.status === 401) {
         navigate("/login", { replace: true });
@@ -49,32 +68,8 @@ const BookDetails = () => {
     }
   };
 
-  const loadRelatedBooks = async (currentBook: Book) => {
-    try {
-      const allBooks = await getBooks();
-
-      const related = allBooks
-        .filter(
-          (book) =>
-            book._id !== currentBook._id &&
-            (book.category === currentBook.category ||
-              (typeof book.author === "object" &&
-                typeof currentBook.author === "object" &&
-                book.author?.name === currentBook.author?.name))
-        )
-        .slice(0, 4); //Limit to 4 related books.
-
-      setRelatedBooks(related);
-    } catch (error: any) {
-      //Fail silently for related books.
-      console.error("Failed to load related books.");
-    }
-  };
-
   const handleAddToCart = async () => {
-    if (!book || addingToCart) {
-      return;
-    }
+    if (!book || addingToCart) return;
 
     setAddingToCart(true);
 
@@ -85,7 +80,7 @@ const BookDetails = () => {
 
       showToast(
         "success",
-        `${quantity} ${quantityText} of ${book.title} added to cart!`
+        `${quantity} ${quantityText} of ${book.title} added to cart!`,
       );
 
       navigate("/cart");
@@ -108,15 +103,15 @@ const BookDetails = () => {
   }, [bookId]);
 
   if (loading) {
-    return <p className="status">Loading book...</p>;
+    return <p className={styles.status}>Loading book...</p>;
   }
 
   if (err) {
-    return <p className="error">{err}</p>;
+    return <p className={styles.error}>{err}</p>;
   }
 
   if (!book) {
-    return <p className="error">Book not found.</p>;
+    return <p className={styles.error}>Book not found.</p>;
   }
 
   const authorName =
@@ -126,51 +121,51 @@ const BookDetails = () => {
   const maxQuantity = Math.min(book.stock, 10);
 
   return (
-    <div className="bookDetailsWrapper">
-      {/* Breadcrumb stays at top */}
-      <nav className="breadCrumb">
+    <div className={styles.bookDetailsWrapper}>
+      {/* Breadcrumb */}
+      <nav className={styles.breadCrumb}>
         <Link to="/books">Books</Link>
-        <span className="breadCrumbSeperator">{">"}</span>
+        <span className={styles.breadCrumbSeperator}>{">"}</span>
         <span>{book.category}</span>
-        <span className="breadCrumbSeperator">{">"}</span>
+        <span className={styles.breadCrumbSeperator}>{">"}</span>
         <span>{book.title}</span>
       </nav>
 
       {/* Main 2-column layout */}
-      <div className="bookDetailGrid">
-        {/* LEFT COLUMN - Image + Quick Info */}
-        <aside className="bookImageSection">
-          <div className="bookImagePlaceholder">
-            <div className="imagePlaceholderText">
+      <div className={styles.bookDetailGrid}>
+        {/* LEFT COLUMN */}
+        <aside className={styles.bookImageSection}>
+          <div className={styles.bookImagePlaceholder}>
+            <div className={styles.imagePlaceholderText}>
               📚
               <br />
               Book Cover
             </div>
           </div>
 
-          <div className="bookQuickInfo">
+          <div className={styles.bookQuickInfo}>
             <h4>Quick Info</h4>
-            <div className="quickInfoItem">
-              <span className="quickInfoLabel">Author:</span>
+            <div className={styles.quickInfoItem}>
+              <span className={styles.quickInfoLabel}>Author:</span>
               <span>{authorName}</span>
             </div>
-            <div className="quickInfoItem">
-              <span className="quickInfoLabel">Category:</span>
-              <span className="bookCategory">{book.category}</span>
+            <div className={styles.quickInfoItem}>
+              <span className={styles.quickInfoLabel}>Category:</span>
+              <span className={styles.bookCategory}>{book.category}</span>
             </div>
-            <div className="quickInfoItem">
-              <span className="quickInfoLabel">ISBN:</span>
+            <div className={styles.quickInfoItem}>
+              <span className={styles.quickInfoLabel}>ISBN:</span>
               <span>{book.isbn}</span>
             </div>
             {book.pages && (
-              <div className="quickInfoItem">
-                <span className="quickInfoLabel">Pages:</span>
+              <div className={styles.quickInfoItem}>
+                <span className={styles.quickInfoLabel}>Pages:</span>
                 <span>{book.pages}</span>
               </div>
             )}
             {book.publishedDate && (
-              <div className="quickInfoItem">
-                <span className="quickInfoLabel">Published:</span>
+              <div className={styles.quickInfoItem}>
+                <span className={styles.quickInfoLabel}>Published:</span>
                 <span>
                   {new Date(book.publishedDate).toLocaleDateString("en-IN")}
                 </span>
@@ -179,33 +174,33 @@ const BookDetails = () => {
           </div>
         </aside>
 
-        {/* RIGHT COLUMN - Main Content */}
-        <section className="bookMainContent">
-          {/* Title */}
-          <h1 className="bookDetailTitle">{book.title}</h1>
-          <div className="bookAuthorLine">
+        {/* RIGHT COLUMN */}
+        <section className={styles.bookMainContent}>
+          <h1 className={styles.bookDetailTitle}>{book.title}</h1>
+          <div className={styles.bookAuthorLine}>
             by <span>{authorName}</span>
           </div>
 
-          {/* Price & Stock - Compact Box */}
-          <div className="buyBox">
-            <div className="priceSection">
-              <span className="priceLabel">Price:</span>
-              <span className="currentPrice">{inr.format(book.price)}</span>
+          {/* Buy box */}
+          <div className={styles.buyBox}>
+            <div className={styles.priceSection}>
+              <span className={styles.priceLabel}>Price:</span>
+              <span className={styles.currentPrice}>
+                {inr.format(book.price)}
+              </span>
             </div>
 
-            <div className="stockSection">
+            <div className={styles.stockSection}>
               {inStock ? (
-                <span className="inStock">✓ {book.stock} in stock</span>
+                <span className={styles.inStock}>✓ {book.stock} in stock</span>
               ) : (
-                <span className="outOfStock">Out of stock</span>
+                <span className={styles.outOfStock}>Out of stock</span>
               )}
             </div>
 
-            {/* Quantity + Add to Cart */}
             {inStock && (
-              <div className="addToCartSection">
-                <div className="quantitySelector">
+              <div className={styles.addToCartSection}>
+                <div className={styles.quantitySelector}>
                   <label htmlFor="quantity">Qty:</label>
                   <select
                     id="quantity"
@@ -218,13 +213,13 @@ const BookDetails = () => {
                         <option key={num} value={num}>
                           {num}
                         </option>
-                      )
+                      ),
                     )}
                   </select>
                 </div>
 
                 <button
-                  className="addToCartBtn"
+                  className={styles.addToCartBtn}
                   onClick={handleAddToCart}
                   disabled={!inStock || addingToCart}
                 >
@@ -234,41 +229,43 @@ const BookDetails = () => {
             )}
           </div>
 
-          {/* Description - HIGH UP */}
+          {/* Description */}
           {book.description && (
-            <div className="bookDescription">
+            <div className={styles.bookDescription}>
               <h3>About this book</h3>
               <p>{book.description}</p>
             </div>
           )}
 
-          {/* Book Details */}
-          <div className="bookDetails">
+          {/* Product Details */}
+          <div className={styles.bookDetails}>
             <h3>Product Details</h3>
-            <div className="detailsGrid">
-              <div className="detailItem">
-                <span className="detailLabel">ISBN:</span> {book.isbn}
+            <div className={styles.detailsGrid}>
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>ISBN:</span> {book.isbn}
               </div>
               {book.pages && (
-                <div className="detailItem">
-                  <span className="detailLabel">Pages:</span> {book.pages}
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Pages:</span>{" "}
+                  {book.pages}
                 </div>
               )}
               {book.publishedDate && (
-                <div className="detailItem">
-                  <span className="detailLabel">Published:</span>{" "}
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Published:</span>{" "}
                   {new Date(book.publishedDate).toLocaleDateString("en-IN")}
                 </div>
               )}
-              <div className="detailItem">
-                <span className="detailLabel">Category:</span> {book.category}
+              <div className={styles.detailItem}>
+                <span className={styles.detailLabel}>Category:</span>{" "}
+                {book.category}
               </div>
             </div>
           </div>
 
-          {/* Author Info - Still included but lower */}
+          {/* Author Info */}
           {authorBio && (
-            <div className="authorInfo">
+            <div className={styles.authorInfo}>
               <h3>About the Author</h3>
               <h4>{authorName}</h4>
               <p>{authorBio}</p>
@@ -277,22 +274,24 @@ const BookDetails = () => {
 
           {/* Related Books */}
           {relatedBooks.length > 0 && (
-            <div className="relatedBooks">
+            <div className={styles.relatedBooks}>
               <h3>Customers also viewed</h3>
-              <div className="relatedBooksGrid">
+              <div className={styles.relatedBooksGrid}>
                 {relatedBooks.map((relatedBook) => (
                   <Link
                     key={relatedBook._id}
                     to={`/books/${relatedBook._id}`}
-                    className="relatedBookCard"
+                    className={styles.relatedBookCard}
                   >
-                    <div className="relatedBookTitle">{relatedBook.title}</div>
-                    <div className="relatedBookAuthor">
+                    <div className={styles.relatedBookTitle}>
+                      {relatedBook.title}
+                    </div>
+                    <div className={styles.relatedBookAuthor}>
                       {typeof relatedBook.author === "object"
                         ? relatedBook.author.name
                         : "Unknown"}
                     </div>
-                    <div className="relatedBookPrice">
+                    <div className={styles.relatedBookPrice}>
                       {inr.format(relatedBook.price)}
                     </div>
                   </Link>
@@ -301,7 +300,7 @@ const BookDetails = () => {
             </div>
           )}
 
-          <button className="backBtn" onClick={() => navigate("/books")}>
+          <button className={styles.backBtn} onClick={() => navigate("/books")}>
             ← Back to Books
           </button>
         </section>
