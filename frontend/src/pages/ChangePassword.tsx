@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useToast } from "../context/ToastContext";
 import { changePassword } from "../api/user";
 import { Link, useNavigate } from "react-router";
-import "./ChangePassword.css";
+import styles from "./ChangePassword.module.css";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
@@ -58,14 +58,14 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="changePasswordWrapper">
-      <div className="changePasswordHeader">
+    <div className={styles.changePasswordWrapper}>
+      <div className={styles.changePasswordHeader}>
         <h2>Change Password</h2>
         <Link to="/profile">Back to Profile</Link>
       </div>
 
-      <form className="changePasswordForm" onSubmit={handleSubmit}>
-        <div className="formGroup">
+      <form className={styles.changePasswordForm} onSubmit={handleSubmit}>
+        <div className={styles.formGroup}>
           <label htmlFor="oldPassword">Current Password</label>
           <input
             id="oldPassword"
@@ -79,7 +79,7 @@ const ChangePassword = () => {
           />
         </div>
 
-        <div className="formGroup">
+        <div className={styles.formGroup}>
           <label htmlFor="newPassword">New Password</label>
           <input
             id="newPassword"
@@ -109,11 +109,11 @@ const ChangePassword = () => {
           />
         </div>
 
-        {err && <p className="error">{err}</p>}
+        {err && <p className={styles.error}>{err}</p>}
 
-        <div className="formActions">
+        <div className={styles.formActions}>
           <button
-            className="cancelBtn"
+            className={styles.cancelBtn}
             type="button"
             onClick={() => {
               navigate("/profile");
@@ -121,7 +121,7 @@ const ChangePassword = () => {
           >
             Cancel
           </button>
-          <button className="saveBtn" type="submit" disabled={loading}>
+          <button className={styles.saveBtn} type="submit" disabled={loading}>
             {loading ? "Changing Password..." : "Change Password"}
           </button>
         </div>

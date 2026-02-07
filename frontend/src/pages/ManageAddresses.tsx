@@ -9,7 +9,7 @@ import {
   User,
 } from "../api/user";
 import { Link, useNavigate } from "react-router";
-import "./ManageAddresses.css";
+import styles from "./ManageAddresses.module.css";
 
 const ManageAddresses = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -146,19 +146,19 @@ const ManageAddresses = () => {
   if (!user) return <p className="error">User not found.</p>;
 
   return (
-    <div className="manageAddressesWrapper">
-      <div className="addressHeader">
+    <div className={styles.manageAddressesWrapper}>
+      <div className={styles.addressHeader}>
         <h2>Manage Addresses</h2>
-        <div className="headerActions">
+        <div className={styles.headerActions}>
           <button
-            className="addBtn"
+            className={styles.addBtn}
             onClick={() => {
               setShowForm(true);
             }}
           >
             Add New Address
           </button>
-          <Link to="/profile" className="actionBtn">
+          <Link to="/profile" className={styles.actionBtn}>
             Back to Profile
           </Link>
         </div>
@@ -166,16 +166,16 @@ const ManageAddresses = () => {
 
       {/*Address Form*/}
       {showForm && (
-        <div className="addressFormCard">
-          <div className="addressFormHeader">
+        <div className={styles.addressFormCard}>
+          <div className={styles.addressFormHeader}>
             <h3>{editingAddress ? "Edit Address" : "Add New Address"}</h3>
-            <button onClick={resetForm} className="closeBtn">
+            <button onClick={resetForm} className={styles.closeBtn}>
               Reset
             </button>
           </div>
-          <form className="addressForm" onSubmit={handleSubmit}>
-            <div className="formGrid">
-              <div className="formGroup">
+          <form className={styles.addressForm} onSubmit={handleSubmit}>
+            <div className={styles.formGrid}>
+              <div className={styles.formGroup}>
                 <label htmlFor="fullName">Full Name</label>
                 <input
                   id="fullName"
@@ -192,7 +192,7 @@ const ManageAddresses = () => {
                   placeholder="Enter Full Name"
                 />
               </div>
-              <div className="formGroup">
+              <div className={styles.formGroup}>
                 <label htmlFor="phone">Phone</label>
                 <input
                   id="phone"
@@ -204,7 +204,7 @@ const ManageAddresses = () => {
                   placeholder="Phone Number"
                 />
               </div>
-              <div className="formGroup fullWidth">
+              <div className={`${styles.formGroup} ${styles.fullWidth}`}>
                 <label htmlFor="street">Street</label>
                 <input
                   id="street"
@@ -221,7 +221,7 @@ const ManageAddresses = () => {
                   placeholder="Enter Street Address"
                 />
               </div>
-              <div className="formGroup">
+              <div className={styles.formGroup}>
                 <label htmlFor="city">City</label>
                 <input
                   id="city"
@@ -282,8 +282,8 @@ const ManageAddresses = () => {
                   placeholder="Country"
                 />
               </div>
-              <div className="formGroup">
-                <label className="checkboxLabel">
+              <div className={styles.formGroup}>
+                <label className={styles.checkboxLabel}>
                   <input
                     type="checkbox"
                     checked={formData.isDefault}
@@ -297,12 +297,12 @@ const ManageAddresses = () => {
                   Set as default address
                 </label>
               </div>
-              <div className="formActions">
-                <button className="cancelBtn" type="button" onClick={resetForm}>
+              <div className={styles.formActions}>
+                <button className={styles.cancelBtn} type="button" onClick={resetForm}>
                   Cancel
                 </button>
                 <button
-                  className="saveBtn"
+                  className={styles.saveBtn}
                   type="submit"
                   disabled={formLoading}
                 >
@@ -321,33 +321,33 @@ const ManageAddresses = () => {
       {/*Address List*/}
       <div className="addressesList">
         {user.addresses.length === 0 ? (
-          <div className="noAddresses">
-            <p className="status">No address found.</p>
+          <div className={styles.noAddresses}>
+            <p className={styles.status}>No address found.</p>
             <button
               onClick={() => {
                 setShowForm(true);
               }}
-              className="addBtn"
+              className={styles.addBtn}
             >
               Add First Address
             </button>
           </div>
         ) : (
-          <div className="addressesGrid">
+          <div className={styles.addressesGrid}>
             {user.addresses.map((address) => (
               <div
                 key={address._id}
-                className={`addressCard ${
-                  address.isDefault ? "defaultAddress" : ""
+                className={`${styles.addressCard} ${
+                  address.isDefault ? styles.defaultAddress : ""
                 }`}
               >
                 {address.isDefault && (
-                  <div className="defaultBadge">Default</div>
+                  <div className={styles.defaultBadge}>Default</div>
                 )}
 
-                <div className="addressContent">
-                  <div className="addressName">{address.fullName}</div>
-                  <div className="addressDetails">
+                <div className={styles.addressContent}>
+                  <div className={styles.addressName}>{address.fullName}</div>
+                  <div className={styles.addressDetails}>
                     {address.street} <br />
                     {address.city}, {address.state} {address.pinCode} <br />
                     {address.country} <br />
@@ -355,10 +355,10 @@ const ManageAddresses = () => {
                   </div>
                 </div>
 
-                <div className="addressActions">
+                <div className={styles.addressActions}>
                   <button
                     onClick={() => startEdit(address)}
-                    className="editBtn"
+                    className={styles.editBtn}
                   >
                     Edit
                   </button>
@@ -366,7 +366,7 @@ const ManageAddresses = () => {
                   {!address.isDefault && (
                     <button
                       onClick={() => handleSetDefault(address._id!)}
-                      className="defaultBtn"
+                      className={styles.defaultBtn}
                     >
                       Set Default
                     </button>
@@ -375,7 +375,7 @@ const ManageAddresses = () => {
                     onClick={() =>
                       handleDelete(address._id!, address.isDefault || false)
                     }
-                    className="deleteBtn"
+                    className={styles.deleteBtn}
                   >
                     Delete
                   </button>

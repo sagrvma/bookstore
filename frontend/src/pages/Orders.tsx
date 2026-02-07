@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { cancelOrder, getOrdersByUser, OrdersPage } from "../api/order";
 import { useNavigate } from "react-router";
-import "./Orders.css";
+import styles from "./Orders.module.css";
 
 const Orders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);
@@ -39,39 +39,39 @@ const Orders = () => {
   }, []);
 
   if (loading && !data) {
-    return <p className="status">Loading orders...</p>;
+    return <p className={styles.status}>Loading orders...</p>;
   }
 
   if (err) {
-    return <p className="error">{err}</p>;
+    return <p className={styles.error}>{err}</p>;
   }
   if (!data || data.orders.length === 0) {
     return (
-      <div className="ordersWrapper">
+      <div className={styles.ordersWrapper}>
         <h2>Your Orders</h2>
-        <p className="status">No orders found.</p>
+        <p className={styles.status}>No orders found.</p>
       </div>
     );
   }
 
   return (
-    <div className="ordersWrapper">
+    <div className={styles.ordersWrapper}>
       <h2>Your orders</h2>
-      <ul className="ordersList">
+      <ul className={styles.ordersList}>
         {data.orders.map((order) => (
-          <li key={order._id} className="orderItem">
-            <div className="orderHeader">
-              <div className="orderNumber">#{order.orderNumber}</div>
-              <div className="orderStatus">Order Status : {order.status}</div>
+          <li key={order._id} className={styles.orderItem}>
+            <div className={styles.orderHeader}>
+              <div className={styles.orderNumber}>#{order.orderNumber}</div>
+              <div className={styles.orderStatus}>Order Status : {order.status}</div>
             </div>
-            <div className="orderMeta">
+            <div className={styles.orderMeta}>
               <div>Items: {order.items.length}</div>
               <div>Total: {inr.format(order.totalAmount)}</div>
               <div>
                 Date: {new Date(order.createdAt).toLocaleDateString("en-IN")}
               </div>
             </div>
-            <div className="orderActions">
+            <div className={styles.orderActions}>
               <button
                 onClick={() => {
                   navigate(`/orders/${order._id}`);
@@ -101,7 +101,7 @@ const Orders = () => {
         ))}
       </ul>
 
-      <div className="pagination">
+      <div className={styles.pagination}>
         <button
           disabled={!data.pagination.hasPrev || loading}
           onClick={() => {
@@ -125,7 +125,7 @@ const Orders = () => {
           Next
         </button>
 
-        {loading && <p className="status">Loading...</p>}
+        {loading && <p className={styles.status}>Loading...</p>}
       </div>
     </div>
   );

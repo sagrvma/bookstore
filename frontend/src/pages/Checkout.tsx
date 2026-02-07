@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Order, placeOrder, ShippingAddress } from "../api/order";
 import { useNavigate } from "react-router";
-import "./Checkout.css";
+import styles from "./Checkout.module.css";
 import { useToast } from "../context/ToastContext";
 
 const Checkout = () => {
@@ -54,8 +54,8 @@ const Checkout = () => {
   };
 
   return (
-    <div className="checkoutWrapper">
-      <form className="checkoutForm" onSubmit={onSubmit}>
+    <div className={styles.checkoutWrapper}>
+      <form className={styles.checkoutForm} onSubmit={onSubmit}>
         <fieldset>
           <legend>Shipping Address</legend>
           <label>
@@ -201,7 +201,7 @@ const Checkout = () => {
           />
         </label>
 
-        <div className="checkoutActions">
+        <div className={styles.checkoutActions}>
           <button
             type="button"
             onClick={() => {
@@ -215,7 +215,7 @@ const Checkout = () => {
           </button>
         </div>
 
-        {err && <p className="error">{err}</p>}
+        {err && <p className={styles.error}>{err}</p>}
       </form>
     </div>
   );
