@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { cancelOrder, getOrderById, Order } from "../api/order";
-import "./OrderDetails.css";
+import styles from "./OrderDetails.module.css";
 import { tokenStore } from "../lib/http";
 import { jwtDecode } from "jwt-decode";
 import { JWTPayload } from "../routes/AdminRoute";
@@ -65,7 +65,7 @@ const OrderDetails = () => {
     setErr("");
     try {
       await cancelOrder(order._id);
-      await load(); //Reload after cancel
+      await load();
     } catch (error: any) {
       setErr(error?.response?.data?.message || "Failed to cancel order.");
     } finally {
@@ -78,23 +78,23 @@ const OrderDetails = () => {
   }, [orderId]);
 
   if (loading) {
-    return <p className="status">Loading...</p>;
+    return <p className={styles.status}>Loading...</p>;
   }
   if (err) {
-    return <p className="error">{err}</p>;
+    return <p className={styles.error}>{err}</p>;
   }
 
   if (!order) {
-    return <p className="error">Order not found.</p>;
+    return <p className={styles.error}>Order not found.</p>;
   }
 
-  const canCancel = order.status === "pending" || order.status == "confirmed";
+  const canCancel = order.status === "pending" || order.status === "confirmed";
 
   return (
-    <div className="orderDetailsWrapper">
+    <div className={styles.orderDetailsWrapper}>
       {/* Back Button */}
       <button
-        className="backToOrders"
+        className={styles.backToOrders}
         onClick={() => {
           if (isAdmin) {
             navigate("/admin/orders");
@@ -107,36 +107,40 @@ const OrderDetails = () => {
       </button>
 
       {/* Header Section */}
-      <div className="orderHeader">
-        <div className="orderTitleRow">
+      <div className={styles.orderHeader}>
+        <div className={styles.orderTitleRow}>
           <h1>Order #{order.orderNumber}</h1>
-          <div className={`orderStatusBadge ${order.status}`}>
+          <div
+            className={`${styles.orderStatusBadge} ${
+              styles[`status-${order.status}`]
+            }`}
+          >
             {order.status}
           </div>
         </div>
 
-        <div className="orderInfoGrid">
-          <div className="orderInfoItem">
-            <span className="infoLabel">Date Placed</span>
-            <span className="infoValue">
+        <div className={styles.orderInfoGrid}>
+          <div className={styles.orderInfoItem}>
+            <span className={styles.infoLabel}>Date Placed</span>
+            <span className={styles.infoValue}>
               {new Date(order.createdAt).toLocaleDateString("en-IN")}
             </span>
           </div>
-          <div className="orderInfoItem">
-            <span className="infoLabel">Payment Method</span>
-            <span className="infoValue">
-              {order.paymentMethod.replace("_", " ")}
+          <div className={styles.orderInfoItem}>
+            <span className={styles.infoLabel}>Payment Method</span>
+            <span className={styles.infoValue}>
+              {order.paymentMethod === "cash_on_delivery"
+                ? "Cash on Delivery"
+                : "Card"}
             </span>
           </div>
-          <div className="orderInfoItem">
-            <span className="infoLabel">Payment Status</span>
-            <span className="infoValue" style={{ textTransform: "capitalize" }}>
-              {order.paymentStatus}
-            </span>
+          <div className={styles.orderInfoItem}>
+            <span className={styles.infoLabel}>Payment Status</span>
+            <span className={styles.infoValue}>{order.paymentStatus}</span>
           </div>
-          <div className="orderInfoItem">
-            <span className="infoLabel">Total Amount</span>
-            <span className="infoValue total">
+          <div className={styles.orderInfoItem}>
+            <span className={styles.infoLabel}>Total Amount</span>
+            <span className={`${styles.infoValue} ${styles.total}`}>
               {inr.format(order.totalAmount)}
             </span>
           </div>
@@ -144,91 +148,53 @@ const OrderDetails = () => {
       </div>
 
       {/* Main Content Grid */}
-      <div className="orderContentGrid">
+      <div className={styles.orderContentGrid}>
         {/* Left Column: Items */}
-        <div className="orderItemsCard">
+        <div className={styles.orderItemsCard}>
           <h2>Items in Order</h2>
-          <div className="itemsList">
+          <div className={styles.itemsList}>
             {order.items.map((item) => (
-              <div key={item._id} className="orderItemCard">
-                <div className="itemHeader">
-                  <div className="itemTitle">{item.title}</div>
-                  <div className="itemTotal">{inr.format(item.lineTotal)}</div>
+              <div key={item._id} className={styles.orderItemCard}>
+                <div className={styles.itemHeader}>
+                  <div className={styles.itemTitle}>{item.title}</div>
+                  <div className={styles.itemTotal}>
+                    {inr.format(item.lineTotal)}
+                  </div>
                 </div>
-                <span className="itemAuthor">{item.author}</span>
+                <span className={styles.itemAuthor}>{item.author}</span>
 
-                <div className="itemPricing">
-                  <span className="itemQty">
-                    {item.quantity} x {inr.format(item.price)}
+                <div className={styles.itemPricing}>
+                  <span className={styles.itemQty}>
+                    {item.quantity} × {inr.format(item.price)}
                   </span>
-                  <span className="itemUnitPrice">Unit Price</span>
+                  <span className={styles.itemUnitPrice}>Unit Price</span>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Totals Summary inside Items Card */}
-          <div
-            style={{
-              marginTop: "2rem",
-              paddingTop: "1.5rem",
-              borderTop: "2px solid var(--border)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <span style={{ color: "var(--text-light)" }}>Subtotal</span>
-              <span style={{ fontWeight: 600 }}>
-                {inr.format(order.subtotal)}
-              </span>
+          <div className={styles.totalsSection}>
+            <div className={styles.totalRow}>
+              <span>Subtotal</span>
+              <span>{inr.format(order.subtotal)}</span>
             </div>
-            {/* Tax Section */}
+
             {(order.tax ?? 0) > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                <span style={{ color: "var(--text-light)" }}>Tax</span>
-                <span style={{ fontWeight: 600 }}>
-                  {inr.format(order.tax!)}
-                </span>{" "}
-                {/* or order.tax ?? 0 */}
+              <div className={styles.totalRow}>
+                <span>Tax</span>
+                <span>{inr.format(order.tax!)}</span>
               </div>
             )}
-            {/* Shipping Section */}
+
             {(order.shippingCost ?? 0) > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                <span style={{ color: "var(--text-light)" }}>Shipping</span>
-                <span style={{ fontWeight: 600 }}>
-                  {inr.format(order.shippingCost!)}
-                </span>{" "}
-                {/* or order.shippingCost ?? 0 */}
+              <div className={styles.totalRow}>
+                <span>Shipping</span>
+                <span>{inr.format(order.shippingCost!)}</span>
               </div>
             )}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: "1rem",
-                fontSize: "1.25rem",
-                fontWeight: 700,
-                color: "var(--primary)",
-              }}
-            >
+
+            <div className={styles.grandTotalRow}>
               <span>Grand Total</span>
               <span>{inr.format(order.totalAmount)}</span>
             </div>
@@ -236,12 +202,13 @@ const OrderDetails = () => {
         </div>
 
         {/* Right Column: Sidebar */}
-        <div className="orderSidebar">
+        <div className={styles.orderSidebar}>
           {/* Shipping Address Card */}
-          <div className="sidebarCard">
+          <div className={styles.sidebarCard}>
             <h3>Shipping Address</h3>
-            <div className="addressText">
+            <div className={styles.addressText}>
               <strong>{order.shippingAddress.fullName}</strong>
+              <br />
               {order.shippingAddress.street}
               <br />
               {order.shippingAddress.city}, {order.shippingAddress.state}
@@ -250,31 +217,35 @@ const OrderDetails = () => {
               <br />
               {order.shippingAddress.country}
               <br />
-              Phone: {order.shippingAddress.phone}
+              <span className={styles.phone}>
+                Phone: {order.shippingAddress.phone}
+              </span>
             </div>
           </div>
 
           {/* Payment Info Card */}
-          <div className="sidebarCard">
+          <div className={styles.sidebarCard}>
             <h3>Payment</h3>
-            <div className="paymentBadge">
-              {order.paymentMethod.replace("_", " ")}
+            <div className={styles.paymentBadge}>
+              {order.paymentMethod === "cash_on_delivery"
+                ? "Cash on Delivery"
+                : "Card"}
             </div>
           </div>
 
           {/* Notes Card */}
           {order.notes && (
-            <div className="sidebarCard">
+            <div className={styles.sidebarCard}>
               <h3>Order Notes</h3>
-              <p className="notesText">"{order.notes}"</p>
+              <p className={styles.notesText}>"{order.notes}"</p>
             </div>
           )}
 
           {/* Actions Card */}
           {canCancel && (
-            <div className="sidebarActions">
+            <div className={styles.sidebarActions}>
               <button
-                className="cancelBtn"
+                className={styles.cancelBtn}
                 disabled={cancelling}
                 onClick={onCancel}
               >
