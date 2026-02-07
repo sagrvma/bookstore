@@ -1,0 +1,336 @@
+/* Page wrapper */
+
+.adminBooksWrapper {
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(99, 102, 241, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(236, 72, 153, 0.06) 0%,
+      transparent 50%
+    ),
+    #f8f9fa;
+}
+
+/* Header */
+
+.adminHeader {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(249, 250, 251, 0.98)
+  );
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.adminHeader h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #1a1a2e, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.addBtn {
+  padding: 0.6rem 1.3rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #f9fafb;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.addBtn:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+}
+
+/* Status and error messages */
+
+.status {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+}
+
+.error {
+  max-width: 1200px;
+  margin: 1rem auto 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+}
+
+/* Book form */
+
+.bookForm {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 1.75rem 2rem 2rem;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(249, 250, 251, 0.98)
+  );
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+}
+
+.bookForm h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.formField span {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.formField input,
+.formField select,
+.formField textarea {
+  border-radius: 10px;
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111827;
+}
+
+.formField input:focus,
+.formField select:focus,
+.formField textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.formField textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.formActions button {
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.formActions button[type="button"] {
+  background: rgba(248, 250, 252, 0.95);
+  color: #4b5563;
+}
+
+.formActions button[type="button"]:hover {
+  background: #e5e7eb;
+}
+
+.formActions button[type="submit"] {
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #f9fafb;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.formActions button[type="submit"]:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  transform: translateY(-1px);
+}
+
+/* Books table */
+
+.booksTable {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(249, 250, 251, 0.98)
+  );
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.booksTable table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.booksTable thead {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.booksTable th,
+.booksTable td {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+}
+
+.booksTable th {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.booksTable tbody tr {
+  border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+  transition: background 0.15s ease;
+}
+
+.booksTable tbody tr:hover {
+  background: #f9fafb;
+}
+
+.booksTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.booksTable td {
+  font-size: 0.85rem;
+  color: #4b5563;
+  vertical-align: middle;
+}
+
+.bookTitle {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Row actions */
+
+.adminActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.adminActions button {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.adminActions button:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.adminActions button:last-child {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.adminActions button:last-child:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .adminBooksWrapper {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .formGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .booksTable table {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminBooksWrapper {
+    padding: 2rem 1rem;
+  }
+
+  .booksTable {
+    overflow-x: auto;
+  }
+
+  .booksTable table {
+    min-width: 650px;
+  }
+}

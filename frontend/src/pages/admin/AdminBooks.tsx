@@ -9,7 +9,7 @@ import {
   updateBook,
 } from "../../api/admin";
 import { useNavigate } from "react-router";
-import "./AdminBooks.css";
+import styles from "./AdminBooks.module.css";
 
 const AdminBooks = () => {
   const [books, setBooks] = useState<Book[] | null>(null);
@@ -19,7 +19,6 @@ const AdminBooks = () => {
 
   const navigate = useNavigate();
 
-  //Form State
   const [showForm, setShowForm] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [formData, setFormData] = useState({
@@ -39,10 +38,9 @@ const AdminBooks = () => {
       const res = await getBooks();
       setBooks(res);
     } catch (error: any) {
-      if (error?.response?.status == 401) {
+      if (error?.response?.status === 401) {
         navigate("/login", { replace: true });
-      }
-      if (error?.response?.status === 403) {
+      } else if (error?.response?.status === 403) {
         navigate("/", { replace: true });
       } else {
         setErr(error?.response?.data?.message || "Failed to load books.");
@@ -55,10 +53,9 @@ const AdminBooks = () => {
       const res = await getAuthors();
       setAuthors(res);
     } catch (error: any) {
-      if (error?.response?.status == 401) {
+      if (error?.response?.status === 401) {
         navigate("/login", { replace: true });
-      }
-      if (error?.response?.status === 403) {
+      } else if (error?.response?.status === 403) {
         navigate("/", { replace: true });
       } else {
         setErr(error?.response?.data?.message || "Failed to load authors.");
@@ -96,6 +93,7 @@ const AdminBooks = () => {
   const startEdit = (book: Book) => {
     const authorId =
       typeof book.author === "string" ? book.author : book.author._id;
+
     setFormData({
       title: book.title,
       author: authorId,
@@ -104,11 +102,19 @@ const AdminBooks = () => {
       stock: book.stock,
       description: book.description || "",
       category: book.category,
-      publishedDate: book.publishedDate?.split("T")[0] || "", //Format of ISODate strings is "2023-09-21T10:30:00.000Z"
+      publishedDate: book.publishedDate?.split("T")[0] || "",
       pages: book.pages || 0,
     });
+
     setEditingBook(book);
     setShowForm(true);
+
+    // Scroll to top so the edit form is visible
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,32 +157,33 @@ const AdminBooks = () => {
   };
 
   if (loading && !books) {
-    return <p className="status">Loading books...</p>;
+    return <p className={styles.status}>Loading books...</p>;
   }
 
   return (
-    <div className="adminBooksWrapper">
-      <div className="adminHeader">
+    <div className={styles.adminBooksWrapper}>
+      <div className={styles.adminHeader}>
         <h2>Manage Books</h2>
         <button
-          className="addBtn"
+          className={styles.addBtn}
           onClick={() => {
             setShowForm(true);
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
           }}
         >
           Add New Book
         </button>
       </div>
 
-      {err && <p className="error">{err}</p>}
+      {err && <p className={styles.error}>{err}</p>}
 
       {showForm && (
-        <div className="bookForm">
+        <div className={styles.bookForm}>
           <h3>{editingBook ? "Edit Book" : "Create New Book"}</h3>
           <form onSubmit={handleSubmit}>
-            <div className="formGrid">
-              <label>
-                Title *
+            <div className={styles.formGrid}>
+              <label className={styles.formField}>
+                <span>Title *</span>
                 <input
                   required
                   value={formData.title}
@@ -189,8 +196,8 @@ const AdminBooks = () => {
                 />
               </label>
 
-              <label>
-                Author *
+              <label className={styles.formField}>
+                <span>Author *</span>
                 <select
                   required
                   value={formData.author}
@@ -210,8 +217,8 @@ const AdminBooks = () => {
                 </select>
               </label>
 
-              <label>
-                ISBN *
+              <label className={styles.formField}>
+                <span>ISBN *</span>
                 <input
                   required
                   pattern="[0-9-]{10,17}"
@@ -221,8 +228,9 @@ const AdminBooks = () => {
                   }}
                 />
               </label>
-              <label>
-                Category *
+
+              <label className={styles.formField}>
+                <span>Category *</span>
                 <input
                   required
                   value={formData.category}
@@ -234,8 +242,9 @@ const AdminBooks = () => {
                   }}
                 />
               </label>
-              <label>
-                Price *
+
+              <label className={styles.formField}>
+                <span>Price *</span>
                 <input
                   required
                   type="number"
@@ -250,8 +259,9 @@ const AdminBooks = () => {
                   }}
                 />
               </label>
-              <label>
-                Stock *
+
+              <label className={styles.formField}>
+                <span>Stock *</span>
                 <input
                   required
                   type="number"
@@ -265,8 +275,9 @@ const AdminBooks = () => {
                   }}
                 />
               </label>
-              <label>
-                Published Date
+
+              <label className={styles.formField}>
+                <span>Published Date</span>
                 <input
                   type="date"
                   value={formData.publishedDate}
@@ -278,8 +289,9 @@ const AdminBooks = () => {
                   }}
                 />
               </label>
-              <label>
-                Pages
+
+              <label className={styles.formField}>
+                <span>Pages</span>
                 <input
                   type="number"
                   min="1"
@@ -294,8 +306,8 @@ const AdminBooks = () => {
               </label>
             </div>
 
-            <label>
-              Description
+            <label className={styles.formField}>
+              <span>Description</span>
               <textarea
                 value={formData.description}
                 onChange={(e) => {
@@ -307,7 +319,7 @@ const AdminBooks = () => {
               />
             </label>
 
-            <div className="formActions">
+            <div className={styles.formActions}>
               <button type="button" onClick={resetForm}>
                 Cancel
               </button>
@@ -317,7 +329,7 @@ const AdminBooks = () => {
         </div>
       )}
 
-      <div className="booksTable">
+      <div className={styles.booksTable}>
         <table>
           <thead>
             <tr>
@@ -332,7 +344,7 @@ const AdminBooks = () => {
           <tbody>
             {books?.map((book) => (
               <tr key={book._id}>
-                <td className="bookTitle">{book.title}</td>
+                <td className={styles.bookTitle}>{book.title}</td>
                 <td>
                   {typeof book.author === "string"
                     ? "Unknown"
@@ -342,7 +354,7 @@ const AdminBooks = () => {
                 <td>{book.price}</td>
                 <td>{book.stock}</td>
                 <td>
-                  <div className="adminActions">
+                  <div className={styles.adminActions}>
                     <button
                       onClick={() => {
                         startEdit(book);
