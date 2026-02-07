@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
-import "./Profile.css";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -36,144 +36,174 @@ const Profile = () => {
   }, []);
 
   if (loading) {
-    return <p className="status">Loading profile...</p>;
+    return <p className={styles.status}>Loading profile...</p>;
   }
 
   if (err) {
-    return <p className="error">{err}</p>;
+    return <p className={styles.error}>{err}</p>;
   }
 
   if (!user) {
-    return <p className="status">User not found.</p>;
+    return <p className={styles.status}>User not found.</p>;
   }
 
   const defaultAddress = user.addresses.find((addr) => addr.isDefault);
 
   return (
-    <div className="profileWrapper">
-      <div className="profileHeader">
+    <div className={styles.profileWrapper}>
+      <div className={styles.profileHeader}>
         <h2>My Profile</h2>
-        <div className="profileHeaderActions">
-          <Link to="/profile/edit" className="editBtn">
+        <div className={styles.profileHeaderActions}>
+          <Link to="/profile/edit" className={styles.editBtn}>
             Edit Profile
           </Link>
         </div>
       </div>
 
-      <div className="profileGrid">
-        <section className="profileCard">
+      <div className={styles.profileGrid}>
+        {/* Card 1: Account Information */}
+        <section className={styles.profileCard}>
           <h3>Account Information</h3>
-          <div className="profileInfo">
-            <div className="infoItem">
-              <span className="infoLabel">Name: </span>
-              <span className="infoValue">{user.name}</span>
-            </div>
-            <div className="infoItem">
-              <span className="infoLabel">Email: </span>
-              <span className="infoValue">{user.email}</span>
-            </div>
-            <div className="infoItem">
-              <span className="infoLabel">Role: </span>
-              <span className={`roleTag role-${user.role}`}>{user.role}</span>
-            </div>
-            <div className="infoItem">
-              <span className="infoLabel">Member since: </span>
-              <span className="infoValue">
-                {new Date(user.createdAt).toLocaleDateString("en-IN")}
-              </span>
+          <div className={styles.profileCardContent}>
+            <div className={styles.profileInfo}>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>Name: </span>
+                <span className={styles.infoValue}>{user.name}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>Email: </span>
+                <span className={styles.infoValue}>{user.email}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>Role: </span>
+                <span
+                  className={`${styles.roleTag} ${
+                    styles[
+                      `role${
+                        user.role.charAt(0).toUpperCase() + user.role.slice(1)
+                      }`
+                    ]
+                  }`}
+                >
+                  {user.role}
+                </span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>Member since: </span>
+                <span className={styles.infoValue}>
+                  {new Date(user.createdAt).toLocaleDateString("en-IN")}
+                </span>
+              </div>
             </div>
           </div>
-
-          <div className="cardActions">
-            <Link to="/profile/edit" className="actionBtn">
+          <div className={styles.cardActions}>
+            <Link to="/profile/edit" className={styles.actionBtn}>
               Edit Info
             </Link>
-            <Link to="/profile/password" className="actionBtn">
+            <Link to="/profile/password" className={styles.actionBtn}>
               Change Password
             </Link>
           </div>
         </section>
 
-        <section className="profileCard">
+        {/* Card 2: Default Address */}
+        <section className={styles.profileCard}>
           <h3>Default Address</h3>
-          {defaultAddress ? (
-            <div className="addressDisplay">
-              <div className="addressName">{defaultAddress.fullName}</div>
-              <div className="addressDetails">
-                {defaultAddress.street}
-                <br />
-                {defaultAddress.city}, {defaultAddress.state}{" "}
-                {defaultAddress.pinCode}
-                <br />
-                {defaultAddress.country}
-                <br />
-                Phone: {defaultAddress.phone}
+          <div className={styles.profileCardContent}>
+            {defaultAddress ? (
+              <div className={styles.addressDisplay}>
+                <div className={styles.addressName}>
+                  {defaultAddress.fullName}
+                </div>
+                <div className={styles.addressDetails}>
+                  {defaultAddress.street}
+                  <br />
+                  {defaultAddress.city}, {defaultAddress.state}{" "}
+                  {defaultAddress.pinCode}
+                  <br />
+                  {defaultAddress.country}
+                  <br />
+                  Phone: {defaultAddress.phone}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="noAddress">
-              <p>No default address set.</p>
-            </div>
-          )}
-          <div className="cardActions">
-            <Link to="/profile/addresses" className="actionBtn">
+            ) : (
+              <div className={styles.noAddress}>
+                <p>No default address set.</p>
+              </div>
+            )}
+          </div>
+          <div className={styles.cardActions}>
+            <Link to="/profile/addresses" className={styles.actionBtn}>
               Manage Addresses
             </Link>
           </div>
         </section>
-        <section className="profileCard">
+
+        {/* Card 3: Account Summary */}
+        <section className={styles.profileCard}>
           <h3>Account Summary</h3>
-          <div className="profileStats">
-            <div className="statItem">
-              <span className="statNumber">{user.addresses.length}</span>
-              <span className="statLabel">Saved addresses</span>
-            </div>
-            <div className="statItem">
-              <span className="statNumber">
-                {user.role === "admin" ? "∞" : "?"}
-              </span>
-              <span className="statLabel">Orders</span>
+          <div className={styles.profileCardContent}>
+            <div className={styles.profileStats}>
+              <div className={styles.statItem}>
+                <span className={styles.statNumber}>
+                  {user.addresses.length}
+                </span>
+                <span className={styles.statLabel}>Saved addresses</span>
+              </div>
+              <div className={styles.statItem}>
+                <span className={styles.statNumber}>
+                  {user.role === "admin" ? "∞" : "?"}
+                </span>
+                <span className={styles.statLabel}>Orders</span>
+              </div>
             </div>
           </div>
-          <div className="cardActions">
-            <Link to="/orders" className="actionBtn">
+          <div className={styles.cardActions}>
+            <Link to="/orders" className={styles.actionBtn}>
               View Orders
             </Link>
           </div>
         </section>
       </div>
 
-      <section className="quickActions">
+      <section className={styles.quickActions}>
         <h3>Quick Actions</h3>
-        <div className="actionGrid">
-          <Link to="/books" className="quickActionCard">
-            <div className="actionIcon">📚</div>
-            <div className="actionInfo">
-              <div className="actionTitle">Browse Books</div>
-              <div className="actionDesc">Discover new books to read</div>
+        <div className={styles.actionGrid}>
+          <Link to="/books" className={styles.quickActionCard}>
+            <div className={styles.actionIcon}>📚</div>
+            <div className={styles.actionInfo}>
+              <div className={styles.actionTitle}>Browse Books</div>
+              <div className={styles.actionDesc}>
+                Discover new books to read
+              </div>
             </div>
           </Link>
-          <Link to="/cart" className="quickActionCard">
-            <div className="actionIcon">🛒</div>
-            <div className="actionInfo">
-              <div className="actionTitle">My Cart</div>
-              <div className="actionDesc">Review items in your cart</div>
+
+          <Link to="/cart" className={styles.quickActionCard}>
+            <div className={styles.actionIcon}>🛒</div>
+            <div className={styles.actionInfo}>
+              <div className={styles.actionTitle}>My Cart</div>
+              <div className={styles.actionDesc}>Review items in your cart</div>
             </div>
           </Link>
-          <Link to="/orders" className="quickActionCard">
-            <div className="actionIcon">📦</div>
-            <div className="actionInfo">
-              <div className="actionTitle">Order History</div>
-              <div className="actionDesc">Track your past orders</div>
+
+          <Link to="/orders" className={styles.quickActionCard}>
+            <div className={styles.actionIcon}>📦</div>
+            <div className={styles.actionInfo}>
+              <div className={styles.actionTitle}>Order History</div>
+              <div className={styles.actionDesc}>Track your past orders</div>
             </div>
           </Link>
 
           {user.role === "admin" && (
-            <Link to="/admin/orders" className="quickActionCard adminAction">
-              <div className="actionIcon">⚙️</div>
-              <div className="actionInfo">
-                <div className="actionTitle">Admin Panel</div>
-                <div className="actionDesc">Manage orders and books</div>
+            <Link
+              to="/admin/orders"
+              className={`${styles.quickActionCard} ${styles.adminAction}`}
+            >
+              <div className={styles.actionIcon}>⚙️</div>
+              <div className={styles.actionInfo}>
+                <div className={styles.actionTitle}>Admin Panel</div>
+                <div className={styles.actionDesc}>Manage orders and books</div>
               </div>
             </Link>
           )}

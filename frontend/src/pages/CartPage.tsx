@@ -148,7 +148,7 @@ const CartPage = () => {
                       if (Number.isFinite(v)) {
                         onQuantityChange(
                           item._id,
-                          Math.max(1, Math.min(v, 10))
+                          Math.max(1, Math.min(v, 10)),
                         );
                       }
                     }}
@@ -175,7 +175,7 @@ const CartPage = () => {
           Total Price :{" "}
           {inr.format(
             cart.totalPrice ??
-              cart.items.reduce((s, i) => s + i.price * i.quantity, 0)
+              cart.items.reduce((s, i) => s + i.price * i.quantity, 0),
           )}
         </div>
       </div>
