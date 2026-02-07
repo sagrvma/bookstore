@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Order, OrdersPage } from "../../api/order";
 import { getAllOrders, updateOrderStatus } from "../../api/admin";
 import { useNavigate } from "react-router";
-import "./AdminOrders.css";
+import styles from "./AdminOrders.module.css";
 
 const AdminOrders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);
@@ -47,7 +47,7 @@ const AdminOrders = () => {
 
   const handleStatusUpdate = async (
     orderId: string,
-    newStatus: Order["status"]
+    newStatus: Order["status"],
   ) => {
     setUpdating(orderId);
     try {
@@ -73,14 +73,14 @@ const AdminOrders = () => {
   ];
 
   if (loading && !data) {
-    return <p className="status">Loading Orders...</p>;
+    return <p className={styles.status}>Loading Orders...</p>;
   }
 
   return (
-    <div className="adminOrdersWrapper">
-      <div className="adminHeader">
+    <div className={styles.adminOrdersWrapper}>
+      <div className={styles.adminHeader}>
         <h2>Manage Orders</h2>
-        <div className="adminFilters">
+        <div className={styles.adminFilters}>
           <select
             value={statusFilter}
             onChange={(e) => {
@@ -97,13 +97,13 @@ const AdminOrders = () => {
         </div>
       </div>
 
-      {err && <p className="error">{err}</p>}
+      {err && <p className={styles.error}>{err}</p>}
 
       {data && data.orders.length === 0 ? (
-        <p className="status">No orders found.</p>
+        <p className={styles.status}>No orders found.</p>
       ) : (
         <>
-          <div className="ordersTable">
+          <div className={styles.ordersTable}>
             <table>
               <thead>
                 <tr>
@@ -124,7 +124,11 @@ const AdminOrders = () => {
                     <td>{order.items.length}</td>
                     <td>{inr.format(order.totalAmount)}</td>
                     <td>
-                      <span className={`orderStatus status-${order.status}`}>
+                      <span
+                        className={`${styles.orderStatus} ${
+                          styles[`status-${order.status}`]
+                        }`}
+                      >
                         {order.status}
                       </span>
                     </td>
@@ -132,14 +136,14 @@ const AdminOrders = () => {
                       {new Date(order.createdAt).toLocaleDateString("en-IN")}
                     </td>
                     <td>
-                      <div className="adminActions">
+                      <div className={styles.adminActions}>
                         <select
                           value={order.status}
                           disabled={updating === order._id}
                           onChange={(e) => {
                             handleStatusUpdate(
                               order._id,
-                              e.target.value as Order["status"]
+                              e.target.value as Order["status"],
                             );
                           }}
                         >
@@ -150,7 +154,7 @@ const AdminOrders = () => {
                           ))}
                         </select>
                         <button
-                          className="viewBtn"
+                          className={styles.viewBtn}
                           onClick={() => {
                             navigate(`/orders/${order._id}`);
                           }}
@@ -165,7 +169,7 @@ const AdminOrders = () => {
             </table>
           </div>
 
-          <div className="adminPagination">
+          <div className={styles.adminPagination}>
             <button
               disabled={!data?.pagination.hasPrev || loading}
               onClick={() => {
@@ -191,7 +195,7 @@ const AdminOrders = () => {
         </>
       )}
 
-      {loading && <p className="status">Loading...</p>}
+      {loading && <p className={styles.status}>Loading...</p>}
     </div>
   );
 };

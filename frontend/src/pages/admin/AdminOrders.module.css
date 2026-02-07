@@ -1,0 +1,417 @@
+/* Page wrapper */
+
+.adminOrdersWrapper {
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(99, 102, 241, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(139, 92, 246, 0.06) 0%,
+      transparent 50%
+    ),
+    #f8f9fa;
+}
+
+/* Header */
+
+.adminHeader {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(249, 250, 251, 0.98)
+  );
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.adminHeader h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #1a1a2e, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.adminFilters select {
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(209, 213, 219, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  text-transform: capitalize; /* make filter options look capitalized */
+}
+
+.adminFilters select:hover {
+  border-color: #818cf8;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
+}
+
+.adminFilters select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Status and error messages */
+
+.status {
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+}
+
+.error {
+  max-width: 1200px;
+  margin: 0 auto 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+}
+
+/* Table wrapper */
+
+.ordersTable {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(249, 250, 251, 0.98)
+  );
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Table base */
+
+.ordersTable table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Header row */
+
+.ordersTable thead {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.ordersTable th,
+.ordersTable td {
+  padding: 0.9rem 1.25rem;
+  text-align: center;
+}
+
+.ordersTable th {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Body rows */
+
+.ordersTable tbody tr {
+  border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+  transition: background 0.15s ease;
+  line-height: 1.4;
+}
+
+.ordersTable tbody tr:hover {
+  background: #f9fafb;
+}
+
+.ordersTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Cell text styling */
+
+.ordersTable td {
+  color: #4b5563;
+  font-weight: 400;
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+/* Order # (col 1) */
+
+.ordersTable td:nth-child(1) {
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Customer (col 2) */
+
+.ordersTable td:nth-child(2) {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Items + Total (cols 3,4) */
+
+.ordersTable td:nth-child(3),
+.ordersTable td:nth-child(4) {
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
+  color: #374151;
+}
+
+/* Date (col 6) */
+
+.ordersTable td:nth-child(6) {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+/* Status chip */
+
+.orderStatus {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+}
+
+/* Individual status colors */
+
+.status-pending {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #78350f;
+  border: 1px solid #fbbf24;
+}
+
+.status-confirmed {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e3a8a;
+  border: 1px solid #60a5fa;
+}
+
+.status-shipped {
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  color: #0c4a6e;
+  border: 1px solid #38bdf8;
+}
+
+.status-delivered {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #14532d;
+  border: 1px solid #4ade80;
+}
+
+.status-cancelled {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #7f1d1d;
+  border: 1px solid #f87171;
+}
+
+/* Row actions */
+
+.adminActions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.adminActions select {
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(209, 213, 219, 0.7);
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-transform: capitalize; /* make status options look capitalized */
+}
+
+.adminActions select:hover {
+  border-color: #818cf8;
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.12);
+}
+
+.adminActions select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.viewBtn {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #f9fafb;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.viewBtn:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.4);
+}
+
+.viewBtn:active {
+  transform: translateY(0);
+}
+
+/* Pagination */
+
+.adminPagination {
+  max-width: 1200px;
+  margin: 1.75rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(249, 250, 251, 0.95)
+  );
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.adminPagination button {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(209, 213, 219, 0.7);
+  background: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.adminPagination button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+  border-color: #9ca3af;
+}
+
+.adminPagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .adminOrdersWrapper {
+    padding: 2rem 1.5rem;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .adminHeader h2 {
+    font-size: 1.75rem;
+  }
+
+  .ordersTable {
+    border-radius: 14px;
+  }
+
+  .ordersTable table {
+    font-size: 0.85rem;
+  }
+
+  .ordersTable th,
+  .ordersTable td {
+    padding: 0.85rem 1rem;
+  }
+
+  .adminPagination {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .adminPagination span {
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .adminOrdersWrapper {
+    padding: 1.5rem 1rem;
+  }
+
+  .adminHeader {
+    padding: 1rem 1.25rem;
+  }
+
+  .ordersTable {
+    overflow-x: auto;
+    border-radius: 12px;
+  }
+
+  .ordersTable table {
+    min-width: 650px;
+  }
+
+  .adminPagination {
+    padding: 1rem 1.25rem;
+  }
+}
