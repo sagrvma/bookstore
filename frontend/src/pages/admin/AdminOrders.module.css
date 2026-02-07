@@ -3,23 +3,49 @@
 .adminOrdersWrapper {
   min-height: 100vh;
   padding: 3rem 2rem;
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(99, 102, 241, 0.08) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(139, 92, 246, 0.06) 0%,
-      transparent 50%
-    ),
-    #f8f9fa;
+  background: radial-gradient(
+    circle at bottom left,
+    #eef2ff 0%,
+    #f9fafb 50%,
+    #fef2f2 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background blobs */
+.adminOrdersWrapper::before,
+.adminOrdersWrapper::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.adminOrdersWrapper::before {
+  width: 500px;
+  height: 500px;
+  background: #6366f1;
+  bottom: -200px;
+  left: -150px;
+}
+
+.adminOrdersWrapper::after {
+  width: 450px;
+  height: 450px;
+  background: #a78bfa;
+  top: -100px;
+  right: -120px;
 }
 
 /* Header */
 
 .adminHeader {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   margin: 0 auto 2rem;
   display: flex;
@@ -103,6 +129,8 @@
 /* Table wrapper */
 
 .ordersTable {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
   border-radius: 20px;
@@ -305,6 +333,8 @@
 /* Pagination */
 
 .adminPagination {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   margin: 1.75rem auto 0;
   display: flex;
