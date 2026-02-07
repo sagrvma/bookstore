@@ -7,7 +7,7 @@ import {
   updateAuthor,
 } from "../../api/admin";
 import { useNavigate } from "react-router";
-import "./AdminAuthors.css";
+import styles from "./AdminAuthors.module.css";
 
 const AdminAuthors = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -16,7 +16,6 @@ const AdminAuthors = () => {
 
   const navigate = useNavigate();
 
-  //Form state
   const [showForm, setShowForm] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState<Author | null>(null);
   const [formData, setFormData] = useState({
@@ -34,8 +33,7 @@ const AdminAuthors = () => {
     } catch (error: any) {
       if (error?.response?.status === 401) {
         navigate("/login", { replace: true });
-      }
-      if (error?.response?.status === 403) {
+      } else if (error?.response?.status === 403) {
         navigate("/", { replace: true });
       }
       setErr(error?.response?.data?.message || "Failed to load authors.");
@@ -61,7 +59,6 @@ const AdminAuthors = () => {
       birthDate: "",
       nationality: "",
     });
-
     setEditingAuthor(null);
     setShowForm(false);
   };
@@ -77,6 +74,12 @@ const AdminAuthors = () => {
 
     setEditingAuthor(author);
     setShowForm(true);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   };
 
   const generateSlug = (name: string) => {
@@ -125,32 +128,33 @@ const AdminAuthors = () => {
   };
 
   if (loading) {
-    return <p className="status">Loading...</p>;
+    return <p className={styles.status}>Loading...</p>;
   }
 
   return (
-    <div className="adminAuthorWrapper">
-      <div className="adminHeader">
+    <div className={styles.adminAuthorWrapper}>
+      <div className={styles.adminHeader}>
         <h2>Manage Authors</h2>
         <button
-          className="addBtn"
+          className={styles.addBtn}
           onClick={() => {
             setShowForm(true);
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
           }}
         >
           Add New Author
         </button>
       </div>
 
-      {err && <p className="error">{err}</p>}
+      {err && <p className={styles.error}>{err}</p>}
 
       {showForm && (
-        <div className="authorForm">
+        <div className={styles.authorForm}>
           <h3>{editingAuthor ? "Edit Author" : "Add New Author"}</h3>
           <form onSubmit={handleSubmit}>
-            <div className="formGrid">
-              <label>
-                Name *
+            <div className={styles.formGrid}>
+              <label className={styles.formField}>
+                <span>Name *</span>
                 <input
                   required
                   value={formData.name}
@@ -164,8 +168,8 @@ const AdminAuthors = () => {
                   }}
                 />
               </label>
-              <label>
-                Slug *
+              <label className={styles.formField}>
+                <span>Slug *</span>
                 <input
                   required
                   pattern="[a-z0-9-]+"
@@ -178,8 +182,8 @@ const AdminAuthors = () => {
                   }}
                 />
               </label>
-              <label>
-                Birth Date
+              <label className={styles.formField}>
+                <span>Birth Date</span>
                 <input
                   type="date"
                   value={formData.birthDate}
@@ -191,8 +195,8 @@ const AdminAuthors = () => {
                   }}
                 />
               </label>
-              <label>
-                Nationality
+              <label className={styles.formField}>
+                <span>Nationality</span>
                 <input
                   value={formData.nationality}
                   onChange={(e) => {
@@ -204,8 +208,8 @@ const AdminAuthors = () => {
                 />
               </label>
             </div>
-            <label>
-              Biography
+            <label className={styles.formField}>
+              <span>Biography</span>
               <input
                 value={formData.bio}
                 onChange={(e) => {
@@ -213,7 +217,10 @@ const AdminAuthors = () => {
                 }}
               />
             </label>
-            <div className="formActions">
+            <div className={styles.formActions}>
+              <button type="button" onClick={resetForm}>
+                Cancel
+              </button>
               <button type="submit">
                 {editingAuthor ? "Update" : "Create"}
               </button>
@@ -222,7 +229,7 @@ const AdminAuthors = () => {
         </div>
       )}
 
-      <div className="authorsTable">
+      <div className={styles.authorsTable}>
         <table>
           <thead>
             <tr>
@@ -236,7 +243,7 @@ const AdminAuthors = () => {
           <tbody>
             {authors.map((author) => (
               <tr key={author._id}>
-                <td className="authorName">{author.name}</td>
+                <td className={styles.authorName}>{author.name}</td>
                 <td>{author.slug}</td>
                 <td>{author.nationality}</td>
                 <td>
@@ -245,9 +252,8 @@ const AdminAuthors = () => {
                     : "-"}
                 </td>
                 <td>
-                  <div className="adminActions">
+                  <div className={styles.adminActions}>
                     <button
-                      className="editBtn"
                       onClick={() => {
                         startEdit(author);
                       }}
@@ -255,7 +261,6 @@ const AdminAuthors = () => {
                       Edit
                     </button>
                     <button
-                      className="deleteBtn"
                       onClick={() => {
                         handleDelete(author._id, author.name);
                       }}
