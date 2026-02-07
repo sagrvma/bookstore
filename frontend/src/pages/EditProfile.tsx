@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getProfile, updateProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
-import "./EditProfile.css";
+import styles from "./EditProfile.module.css";
 
 const EditProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -47,7 +47,6 @@ const EditProfile = () => {
       return;
     }
 
-    //Check if data same as earlier, if yes then return
     if (formData.name === user.name && formData.email === user.email) {
       showToast("info", "No changes to save");
       return;
@@ -83,26 +82,28 @@ const EditProfile = () => {
   }, []);
 
   if (loading) {
-    return <p className="status">Loading profile...</p>;
+    return <p className={styles.status}>Loading profile...</p>;
   }
   if (!user) {
-    return <p className="error">User not found.</p>;
+    return <p className={styles.error}>User not found.</p>;
   }
 
   return (
-    <div className="editProfileWrapper">
-      <div className="editProfileHeader">
+    <div className={styles.editProfileWrapper}>
+      <div className={styles.editProfileHeader}>
         <h2>Edit Profile</h2>
-        <Link to="/profile" className="actionBtn">
+        <Link to="/profile" className={styles.actionBtn}>
           Back to Profile
         </Link>
       </div>
-      <form className="editProfileForm" onSubmit={handleSubmit}>
-        <div className="formGroup">
-          <label className="formLabel" htmlFor="name">
+
+      <form className={styles.editProfileForm} onSubmit={handleSubmit}>
+        <div className={styles.formGroup}>
+          <label className={styles.formLabel} htmlFor="name">
             Name
           </label>
           <input
+            id="name"
             type="text"
             required
             minLength={2}
@@ -114,9 +115,13 @@ const EditProfile = () => {
             placeholder="Enter name"
           />
         </div>
-        <div className="formGroup">
-          <label className="formLabel">Email</label>
+
+        <div className={styles.formGroup}>
+          <label className={styles.formLabel} htmlFor="email">
+            Email
+          </label>
           <input
+            id="email"
             type="email"
             required
             value={formData.email}
@@ -127,19 +132,21 @@ const EditProfile = () => {
           />
         </div>
 
-        {err && <p className="error">{err}</p>}
+        {err && <p className={styles.error}>{err}</p>}
 
-        <div className="formActions">
+        <div className={styles.formActions}>
           <button
             type="button"
             onClick={() => {
               navigate("/profile");
             }}
-            className="cancelBtn"
+            className={styles.cancelBtn}
           >
             Cancel
           </button>
-          <button type="submit">{saving ? "Saving..." : "Save changes"}</button>
+          <button type="submit" className={styles.saveBtn}>
+            {saving ? "Saving..." : "Save changes"}
+          </button>
         </div>
       </form>
     </div>
