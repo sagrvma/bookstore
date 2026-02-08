@@ -7,6 +7,7 @@ export interface IBook extends Document {
   price: number;
   stock: number;
   description?: string;
+  coverImage?: string;
   category: string;
   publishedDate?: Date;
   pages?: number;
@@ -50,6 +51,16 @@ const bookSchema = new Schema(
       trim: true,
       maxlength: [2000, "Description can't exceed 2000 characters."],
     },
+    coverImage: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (value: string) => {
+          return value.startsWith("http://") || value.startsWith("https://");
+        },
+        message: "Cover image URL must start with http:// or https://",
+      },
+    },
     category: {
       type: String,
       required: [true, "Book's category is required."],
@@ -70,7 +81,7 @@ const bookSchema = new Schema(
       min: [1, "Number of pages should be at least 1."],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Book = model<IBook>("Book", bookSchema);
