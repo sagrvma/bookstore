@@ -1,16 +1,8 @@
 import { Link, useNavigate } from "react-router";
 import { CSSProperties, useEffect, useState } from "react";
-import { getBooks } from "./api/admin";
+import { Book, getBooks } from "./api/admin";
 // 1. IMPORT STYLES AS AN OBJECT
 import styles from "./App.module.css";
-
-interface Book {
-  _id: string;
-  title: string;
-  author: any;
-  price: number;
-  createdAt: string;
-}
 
 const App = () => {
   const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
@@ -131,7 +123,17 @@ const App = () => {
                 key={book._id}
                 className={styles.bookCardHome}
               >
-                <div className={styles.homeBookPlaceholder}>📚</div>
+                <div className={styles.bookCover}>
+                  {book.coverImage ? (
+                    <img
+                      src={book.coverImage}
+                      alt={book.title}
+                      className={styles.bookImage}
+                    />
+                  ) : (
+                    <span className={styles.bookImagePlaceholder}>📚</span>
+                  )}
+                </div>
                 <div className={styles.bookInfoHome}>
                   <h4 className={styles.bookTitle}>{book.title}</h4>
                   <p className={styles.bookAuthor}>
