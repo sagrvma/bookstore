@@ -5,7 +5,7 @@ import Book, { IBook } from "../models/book";
 
 export const getCart = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -22,7 +22,7 @@ export const getCart = async (
 
     let cart: ICart | null = await Cart.findOne({ user: userId }).populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
@@ -56,7 +56,7 @@ export const getCart = async (
 
 export const addToCart = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -97,7 +97,7 @@ export const addToCart = async (
     //Get cart or create new if it doesn't exist
     let cart: ICart | null = await Cart.findOne({ user: userId }).populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
@@ -111,7 +111,7 @@ export const addToCart = async (
     //Check if book already exists in cart
 
     const bookIndex = cart.items.findIndex(
-      (item) => item.book.toString() === bookId
+      (item) => item.book.toString() === bookId,
     );
 
     if (bookIndex > -1) {
@@ -147,7 +147,7 @@ export const addToCart = async (
     }
 
     await cart.save();
-    await cart.populate("items.book", "title author isbn category");
+    await cart.populate("items.book", "title author isbn category coverImage");
 
     return res.status(200).json({
       success: true,
@@ -167,7 +167,7 @@ export const addToCart = async (
 
 export const updateCartItemById = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -246,7 +246,7 @@ export const updateCartItemById = async (
     await cart.save();
     await cart.populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
@@ -271,7 +271,7 @@ export const updateCartItemById = async (
 
 export const removeCartItemById = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -321,10 +321,10 @@ export const removeCartItemById = async (
       {
         //Returns the new updated cart
         new: true,
-      }
+      },
     ).populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
@@ -358,7 +358,7 @@ export const removeCartItemById = async (
 
 export const removeCartItemByBookId = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -381,10 +381,10 @@ export const removeCartItemByBookId = async (
       {
         //Returns the new updated cart
         new: true,
-      }
+      },
     ).populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
@@ -418,7 +418,7 @@ export const removeCartItemByBookId = async (
 
 export const clearCart = async (
   req: AuthRequest,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   try {
     const userId = req.user?._id;
@@ -454,10 +454,10 @@ export const clearCart = async (
       {
         new: true,
         upsert: true, //Create new if it doesnt already exist or update if it does
-      }
+      },
     ).populate({
       path: "items.book",
-      select: "title author isbn category",
+      select: "title author isbn category coverImage",
       populate: {
         path: "author",
         select: "name",
