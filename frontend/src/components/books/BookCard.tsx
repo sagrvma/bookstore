@@ -14,8 +14,18 @@ const BookCard = ({ book, currencyFormatter, onAddtoCart }: BookCardProps) => {
       <Link to={`/books/${book._id}`} className={styles.imageLink}>
         {/*Placeholder Cover*/}
         <div className={styles.placeholderCover}>
-          <div className={styles.spine}></div>
-          <span className={styles.emoji}>📖</span>
+          {book.coverImage ? (
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className={styles.bookImage}
+            />
+          ) : (
+            <>
+              <div className={styles.spine}></div>
+              <span className={styles.emoji}>📖</span>
+            </>
+          )}
         </div>
       </Link>
 
