@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router";
 import { useToast } from "../context/ToastContext";
 import styles from "./CartPage.module.css";
+import { Book } from "../api/order";
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -119,17 +120,26 @@ const CartPage = () => {
         <div className={styles.cartItemsSection}>
           <ul className={styles.cartList}>
             {cart.items.map((item) => {
-              const book = item.book as any;
-              const authorName =
-                typeof book.author === "string"
-                  ? book.author
-                  : book.author?.name || "Unknown author";
+              const book = typeof item.book === "object" ? item.book : null;
+
+              const authorName = !book
+                ? "Unknown author"
+                : typeof book.author === "object"
+                  ? book.author.name
+                  : book.author || "Unknown author";
 
               return (
                 <li key={item._id} className={styles.cartItem}>
-                  {/* Book cover placeholder */}
                   <div className={styles.bookCover}>
-                    <span className={styles.bookIcon}>📚</span>
+                    {book?.coverImage ? (
+                      <img
+                        src={book.coverImage}
+                        alt={book.title}
+                        className={styles.bookImage}
+                      />
+                    ) : (
+                      <span className={styles.bookIcon}>📚</span>
+                    )}
                   </div>
 
                   <div className={styles.itemInfo}>
