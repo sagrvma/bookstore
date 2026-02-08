@@ -26,6 +26,7 @@ const AdminBooks = () => {
     author: "",
     isbn: "",
     price: 0,
+    coverImage: "",
     stock: 0,
     description: "",
     category: "",
@@ -80,6 +81,7 @@ const AdminBooks = () => {
       author: "",
       isbn: "",
       price: 0,
+      coverImage: "",
       stock: 0,
       description: "",
       category: "",
@@ -99,6 +101,7 @@ const AdminBooks = () => {
       author: authorId,
       isbn: book.isbn,
       price: book.price,
+      coverImage: book.coverImage || "",
       stock: book.stock,
       description: book.description || "",
       category: book.category,
@@ -187,7 +190,7 @@ const AdminBooks = () => {
                 <input
                   required
                   value={formData.title}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       title: e.target.value,
@@ -201,7 +204,7 @@ const AdminBooks = () => {
                 <select
                   required
                   value={formData.author}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       author: e.target.value,
@@ -223,7 +226,7 @@ const AdminBooks = () => {
                   required
                   pattern="[0-9-]{10,17}"
                   value={formData.isbn}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({ ...prev, isbn: e.target.value }));
                   }}
                 />
@@ -234,7 +237,7 @@ const AdminBooks = () => {
                 <input
                   required
                   value={formData.category}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       category: e.target.value,
@@ -251,10 +254,25 @@ const AdminBooks = () => {
                   min="0"
                   step="0.01"
                   value={formData.price}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       price: Number(e.target.value),
+                    }));
+                  }}
+                />
+              </label>
+
+              <label className={styles.formField}>
+                <span>Cover Image URL</span>
+                <input
+                  type="url"
+                  placeholder="https://example.com/image.jpg"
+                  value={formData.coverImage}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      coverImage: e.target.value,
                     }));
                   }}
                 />
@@ -267,7 +285,7 @@ const AdminBooks = () => {
                   type="number"
                   min="0"
                   value={formData.stock}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       stock: Number(e.target.value),
@@ -281,7 +299,7 @@ const AdminBooks = () => {
                 <input
                   type="date"
                   value={formData.publishedDate}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       publishedDate: e.target.value,
@@ -296,7 +314,7 @@ const AdminBooks = () => {
                   type="number"
                   min="1"
                   value={formData.pages}
-                  onChange={(e) => {
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setFormData((prev) => ({
                       ...prev,
                       pages: Number(e.target.value),
@@ -310,7 +328,7 @@ const AdminBooks = () => {
               <span>Description</span>
               <textarea
                 value={formData.description}
-                onChange={(e) => {
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                   setFormData((prev) => ({
                     ...prev,
                     description: e.target.value,
