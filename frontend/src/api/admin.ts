@@ -21,6 +21,7 @@ export type Book = {
   price: number;
   stock: number;
   description?: string;
+  coverImage?: string;
   category: string;
   publishedDate?: string; //Type dates as strings since JSON only returns strings
   pages?: number;
@@ -50,11 +51,11 @@ export const getAllOrders = async (params: {
 
 export const updateOrderStatus = async (
   orderId: string,
-  status: Order["status"]
+  status: Order["status"],
 ) => {
   const res = await http.patch<APISuccess<Order>>(
     `/api/orders/admin/${orderId}/status`,
-    { status }
+    { status },
   );
   return res.data.data;
 };
@@ -83,11 +84,11 @@ export const deleteAuthor = async (authorId: string) => {
 
 export const updateAuthor = async (
   authorId: string,
-  updates: Partial<Author>
+  updates: Partial<Author>,
 ) => {
   const res = await http.patch<APISuccess<Author>>(
     `/api/authors/${authorId}`,
-    updates
+    updates,
   );
   return res.data.data;
 };
@@ -117,7 +118,7 @@ export const removeBook = async (bookId: string) => {
 export const updateBook = async (bookId: string, updates: Partial<Book>) => {
   const res = await http.patch<APISuccess<Book>>(
     `/api/books/${bookId}`,
-    updates
+    updates,
   );
   return res.data.data;
 };

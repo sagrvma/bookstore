@@ -6,6 +6,7 @@ export type CartBook = {
   author?: { _id: string; name: string } | string;
   isbn: string;
   category: string;
+  coverImage?: string;
 };
 
 export type CartItem = {
@@ -48,7 +49,7 @@ export const addToCart = async (bookId: string, bookQuantity: number) => {
 
 export const updateCartItemById = async (
   itemId: string,
-  newQuantity: number
+  newQuantity: number,
 ) => {
   const res = await http.patch(`/api/cart/item/${itemId}`, { newQuantity });
   return res.data.data;
