@@ -135,13 +135,23 @@ const BookDetails = () => {
       <div className={styles.bookDetailGrid}>
         {/* LEFT COLUMN */}
         <aside className={styles.bookImageSection}>
-          <div className={styles.bookImagePlaceholder}>
-            <div className={styles.imagePlaceholderText}>
-              📚
-              <br />
-              Book Cover
-            </div>
-          </div>
+          {book.coverImage ? (
+            <img
+              src={book.coverImage}
+              alt={book.title}
+              className={styles.bookImage}
+            />
+          ) : (
+            <>
+              <div className={styles.bookImagePlaceholder}>
+                <div className={styles.imagePlaceholderText}>
+                  📚
+                  <br />
+                  Book Cover
+                </div>
+              </div>
+            </>
+          )}
 
           <div className={styles.bookQuickInfo}>
             <h4>Quick Info</h4>
