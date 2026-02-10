@@ -4,6 +4,7 @@ import { Book, getBookById, getBooks } from "../api/admin";
 import { addToCart } from "../api/cart";
 import { useToast } from "../context/ToastContext";
 import styles from "./BookDetails.module.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const BookDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -103,7 +104,7 @@ const BookDetails = () => {
   }, [bookId]);
 
   if (loading) {
-    return <p className={styles.status}>Loading book...</p>;
+    return <LoadingSpinner />;
   }
 
   if (err) {
