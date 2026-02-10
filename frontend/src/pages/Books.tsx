@@ -1,4 +1,4 @@
-import { cloneElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BooksHero from "../components/books/BooksHero";
 import BooksFilter, {
   BooksFiltersState,
@@ -10,6 +10,7 @@ import { addToCart } from "../api/cart";
 
 import styles from "./Books.module.css";
 import BookCard from "../components/books/BookCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Books = () => {
   //Core Data States
@@ -141,11 +142,7 @@ const Books = () => {
   };
 
   if (loading) {
-    return (
-      <div style={{ textAlign: "center", padding: "4rem" }}>
-        Loading Library...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
