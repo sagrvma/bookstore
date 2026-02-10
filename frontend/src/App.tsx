@@ -3,6 +3,7 @@ import { CSSProperties, useEffect, useState } from "react";
 import { Book, getBooks } from "./api/admin";
 // 1. IMPORT STYLES AS AN OBJECT
 import styles from "./App.module.css";
+import BookCardSkeleton from "./components/books/BookCardSkeleton";
 
 const App = () => {
   const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
@@ -114,7 +115,12 @@ const App = () => {
         </div>
 
         {loading ? (
-          <p>Loading...</p>
+          <div className={styles.booksGrid}>
+            <BookCardSkeleton />
+            <BookCardSkeleton />
+            <BookCardSkeleton />
+            <BookCardSkeleton />
+          </div>
         ) : (
           <div className={styles.booksGrid}>
             {featuredBooks.map((book) => (
