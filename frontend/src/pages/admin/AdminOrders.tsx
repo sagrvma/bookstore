@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Order, OrdersPage } from "../../api/order";
 import { getAllOrders, updateOrderStatus } from "../../api/admin";
+import { Order, OrdersPage } from "../../api/order";
 import { useNavigate } from "react-router";
 import styles from "./AdminOrders.module.css";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const AdminOrders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);
@@ -73,7 +74,7 @@ const AdminOrders = () => {
   ];
 
   if (loading && !data) {
-    return <p className={styles.status}>Loading Orders...</p>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -195,7 +196,7 @@ const AdminOrders = () => {
         </>
       )}
 
-      {loading && <p className={styles.status}>Loading...</p>}
+      {loading && <LoadingSpinner />}
     </div>
   );
 };

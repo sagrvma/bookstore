@@ -8,6 +8,7 @@ import {
 } from "../../api/admin";
 import { useNavigate } from "react-router";
 import styles from "./AdminAuthors.module.css";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const AdminAuthors = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -128,7 +129,7 @@ const AdminAuthors = () => {
   };
 
   if (loading) {
-    return <p className={styles.status}>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   return (

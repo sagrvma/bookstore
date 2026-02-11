@@ -10,6 +10,7 @@ import {
 } from "../../api/admin";
 import { useNavigate } from "react-router";
 import styles from "./AdminBooks.module.css";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const AdminBooks = () => {
   const [books, setBooks] = useState<Book[] | null>(null);
@@ -160,7 +161,7 @@ const AdminBooks = () => {
   };
 
   if (loading && !books) {
-    return <p className={styles.status}>Loading books...</p>;
+    return <LoadingSpinner />;
   }
 
   return (
