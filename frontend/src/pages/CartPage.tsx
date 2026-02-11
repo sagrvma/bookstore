@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router";
 import { useToast } from "../context/ToastContext";
 import styles from "./CartPage.module.css";
-import { Book } from "../api/order";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const CartPage = () => {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -82,6 +82,10 @@ const CartPage = () => {
       setErr(msg);
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   if (err) {
     return <p className={styles.error}>{err}</p>;
