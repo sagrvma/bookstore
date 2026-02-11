@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { cancelOrder, getOrdersByUser, OrdersPage } from "../api/order";
 import { useNavigate } from "react-router";
 import styles from "./Orders.module.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Orders = () => {
   const [data, setData] = useState<OrdersPage | null>(null);
@@ -39,7 +40,7 @@ const Orders = () => {
   }, []);
 
   if (loading && !data) {
-    return <p className={styles.status}>Loading orders...</p>;
+    return <LoadingSpinner />;
   }
 
   if (err) {
@@ -62,7 +63,9 @@ const Orders = () => {
           <li key={order._id} className={styles.orderItem}>
             <div className={styles.orderHeader}>
               <div className={styles.orderNumber}>#{order.orderNumber}</div>
-              <div className={styles.orderStatus}>Order Status : {order.status}</div>
+              <div className={styles.orderStatus}>
+                Order Status : {order.status}
+              </div>
             </div>
             <div className={styles.orderMeta}>
               <div>Items: {order.items.length}</div>
@@ -88,7 +91,7 @@ const Orders = () => {
                     } catch (error: any) {
                       setErr(
                         error?.response?.data?.message ||
-                          "Failed to cancel order."
+                          "Failed to cancel order.",
                       );
                     }
                   }}
@@ -125,7 +128,7 @@ const Orders = () => {
           Next
         </button>
 
-        {loading && <p className={styles.status}>Loading...</p>}
+        {loading && <LoadingSpinner />}
       </div>
     </div>
   );

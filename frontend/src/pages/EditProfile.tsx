@@ -3,6 +3,7 @@ import { getProfile, updateProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
 import styles from "./EditProfile.module.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const EditProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -82,7 +83,7 @@ const EditProfile = () => {
   }, []);
 
   if (loading) {
-    return <p className={styles.status}>Loading profile...</p>;
+    return <LoadingSpinner />;
   }
   if (!user) {
     return <p className={styles.error}>User not found.</p>;

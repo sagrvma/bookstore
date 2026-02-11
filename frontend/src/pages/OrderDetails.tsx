@@ -5,6 +5,7 @@ import styles from "./OrderDetails.module.css";
 import { tokenStore } from "../lib/http";
 import { jwtDecode } from "jwt-decode";
 import { JWTPayload } from "../routes/AdminRoute";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const OrderDetails = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -78,7 +79,7 @@ const OrderDetails = () => {
   }, [orderId]);
 
   if (loading) {
-    return <p className={styles.status}>Loading...</p>;
+    return <LoadingSpinner />;
   }
   if (err) {
     return <p className={styles.error}>{err}</p>;

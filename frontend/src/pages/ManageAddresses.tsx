@@ -10,6 +10,7 @@ import {
 } from "../api/user";
 import { Link, useNavigate } from "react-router";
 import styles from "./ManageAddresses.module.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ManageAddresses = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -108,7 +109,7 @@ const ManageAddresses = () => {
     if (isDefault && user?.addresses.length === 1) {
       showToast(
         "warning",
-        "Cannot delete the only address. Add another address first."
+        "Cannot delete the only address. Add another address first.",
       );
       return;
     }
@@ -141,7 +142,7 @@ const ManageAddresses = () => {
     loadProfile();
   }, []);
 
-  if (loading) return <p className="status">Loading addresses...</p>;
+  if (loading) return <LoadingSpinner />;
   if (err) return <p className="error">{err}</p>;
   if (!user) return <p className="error">User not found.</p>;
 
@@ -298,7 +299,11 @@ const ManageAddresses = () => {
                 </label>
               </div>
               <div className={styles.formActions}>
-                <button className={styles.cancelBtn} type="button" onClick={resetForm}>
+                <button
+                  className={styles.cancelBtn}
+                  type="button"
+                  onClick={resetForm}
+                >
                   Cancel
                 </button>
                 <button
@@ -309,8 +314,8 @@ const ManageAddresses = () => {
                   {formLoading
                     ? "Saving..."
                     : editingAddress
-                    ? "Update Address"
-                    : "Add Address"}
+                      ? "Update Address"
+                      : "Add Address"}
                 </button>
               </div>
             </div>

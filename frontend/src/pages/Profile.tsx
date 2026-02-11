@@ -3,6 +3,7 @@ import { getProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
 import styles from "./Profile.module.css";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -36,7 +37,7 @@ const Profile = () => {
   }, []);
 
   if (loading) {
-    return <p className={styles.status}>Loading profile...</p>;
+    return <LoadingSpinner />;
   }
 
   if (err) {
