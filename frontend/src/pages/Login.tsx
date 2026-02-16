@@ -26,12 +26,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { showToast } = useToast();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr("");
+    setLoading(true);
     try {
       const res = await http.post<APISuccess<AuthPayload>>("/api/auth/login", {
         email,
@@ -51,6 +53,8 @@ const Login = () => {
         "Login failed! Please try again.";
       showToast("error", msg);
       setErr(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,6 +74,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address"
+            disabled={loading}
           />
         </label>
         <label className={styles.inputLabel}>
@@ -80,10 +85,18 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
+            disabled={loading}
           />
         </label>
-        <button type="submit" className={styles.submitBtn}>
-          Sign In
+        <button type="submit" className={styles.submitBtn} disabled={loading}>
+          {loading ? (
+            <span className={styles.btnLoading}>
+              <span className={styles.spinner} />
+              Signing in…
+            </span>
+          ) : (
+            "Sign In"
+          )}
         </button>
         {err && <p className={styles.error}>{err}</p>}
       </form>

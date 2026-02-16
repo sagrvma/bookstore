@@ -30,12 +30,16 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err?.response?.status === 401) {
+    const reqUrl = err?.config?.url || "";
+
+    const isAuthReq = reqUrl.includes("/auth/");
+
+    if (err?.response?.status === 401 && !isAuthReq) {
       tokenStore.clear();
       window.location.assign("/login");
     }
     return Promise.reject(err);
-  }
+  },
 );
 
 export default http; //Can be used across the app, e.g http.get("api/books")
