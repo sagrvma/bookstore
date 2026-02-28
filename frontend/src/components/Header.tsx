@@ -5,9 +5,13 @@ import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
 
 import "./Header.css";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const Header = () => {
   const { showToast } = useToast();
+
+  const { theme, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
 
@@ -63,6 +67,9 @@ const Header = () => {
         </div>
         {/*Right : Auth */}
         <div className="headerRight">
+          <button className="themeToggleBtn" onClick={toggleTheme}>
+            {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
           {isAuthed ? (
             <>
               <Link to="/profile" className="navLink">
