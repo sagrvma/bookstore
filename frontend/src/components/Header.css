@@ -3,12 +3,8 @@
   top: 0;
   z-index: 20;
   backdrop-filter: blur(20px);
-  background: linear-gradient(
-    to right,
-    rgba(239, 246, 255, 0.92),
-    rgba(248, 250, 252, 0.95)
-  );
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-color);
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
 }
 
@@ -51,7 +47,7 @@
 
 .navLink {
   text-decoration: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 0.94rem;
   padding: 0.5rem 1rem;
@@ -62,8 +58,8 @@
 }
 
 .navLink:hover {
-  color: #111827;
-  background: rgba(239, 246, 255, 0.85);
+  color: var(--text-primary);
+  background: rgba(99, 102, 241, 0.06);
   box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
 }
 
@@ -74,16 +70,16 @@
   gap: 0.5rem;
   padding: 0.35rem 0.8rem;
   margin-left: 0.5rem;
-  background: rgba(226, 232, 240, 0.5);
+  background: rgba(99, 102, 241, 0.05);
   border-radius: 999px;
-  border: 1px solid rgba(203, 213, 225, 0.6);
+  border: 1px solid var(--border-color);
 }
 
 .adminLabel {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #9ca3af;
+  color: var(--text-muted);
   font-weight: 700;
   padding-right: 0.3rem;
 }
@@ -103,13 +99,13 @@
 /* Profile/Login as pills */
 .headerRight .navLink {
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
 }
 
 .headerRight .navLink:hover {
-  background: rgba(239, 246, 255, 0.95);
-  border-color: rgba(203, 213, 225, 0.95);
+  background: rgba(99, 102, 241, 0.06);
+  border-color: var(--border-color);
   color: #4f46e5;
 }
 
@@ -117,13 +113,9 @@
 .logoutBtn {
   padding: 0.5rem 1.1rem;
   border-radius: 999px;
-  border: 1px solid rgba(203, 213, 225, 0.9);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(248, 250, 252, 0.95)
-  );
-  color: #4b5563;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 0.9rem;
   cursor: pointer;
@@ -132,9 +124,9 @@
 }
 
 .logoutBtn:hover {
-  background: rgba(239, 246, 255, 0.95);
+  background: rgba(99, 102, 241, 0.06);
   border-color: #cbd5e1;
-  color: #111827;
+  color: var(--text-primary);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
@@ -154,7 +146,7 @@
     flex-wrap: wrap;
     row-gap: 0.5rem;
     padding-top: 0.5rem;
-    border-top: 1px solid rgba(226, 232, 240, 0.6);
+    border-top: 1px solid var(--border-color);
   }
 
   .headerRight {
@@ -174,11 +166,11 @@
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid var(--border-color, #e2e8f0);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 0.4rem;
   cursor: pointer;
-  color: inherit;
+  color: var(--text-secondary);
   transition:
     background 0.15s ease,
     border-color 0.15s ease,

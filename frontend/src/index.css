@@ -4,6 +4,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease;
 }
 
 :root {
@@ -14,6 +18,7 @@
   --bg-page: #f8f9fa;
   --bg-surface: #ffffff;
   --bg-surface-alt: rgba(255, 255, 255, 0.92);
+  --bg-header: rgba(239, 246, 255, 0.92);
 
   /* Text */
   --text-primary: #0f172a;
@@ -38,6 +43,7 @@
   --bg-page: #0f172a;
   --bg-surface: #1e293b;
   --bg-surface-alt: rgba(30, 41, 59, 0.92);
+  --bg-header: rgba(15, 23, 42, 0.92);
 
   /* Text */
   --text-primary: #f1f5f9;
@@ -67,7 +73,4 @@ body {
   background-color: var(--bg-page);
   color: var(--text-primary);
   line-height: 1.6;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
 }
