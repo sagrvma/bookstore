@@ -28,7 +28,7 @@
 .loadingText {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
   animation: pulse 1.5s ease-in-out infinite;
 }
 

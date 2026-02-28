@@ -1,6 +1,6 @@
-.pageWrapper {
-  min-height: 100vh;
-  background:
+/* Light theme */
+:root {
+  --books-bg:
     radial-gradient(
       circle at top left,
       rgba(236, 72, 153, 0.12) 0,
@@ -19,6 +19,31 @@
     #f3f4f6;
 }
 
+[data-theme="dark"] {
+  --books-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(236, 72, 153, 0.08) 0,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(56, 189, 248, 0.08) 0,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(79, 70, 229, 0.1) 0,
+      transparent 60%
+    ),
+    #0f172a;
+}
+
+.pageWrapper {
+  min-height: 100vh;
+  background: var(--books-bg);
+}
+
 .layoutGrid {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -30,12 +55,12 @@
 
 .resultsCount {
   font-size: 0.95rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
 }
 
 .resultsCount strong {
-  color: #111827;
+  color: var(--text-primary);
 }
 
 .grid {
@@ -49,9 +74,9 @@
   padding: 3rem 2rem;
   border-radius: 20px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-surface);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-color);
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
 }
 
@@ -59,7 +84,7 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-size: 1.2rem;
-  color: #0f172a;
+  color: var(--text-primary);
 }
 
 .clearBtn {

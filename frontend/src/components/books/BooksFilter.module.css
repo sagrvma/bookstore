@@ -1,13 +1,9 @@
 .sidebar {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
   padding: 2rem;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
   position: sticky;
   top: 2rem;
@@ -16,7 +12,7 @@
 
 .filterGroup {
   margin-bottom: 2rem;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 1.5rem;
 }
 
@@ -27,7 +23,7 @@
 .filterGroup h3 {
   font-size: 0.9rem;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--text-secondary);
   letter-spacing: 1px;
   margin-bottom: 1rem;
   font-weight: 700;
@@ -36,13 +32,13 @@
 .customSelect {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid rgba(203, 213, 225, 0.7);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-surface);
   cursor: pointer;
   outline: none;
-  color: #0f172a;
+  color: var(--text-primary);
   font-weight: 500;
   transition: all 0.15s ease;
 }
@@ -77,13 +73,13 @@
 .sortBtn {
   flex: 1;
   padding: 0.5rem;
-  border: 1px solid rgba(203, 213, 225, 0.7);
-  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
   border-radius: 10px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -97,9 +93,9 @@
 .resetBtn {
   width: 100%;
   padding: 0.8rem;
-  background: rgba(254, 242, 242, 0.5);
-  border: 1px dashed rgba(239, 68, 68, 0.4);
-  color: #dc2626;
+  background: var(--error-bg);
+  border: 1px dashed var(--error-border);
+  color: var(--error-text);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
@@ -108,7 +104,7 @@
 
 .resetBtn:hover {
   background: rgba(254, 242, 242, 0.8);
-  color: #dc2626;
+  color: var(--error-text);
   border-style: solid;
   border-color: #ef4444;
 }

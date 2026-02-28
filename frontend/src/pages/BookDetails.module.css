@@ -1,6 +1,6 @@
-.bookDetailsWrapper {
-  min-height: 100vh;
-  background:
+/* Light theme */
+:root {
+  --book-details-bg:
     radial-gradient(
       circle at top left,
       rgba(236, 72, 153, 0.12) 0,
@@ -17,6 +17,31 @@
       transparent 60%
     ),
     #f3f4f6;
+}
+
+[data-theme="dark"] {
+  --book-details-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(236, 72, 153, 0.08) 0,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(56, 189, 248, 0.08) 0,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(79, 70, 229, 0.1) 0,
+      transparent 60%
+    ),
+    #0f172a;
+}
+
+.bookDetailsWrapper {
+  min-height: 100vh;
+  background: var(--book-details-bg);
   padding: 2rem;
 }
 
@@ -28,7 +53,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .breadCrumb a {
@@ -43,7 +68,7 @@
 }
 
 .breadCrumbSeperator {
-  color: #cbd5e1;
+  color: var(--text-muted);
   user-select: none;
 }
 
@@ -81,7 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
 }
 
@@ -95,13 +120,9 @@
 .bookQuickInfo {
   padding: 1.75rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
 
@@ -109,7 +130,7 @@
   margin: 0 0 1rem;
   font-size: 1rem;
   font-weight: 700;
-  color: #020617;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -118,7 +139,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  border-bottom: 1px solid var(--border-color);
   font-size: 0.9rem;
 }
 
@@ -127,7 +148,7 @@
 }
 
 .quickInfoLabel {
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -151,7 +172,7 @@
 .bookDetailTitle {
   font-size: 2.5rem;
   font-weight: 900;
-  color: #020617;
+  color: var(--text-primary);
   letter-spacing: -0.03em;
   margin: 0;
   line-height: 1.2;
@@ -159,7 +180,7 @@
 
 .bookAuthorLine {
   font-size: 1.1rem;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-top: -1rem;
 }
 
@@ -172,13 +193,9 @@
 .buyBox {
   padding: 2rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.95),
-    rgba(249, 250, 251, 0.9)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-color);
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
   display: flex;
   flex-direction: column;
@@ -193,7 +210,7 @@
 
 .priceLabel {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -232,17 +249,17 @@
 .quantitySelector label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-primary);
 }
 
 .quantitySelector select {
   padding: 0.6rem 1rem;
   border-radius: 10px;
-  border: 1px solid rgba(203, 213, 225, 0.7);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
   font-size: 0.95rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-primary);
   cursor: pointer;
   outline: none;
   transition: all 0.15s ease;
@@ -281,13 +298,9 @@
 .bookDescription {
   padding: 2rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
 
@@ -295,12 +308,12 @@
   margin: 0 0 1rem;
   font-size: 1.4rem;
   font-weight: 800;
-  color: #020617;
+  color: var(--text-primary);
 }
 
 .bookDescription p {
   line-height: 1.7;
-  color: #475569;
+  color: var(--text-secondary);
   margin: 0;
   font-size: 1rem;
 }
@@ -309,13 +322,9 @@
 .bookDetails {
   padding: 2rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
 
@@ -323,7 +332,7 @@
   margin: 0 0 1.25rem;
   font-size: 1.4rem;
   font-weight: 800;
-  color: #020617;
+  color: var(--text-primary);
 }
 
 .detailsGrid {
@@ -334,25 +343,21 @@
 
 .detailItem {
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--text-secondary);
 }
 
 .detailLabel {
   font-weight: 700;
-  color: #334155;
+  color: var(--text-primary);
 }
 
 /* Author Info */
 .authorInfo {
   padding: 2rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
 
@@ -360,7 +365,7 @@
   margin: 0 0 0.75rem;
   font-size: 1.4rem;
   font-weight: 800;
-  color: #020617;
+  color: var(--text-primary);
 }
 
 .authorInfo h4 {
@@ -372,7 +377,7 @@
 
 .authorInfo p {
   line-height: 1.7;
-  color: #475569;
+  color: var(--text-secondary);
   margin: 0;
   font-size: 0.95rem;
 }
@@ -381,13 +386,9 @@
 .relatedBooks {
   padding: 2rem;
   border-radius: 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(249, 250, 251, 0.88)
-  );
+  background: var(--bg-surface-alt);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
 
@@ -395,7 +396,7 @@
   margin: 0 0 1.5rem;
   font-size: 1.4rem;
   font-weight: 800;
-  color: #020617;
+  color: var(--text-primary);
 }
 
 .relatedBooksGrid {
@@ -407,8 +408,8 @@
 .relatedBookCard {
   padding: 1.25rem;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(226, 232, 240, 0.6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -422,7 +423,7 @@
 .relatedBookTitle {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #020617;
+  color: var(--text-primary);
   margin-bottom: 0.4rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -432,7 +433,7 @@
 
 .relatedBookAuthor {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
 
@@ -446,9 +447,9 @@
 .backBtn {
   padding: 0.85rem 1.5rem;
   border-radius: 12px;
-  border: 1px solid rgba(203, 213, 225, 0.7);
-  background: rgba(255, 255, 255, 0.9);
-  color: #334155;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -457,8 +458,8 @@
 }
 
 .backBtn:hover {
-  background: rgba(255, 255, 255, 1);
-  border-color: #94a3b8;
+  background: var(--bg-surface-alt);
+  border-color: var(--text-muted);
   transform: translateX(-4px);
 }
 
@@ -468,7 +469,7 @@
   text-align: center;
   padding: 4rem 2rem;
   font-size: 1.1rem;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
 .error {

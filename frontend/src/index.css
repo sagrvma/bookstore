@@ -30,6 +30,7 @@
   /* Brand */
   --brand: #6366f1;
   --brand-dark: #4f46e5;
+  --title-gradient: linear-gradient(135deg, #1a1a2e, #4f46e5);
 
   /* Feedback */
   --error-bg: rgba(239, 68, 68, 0.1);
@@ -54,6 +55,7 @@
   /* Brand (stays the same) */
   --brand: #6366f1;
   --brand-dark: #4f46e5;
+  --title-gradient: linear-gradient(135deg, #f1f5f9, #6366f1, #a855f7);
 
   /* Feedback */
   --error-bg: rgba(239, 68, 68, 0.15);
