@@ -217,8 +217,8 @@
   height: 32px;
   border-radius: 999px;
   border: none;
-  background: rgba(254, 242, 242, 0.8);
-  color: #ef4444;
+  background: var(--error-bg);
+  color: var(--error-text);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 1;
@@ -231,7 +231,7 @@
 }
 
 .removeBtn:hover {
-  background: rgba(254, 226, 226, 1);
+  background: var(--error-border);
   transform: scale(1.1);
 }
 
@@ -374,7 +374,7 @@
 .error {
   text-align: center;
   padding: 4rem 2rem;
-  color: #ef4444;
+  color: var(--error-text);
   font-size: 1.05rem;
 }
 

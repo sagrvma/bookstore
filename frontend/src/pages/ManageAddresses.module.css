@@ -140,7 +140,7 @@
   transition: color 0.15s ease;
 }
 .closeBtn:hover {
-  color: #dc2626;
+  color: var(--error-text);
   text-decoration: underline;
 }
 
@@ -354,15 +354,15 @@
   transform: translateY(-2px);
 }
 .deleteBtn {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
-  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  background: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border) !important;
   margin-left: auto;
 }
 .deleteBtn:hover {
-  background: #dc2626;
+  background: var(--error-text);
   color: white;
-  border-color: #dc2626 !important;
+  border-color: var(--error-text) !important;
   transform: translateY(-2px);
 }
 
@@ -393,7 +393,7 @@
   color: var(--text-secondary);
 }
 .error {
-  color: #ef4444;
+  color: var(--error-text);
 }
 
 @media (max-width: 768px) {

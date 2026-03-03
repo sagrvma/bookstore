@@ -103,8 +103,8 @@
 }
 
 .resetBtn:hover {
-  background: rgba(254, 242, 242, 0.8);
+  background: var(--error-bg);
   color: var(--error-text);
   border-style: solid;
-  border-color: #ef4444;
+  border-color: var(--error-text);
 }
