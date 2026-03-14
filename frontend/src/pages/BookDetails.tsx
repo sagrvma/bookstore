@@ -18,7 +18,7 @@ const BookDetails = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const inr = new Intl.NumberFormat("en-In", {
+  const inr = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
   });
@@ -116,7 +116,7 @@ const BookDetails = () => {
   }
 
   const authorName =
-    typeof book.author === "object" ? book.author?.name : "Unkown author";
+    typeof book.author === "object" ? book.author?.name : "Unknown author";
   const authorBio = typeof book.author === "object" ? book.author?.bio : null;
   const inStock = book.stock > 0;
   const maxQuantity = Math.min(book.stock, 10);
