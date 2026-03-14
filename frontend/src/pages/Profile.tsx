@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { getProfile, User } from "../api/user";
 import { useToast } from "../context/ToastContext";
 import { Link, useNavigate } from "react-router";
+import { getOrdersByUser } from "../api/order";
 import styles from "./Profile.module.css";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [orderCount, setOrderCount] = useState<number | null>(null);
   const [err, setErr] = useState("");
   const { showToast } = useToast();
 
@@ -18,6 +20,15 @@ const Profile = () => {
     setLoading(true);
     try {
       const userData = await getProfile();
+
+      //Fetch user's order data for count
+      try {
+        const ordersData = await getOrdersByUser({ page: 1, limit: 1 });
+        setOrderCount(ordersData.pagination.totalOrders);
+      } catch (error) {
+        setOrderCount(null);
+      }
+
       setUser(userData);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -153,7 +164,7 @@ const Profile = () => {
               </div>
               <div className={styles.statItem}>
                 <span className={styles.statNumber}>
-                  {user.role === "admin" ? "∞" : "?"}
+                  {orderCount !== null ? orderCount : "-"}
                 </span>
                 <span className={styles.statLabel}>Orders</span>
               </div>
