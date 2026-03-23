@@ -6,7 +6,7 @@
   border: 1px solid var(--border-color);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
   position: sticky;
-  top: 2rem;
+  top: calc(var(--header-height, 64px) + 1.5rem);
   height: fit-content;
 }
 
